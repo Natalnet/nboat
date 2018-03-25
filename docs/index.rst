@@ -13,6 +13,8 @@ About the Boats
 
 talk a little bit about the boats and the purpose of this document.
 
+TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG!!!!!!!!!!!!!!!!!!!!!!
+
 show some youtube videos of the boats in action.
 
 Autonomous Systems Laboratoty - PUCRS
