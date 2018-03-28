@@ -3,16 +3,18 @@
 Contributors
 ========================
  
-The list of contributors to this document.
+The list of contributors to this project.
 
-	* `@Alexandre Amory <https://amamory.github.io/>`_
+	* @Alvaro Negreiros
 
-	* @Davi Henrique
+    * @Andouglas Costa
 
-	* @Luiz Marcos Gonçalves
+	* `@Davi Henrique <https://.github.com/davihdsantos/>`
 
-	* @Marcelo Paravisi
+    * @João Moreno
 
-	* @Vitor Jorge
+	* @Justo Emilio
 
+	* @Luiz Marcos
 
+    * @Vitor Vieira

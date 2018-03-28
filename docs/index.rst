@@ -1,3 +1,4 @@
+
 ==========================
 Nboat Documentation
 ==========================
@@ -6,13 +7,12 @@ Nboat Documentation
 About the project
 -----------------
 
-.. image:: ./source/getting_started/images/boats.png
+.. image:: ./source/getting_started/images/nboat2.png
     :align: center
 
 
 talk a little bit about the boats and the purpose of this document.
 
-show some youtube videos of the boats in action.
 
 NatalNet -- UFRN
 --------------------------------------
@@ -26,11 +26,14 @@ Summary
 .. toctree::
    :maxdepth: 3
     
-   source/getting_started/index
-   source/disturbances/index
-   source/boats/index
-   source/environments/index
-   source/control/index
+   source/our_sailboats/index
+   source/nboat_mini/index
+   source/nboat/index
+   source/gnc/index
+   source/water_sensor/index
+   source/obstacle_detection/index
+   source/simulation/index
+   source/publications/index
    source/contributors/index
 
 
