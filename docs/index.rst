@@ -1,10 +1,9 @@
-
 ==========================
-Welcome to Unmanned Surface Vehicle Simulation for Gazebo
+Nboat Documentation
 ==========================
 
 
-About the Boats
+About the project
 -----------------
 
 .. image:: ./source/getting_started/images/boats.png
@@ -13,14 +12,12 @@ About the Boats
 
 talk a little bit about the boats and the purpose of this document.
 
-TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG!!!!!!!!!!!!!!!!!!!!!!
-
 show some youtube videos of the boats in action.
 
-Autonomous Systems Laboratoty - PUCRS
+NatalNet -- UFRN
 --------------------------------------
 
-talk about LSA, link to the webpage
+talk about NatalNet, link to the webpage
 
 
 Summary
@@ -40,12 +37,12 @@ Summary
 Disclaimer
 ----------
 
-The purpose of this document is for the use of LSA group only, but we open it in case it can be usefull for someone else.
-Everything you find here is without absolutly no waranty and I'm not responsible for any inconveniences or issues that might occurs. 
+The purpose of this document is for the use of Nboat group only, but we open it in case it can be usefull for someone else.
+Everything you find here is without absolutly no waranty and we're not responsible for any inconveniences or issues that might occurs. 
 
 Feedback
 --------
 
-Don't hesitate to ask about some additional info or next guides and also if you find some mistakes, please let me know.
+Don't hesitate to ask about some additional info or next guides and also if you find some mistakes, please let us know.
 This can be done by submitting an issue or a push request on github.
 
