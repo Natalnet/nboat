@@ -7,7 +7,7 @@ Nboat Documentation
 About the project
 -----------------
 
-.. image:: ./source/getting_started/images/nboat2.png
+.. image:: ./source/our_sailboats/images/nboat2.png
     :align: center
 
 
