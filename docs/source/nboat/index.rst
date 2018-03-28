@@ -5,9 +5,6 @@
 Nboat (Version 2.0)
 =========================
 
-Nboat (version 2.0)
------------------
-
 Contruction
 --------
 
