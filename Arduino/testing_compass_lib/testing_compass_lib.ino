@@ -8,5 +8,5 @@ void setup(){
 
 
 void loop() {
-  Serial.println(compass.get_value());  
+  Serial.println(compass.readHeading());  
 }
