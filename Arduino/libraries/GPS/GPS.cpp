@@ -7,8 +7,6 @@
 */
 
 #include "Arduino.h"
-#include "TinyGPS.h"
-#include "Location.h"
 #include "GPS.h"
 
 GPS::GPS(){
@@ -35,8 +33,8 @@ Location GPS::readPosition(Location p1){
   return p1;
 }
 
-int GPS::computeDistance(Location p1, Location p2){
-  return (int)TinyGPS::distance_between(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
+float GPS::computeDistance(Location p1, Location p2){
+  return TinyGPS::distance_between(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
 }
 
 float GPS::computeHeading(Location p1, Location p2){

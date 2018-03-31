@@ -18,7 +18,7 @@ class GPS
   public:
     GPS();
     Location readPosition(Location p1);
-    int computeDistance(Location p1, Location p2);
+    float computeDistance(Location p1, Location p2);
     float computeHeading(Location p1, Location p2);
   private:
     TinyGPS gps;
