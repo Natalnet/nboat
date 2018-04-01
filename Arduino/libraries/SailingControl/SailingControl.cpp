@@ -1,14 +1,79 @@
-float saturador(float sensor) {
-  if (sensor > 180) {
-    sensor = sensor - 360;
-  }
-  if (sensor < -180) {
-    sensor = sensor + 360;
-  }
-  return sensor;
+/*
+
+  SailingControl.h - Library containing code for the movement controllers used in Nboat project.
+  Created by Davi H. dos Santos, March 31, 2018.
+  BSD license, all text above must be included in any redistribution.
+
+*/
+
+
+#include "Arduino.h"
+#include "SailingControl.h"
+
+SailingControl::SailingControl(){
+  _kp = 1;
+  _ki = 0;
+  _starttime = millis(); //TODO check if the time scale is correct (s, ms, micro s ???)
+  I_prior = 0;
 }
 
-float saturador_rudder(float sensor) {
+void SailingControl::rudderHeadingControl(Location target) {
+
+  _currentPosition = _gps.readPosition(); // TODO in case of exception (or null response...)
+
+  _sp = _gps.computeHeading(_currentPosition, target);
+  _sp = adjustFrame(_sp);
+
+  _heading = _compass.readHeading();
+
+  _currentError = _sp - _heading;
+  _currentError = adjustFrame(_currentError);
+  
+  // control "equation" (removed) passing the raw error forward
+  
+  _currentError = rudderAngle;
+  rudderAngle = P(_currentError) + I(_currentError);
+  rudderAngle = rudderAngleSaturation(rudderAngle);
+  //rudderAngle_sig = rudder_signal(rudderAngle);
+
+  //actuatorsDrivers.rudder(rudderAngle); //TODO
+
+  //rudderAngle_sig = adjustFrame_atuador_cor(rudderAngle); vai pro driver
+  //Serial1.print(rudderAngle_sig); vai pro driver
+}
+
+float SailingControl::P(float currentError)
+{
+  return _kp * currentError;
+}
+
+float SailingControl::I(float currentError)
+{
+  _endtime = millis();
+  _cycleTime = _endtime - _starttime;
+  _starttime = millis();
+  if ((I_prior > 0 && currentError < 0) || (I_prior < 0 && currentError > 0))
+  {
+    I_prior = I_prior + _ki * currentError * 50 * _cycleTime;
+  }
+  else
+  {
+    I_prior = I_prior + _ki * currentError * _cycleTime;
+  }
+  return I_prior;
+}
+
+float SailingControl::adjustFrame(float angle) {
+  if (angle > 180) {
+    angle = angle - 360;
+  }
+  if (angle < -180) {
+    angle = angle + 360;
+  }
+  return angle;
+}
+
+float SailingControl::rudderAngleSaturation(float sensor) {
   if (sensor > 90) {
     sensor = 90;
   }
@@ -18,50 +83,10 @@ float saturador_rudder(float sensor) {
   return sensor;
 }
 
-int saturador_atuador_cor(float sensor) {
-  float id = (-sensor + 120)/30;
-  int aux = (int)id;
-  float decpart = id - aux;
-  int idreturn = 1;
-  if (decpart <= 0.5){
-    idreturn = id;
-  } else{
-    idreturn = id + 1;
-  }
-  return idreturn;
+void SailingControl::sailControl(){
+  _windDir = _windSensors.readWindDirection();
+  // angle that i want the sail to have
+  _sailAngle =  _windDir/2;
+  _actuators.setSailPosition(_sailAngle);
 }
 
-// controle do rudder
-void controle_rudder() {
-  sp = saturador(sp);
-  erroAtual = sp - heading;
-  erroAtual = saturador(erroAtual);
-  
-  angulo_rudder_ant = angulo_rudder;
-  angulo_rudder = 90 * (erroAtual/180);
-  
-  erroAtual = angulo_rudder;
-  angulo_rudder = P() + I();
-  angulo_rudder = saturador_rudder(angulo_rudder);
-  //angulo_rudder_sig = rudder_signal(angulo_rudder);
-  angulo_rudder_sig = saturador_atuador_cor(angulo_rudder);
-  Serial1.print(angulo_rudder_sig);
-}
-
-float P()
-{
-  return Kp * erroAtual;
-}
-
-float I()
-{
-  if ((Ianterior > 0 && erroAtual < 0) || (Ianterior < 0 && erroAtual > 0))
-  {
-    Ianterior = Ianterior + Ki * erroAtual * 50 * tempo_do_ciclo;
-  }
-  else
-  {
-    Ianterior = Ianterior + Ki * erroAtual * tempo_do_ciclo;
-  }
-  return Ianterior;
-}

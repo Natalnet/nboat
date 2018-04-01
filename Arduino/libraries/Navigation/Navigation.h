@@ -23,7 +23,7 @@ class Navigation
 {
   public:
     Navigation();
-    vector<Location> tackingPoints(Location current, Location target, float tackingAngle = 60, float tackingWidenessRate = 0.2);
+    vector<Location> findTackingPoints(Location current, Location target, float tackingAngle = 60, float tackingWidenessRate = 0.2);
     float adjustFrame(float sensor);
     Location angleToLocation(float lat, float lon);
   private:

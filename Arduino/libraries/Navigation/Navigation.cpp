@@ -13,7 +13,7 @@
 Navigation::Navigation(){
 }
 
-vector<Location> Navigation::tackingPoints(Location current, Location target, float tackingAngle, float tackingWidenessRate)
+vector<Location> Navigation::findTackingPoints(Location current, Location target, float tackingAngle, float tackingWidenessRate)
 {
   // getting curent heeling value
   _heading = _compass.readHeading();

@@ -17,7 +17,7 @@ class GPS
 {
   public:
     GPS();
-    Location readPosition(Location p1);
+    Location readPosition();
     float computeDistance(Location p1, Location p2);
     float computeHeading(Location p1, Location p2);
   private:

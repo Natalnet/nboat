@@ -15,7 +15,7 @@ GPS::GPS(){
   start = 0.0;
 }
 
-Location GPS::readPosition(Location p1){  
+Location GPS::readPosition(){  
   start = millis();
   do 
   {
@@ -24,13 +24,13 @@ Location GPS::readPosition(Location p1){
       c = Serial3.read();
       if(gps.encode(c))
       {
-        gps.f_get_position(&p1.latitude, &p1.longitude);
+        gps.f_get_position(&_p1.latitude, &_p1.longitude);
         //direcao = gps.f_course();
         //velocidade = gps.f_speed_kmph();
       }
     }
   } while (millis() - start < ms);
-  return p1;
+  return _p1;
 }
 
 float GPS::computeDistance(Location p1, Location p2){
