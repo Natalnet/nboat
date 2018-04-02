@@ -9,7 +9,7 @@ About the project
 
 The Nboat Project started in 2013. Our main goal is to develop an autonomous sailboat platform to be used as an educational tool to increase interest in the area of mobile robotics of our community and in the process nurture human resources specialized in envorinmental and green robotics.
 
-Further, our plataform will be used to help researchers in applications such as water quality evaluation, coastal survailancy. Our secondary goal is to participate in various autonomous sailboat competitions such as the Microtransat Challenge, IRSC and WRSC. The Nboat project is funded partially by CNPq and CAPES.
+Further, our plataform will be used to help researchers in applications such as water quality evaluation, coastal survailancy. Our secondary goal is to participate in various autonomous sailboat competitions such as the Microtransat Challenge, IRSC and WRSC. The Nboat project is partially funded by CNPq and CAPES.
 
 .. image:: ./source/our_sailboats/images/nboat2.png
     :scale: 50 %
@@ -20,7 +20,7 @@ Further, our plataform will be used to help researchers in applications such as 
 NatalNet -- UFRN
 --------------------------------------
 
-Located in the UFRN (Federal University of Rio Grande do Norte), the NatalNet Associated laboratoriesare comprised of many laboratories. They are mainly focused in reseachs involving computer vision, educational robotics and mobile robotics in general. For more details of NatalNet Laboratories see http://www.natalnet.br/home/.
+Located in the UFRN (Federal University of Rio Grande do Norte, Brazil), the NatalNet Associated laboratories are comprised of many reseach groups. They are mainly focused in reseachs involving computer vision, educational robotics and mobile robotics in general. For more details on NatalNet Laboratories see http://www.natalnet.br/home/.
 
 Summary
 --------------------------------------
