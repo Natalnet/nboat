@@ -8,6 +8,7 @@ About the project
 -----------------
 
 .. image:: ./source/our_sailboats/images/nboat2.png
+    :scale: 50 %
     :align: center
 
 
