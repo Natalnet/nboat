@@ -10,18 +10,29 @@
 #define ActuatorsDrivers_h
 
 #include "Arduino.h"
-#include "DualVNH5019MotorShield.h"
+#include "DualVNH5019MotorShield.h" //actuators driver
+#include "Adafruit_TCS34725.h" //collor sensor
 
 class ActuatorsDrivers
 {
   public:
     ActuatorsDrivers();
-    void setSailPosition(float sailAngle, int analogAtuador = A4);
+    void setSailPosition(float sailAngle, int sensorPin = A4);
     void setRudderPosition(float rudderAngle);
+    int angleToColor(float sensor);
+    void getRudderPosition();
+    void moveRudder(int desiredColor);
+    void readColor();
+    void moveRudderToCenter();
+    void readCurrentRGB();
   private:
     float sensorReading, desiredPosition, _sailAngleMaxValue, sensorError;
+    float _id, _aux, _decpart, lux, r_red, r_green, r_blue;
     int sailUpperLimit, sailLowerLimit;
-    DualVNH5019MotorShield _md;
+    int _command, _currentColor;
+    uint16_t clear, red, green, blue;
+    DualVNH5019MotorShield _sailActuator, _rudderActuator;
+    Adafruit_TCS34725 tcs;
 
 };
 
