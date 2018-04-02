@@ -7,19 +7,19 @@ Nboat Documentation
 About the project
 -----------------
 
+The Sailboat Project started in 2013. Our main goal is to develop an autonomous sailboat platform to be used as an educational tool to increase interest in the area of mobile robotics of our community and also generate human resources specialized in envorinmental robotics.  
+Further, our plataform will be used to help researchers in applications such as water quality evaluation, coastal survailancy. Our secondary goal is to participate in various autonomous sailboat competitions such as the Microtransat Challenge, IRSC and WRSC.
+
 .. image:: ./source/our_sailboats/images/nboat2.png
     :scale: 50 %
     :align: center
-
-
-talk a little bit about the boats and the purpose of this document.
+    :alt: Nboat platform.
 
 
 NatalNet -- UFRN
 --------------------------------------
 
-talk about NatalNet, link to the webpage
-
+Located in the UFRN (Federal University of Rio Grande do Norte), the NatalNet laboratories are mainly focused in reseachs involving computer vision, educational robotics and mobile robotics in general.
 
 Summary
 --------------------------------------
@@ -49,4 +49,3 @@ Feedback
 
 Don't hesitate to ask about some additional info or next guides and also if you find some mistakes, please let us know.
 This can be done by submitting an issue or a push request on github.
-
