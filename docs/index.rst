@@ -19,7 +19,7 @@ Further, our plataform will be used to help researchers in applications such as 
 NatalNet -- UFRN
 --------------------------------------
 
-Located in the UFRN (Federal University of Rio Grande do Norte), the NatalNet laboratories are mainly focused in reseachs involving computer vision, educational robotics and mobile robotics in general.
+Located in the UFRN (Federal University of Rio Grande do Norte), the NatalNet Associated laboratoriesare comprised of many laboratories. They are mainly focused in reseachs involving computer vision, educational robotics and mobile robotics in general. For more details of NatalNet Laboratories see <a href="http://www.natalnet.br/home/"></a>.
 
 Summary
 --------------------------------------
