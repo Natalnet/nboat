@@ -24,6 +24,10 @@ We decided to use the arduino as the main processing hardware in this prototypin
 With these necessary informatio, we started to develop our first and rudimentary autonomous sailing strategy. The idea was to adjust the sailboat heading (this is done by the rudder) and to get forward velocity (by adjusting the sail angle) constantly. Our first hipotesys was that if a sailboat does theses steps it will eventually reach a desired position. So, in this case the sailboat has to independt controllers: one for the sail, responsible for chosing the "right" sail angle so the sailboat gets some forward velocity; and one for the rudder, resposible for chosing the "right" rudder position so the sailboat follows a desired heading (the one that leads to the target point).
 
 these two controllers were boiled down to the following equations:
+
+.. math:: e^{i\pi} + 1 = 0
+   :label: euler
+
 COLOCAR EQUAÇÕES DE CONTROLE
 
 
@@ -31,6 +35,10 @@ After implementing this control strategy he started setting up the hardware. We 
 
 IMAGEM DO FRITZING
 
+.. image:: ./source/gnc/images/nboat2.png
+    :scale: 50 %
+    :align: center
+    :alt: Nboat platform.
 
 
 Testing
