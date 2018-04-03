@@ -36,7 +36,7 @@ void SailingControl::rudderHeadingControl(Location target) {
   rudderAngle = rudderAngleSaturation(rudderAngle);
   //rudderAngle_sig = rudder_signal(rudderAngle);
 
-  //actuatorsDrivers.rudder(rudderAngle); //TODO
+  _actuators.setRudderPosition(rudderAngle); //TODO
 
   //rudderAngle_sig = adjustFrame_atuador_cor(rudderAngle); vai pro driver
   //Serial1.print(rudderAngle_sig); vai pro driver

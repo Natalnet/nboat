@@ -57,7 +57,8 @@ void loop() {
 
       // adjust rudder and sail accordingly
       movementControl.rudderHeadingControl(nextLocation);
-      movementControl.sailControl();
+      //control done by the arduino uno on the sail actuator compartiment
+      //movementControl.sailControl();
 
       // keep track of distance to target
       lastDistanciaDestino = distanceToTarget;
@@ -89,7 +90,7 @@ void loop() {
       
       lastLocation = currentLocation;
       
-      //record and send data do base station
+      //record and send data to base station
       //salvar_dados();
     }
   }
