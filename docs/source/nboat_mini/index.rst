@@ -25,7 +25,7 @@ With these necessary informatiom, we started to develop our first and rudimentar
 
 these two controllers were boiled down to the following equations:
 
-.. highlight:: python 
+.. code-block:: python 
   
     sailAngle = windDirection/2
 
@@ -33,7 +33,7 @@ these two controllers were boiled down to the following equations:
 
 where,
 
-.. highlight:: python
+.. code-block:: python
 
     headingError = currentHeading - desiredHeading
 
