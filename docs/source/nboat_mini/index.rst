@@ -35,8 +35,7 @@ where,
 
 .. code-block:: python
 
-    headingError = currentHeading - desiredHeading
-
+    headingError = desiredHeading - currentHeading 
 
 After implementing this control strategy we started setting up the hardware. We first tested every one of the sensors fisically, so the conections were correct and the sensors were ON, and by software, so the value read by the sensor is available for use in the code. After these individual tests we put them all togueter in the arduinomega, showed by the pin schematics bellow:
 
@@ -55,3 +54,20 @@ After all, we took the boat to a nearby lagoon, called *Lagoa de Alcaçuz*, to p
     <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
             <iframe src="https://www.youtube.com/embed/vy302e11Tpc?start=390&end=508" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 95%; height: 95%;"></iframe>
                 </div>
+
+
+As you can see the sailboat reached the desired target, even under not ideal conditions, with high wind velocity and some timid waves.
+
+Right after this test the concealment that we put on the sailboat was finally broken by the water and the sailboat stoped working properly.
+
+
+Lessons learned
+--------  
+
+Some of it might seem obvious but...
+
+* The sailing control startegy that we develop worked but it wasnt particulary robuts enough to allow sailing to points directly againts the wind (a zig-zaging maneuver called tacking/beating)
+
+* If you're developing any navigation techiniques for a robot TEST IT FIRST IN SIMULATION. It will save you a lot of time
+
+* If you're going to perform ANY outdoor experiment (specially in the water) CAREFULLY PREPARE you fucking robot and PLAN the fucking mission back to back. In this way you'll take the most out of the experiment
