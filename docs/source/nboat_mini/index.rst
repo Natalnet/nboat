@@ -19,11 +19,23 @@ Contruction
 Electronics
 --------
 
-We decided to use the arduino as the main processing hardware in this prototyping phase and to integrate our system at this first moment. So we realized that the minimal necessary information to allow autonomous sailing were at the time position (GPS), current heading (compass or 9DOF IMU) and wind direction (wind vane) (latter we figured that control the sail angle could be done mecanically).
+We decided to use the arduino as the main processing hardware in this prototyping phase and to integrate our system at this first moment. So we realized that the minimal necessary information to allow autonomous sailing were (at that time): position (GPS), current heading (compass or 9DOF IMU) and wind direction (wind vane) (latter we figured that control the sail angle could be done mecanically).
 
-With these necessary informatio, we started to develop our first and rudimentary autonomous sailing strategy. The idea was to adjust the sailboat heading (this is done by the rudder) and to get forward velocity (by adjusting the sail angle) constantly. Our first hipotesys was that if a sailboat does theses steps it will eventually reach a desired position. So, in this case the sailboat has to independt controllers: one for the sail, responsible for chosing the "right" sail angle so the sailboat gets some forward velocity; and one for the rudder, resposible for chosing the "right" rudder position so the sailboat follows a desired heading (the one that leads to the target point).
+With these necessary informatiom, we started to develop our first and rudimentary autonomous sailing strategy. The idea was to constantly adjust the sailboat's heading (this is done by the rudder) and to get forward velocity (by adjusting the sail angle). Our first hipotesys was that if a sailboat does theses steps it will eventually reach a desired position. So, in this case the sailboat has two independt controllers: one for the sail, responsible for chosing the "right" sail angle so the sailboat gets some forward velocity; and one for the rudder, resposible for chosing the "right" rudder position so the sailboat follows a desired heading (the one that leads to the target point).
 
 these two controllers were boiled down to the following equations:
+
+.. highlight:: c
+  
+    sailAngle = windDirection/3
+
+    rudderAngle = headingError
+
+where,
+
+.. highlight:: c
+
+    headingError = currentHeading - desiredHeading
 
 /**Since Pythagoras, we know that :math:`a^2 + b^2 = c^2`.**/
 
