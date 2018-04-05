@@ -11,7 +11,7 @@ So, our idea was instead of build a sailboat from zero, buy a comertioal sailboa
 
 All this process is explain in details bellow.
 
-Contruction
+Construction
 --------
 
 
@@ -40,7 +40,7 @@ where,
 
 After implementing this control strategy we started setting up the hardware. We first tested every one of the sensors fisically, so the conections were correct and the sensors were ON, and by software, so the value read by the sensor is available for use in the code. After these individual tests we put them all togueter in the arduino uno used, showed by the pin schematics bellow:
 
-.. image:: ./source/nboat_mini/images/hardware_sailboat1.png
+.. image:: ./images/hardware_sailboat1.png
     :scale: 50 %
     :align: center
 
