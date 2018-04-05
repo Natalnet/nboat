@@ -37,21 +37,12 @@ where,
 
     headingError = currentHeading - desiredHeading
 
-/**Since Pythagoras, we know that :math:`a^2 + b^2 = c^2`.**/
 
-.. math:: e^{i\pi} + 1 = 0
+After implementing this control strategy we started setting up the hardware. We first tested every one of the sensors fisically, so the conections were correct and the sensors were ON, and by software, so the value read by the sensor is available for use in the code. After these individual tests we put them all togueter in the arduino uno used, showed by the pin schematics bellow:
 
-COLOCAR EQUAÇÕES DE CONTROLE
-
-
-After implementing this control strategy he started setting up the hardware. We first tested every one of the sensors fisically, so the conections are correct the sensor is ON, and by software, so the value read by the sensor is available for use in the code. After these individual tests we put them all togueter in the arduino uno used, showed the pin schematics bellow:
-
-IMAGEM DO FRITZING
-
-.. image:: ./source/gnc/images/nboat2.png
+.. image:: ./source/sailboat_mini/images/hardware_sailboat1.png
     :scale: 50 %
     :align: center
-    :alt: Nboat platform.
 
 
 Testing
