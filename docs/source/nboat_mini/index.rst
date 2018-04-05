@@ -38,14 +38,20 @@ where,
     headingError = currentHeading - desiredHeading
 
 
-After implementing this control strategy we started setting up the hardware. We first tested every one of the sensors fisically, so the conections were correct and the sensors were ON, and by software, so the value read by the sensor is available for use in the code. After these individual tests we put them all togueter in the arduino uno used, showed by the pin schematics bellow:
+After implementing this control strategy we started setting up the hardware. We first tested every one of the sensors fisically, so the conections were correct and the sensors were ON, and by software, so the value read by the sensor is available for use in the code. After these individual tests we put them all togueter in the arduinomega, showed by the pin schematics bellow:
 
 .. image:: ./images/hardware_sailboat1.png
-    :scale: 50 %
+    :scale: 75 %
     :align: center
 
 
 Testing
 --------
 
+After all, we took the boat to a nearby lagoon, called *Lagoa de Alcaçuz*, to perform some experimental tests. We hope to see if the whole system was working by picking a desired point in the lagoon and watching if the sailboat would be able to reach it on its own. The results of this experiment are shown in the video bellow.
 
+.. raw:: html
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+            <iframe src="http://www.youtube.com/embed/vy302e11Tpc&t=6m29s" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 95%; height: 95%;"></iframe>
+                </div>
