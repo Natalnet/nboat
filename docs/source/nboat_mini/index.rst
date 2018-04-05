@@ -25,15 +25,15 @@ With these necessary informatiom, we started to develop our first and rudimentar
 
 these two controllers were boiled down to the following equations:
 
-.. highlight:: c
+.. highlight:: python 
   
-    sailAngle = windDirection/3
+    sailAngle = windDirection/2
 
     rudderAngle = headingError
 
 where,
 
-.. highlight:: c
+.. highlight:: python
 
     headingError = currentHeading - desiredHeading
 
