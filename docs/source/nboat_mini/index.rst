@@ -53,5 +53,5 @@ After all, we took the boat to a nearby lagoon, called *Lagoa de Alcaçuz*, to p
 .. raw:: html
 
     <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
-            <iframe src="http://www.youtube.com/embed/vy302e11Tpc&t=6m29s" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 95%; height: 95%;"></iframe>
+            <iframe src="https://www.youtube.com/embed/vy302e11Tpc?start=390&end=508" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 95%; height: 95%;"></iframe>
                 </div>
