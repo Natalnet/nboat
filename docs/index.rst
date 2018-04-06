@@ -32,7 +32,7 @@ Summary
    source/nboat_mini/index
    source/nboat/index
    source/gnc/index
-   source/water_sensor/index
+   source/water_sensors/index
    source/obstacle_detection/index
    source/simulation/index
    source/publications/index
