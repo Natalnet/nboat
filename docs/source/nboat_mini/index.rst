@@ -16,7 +16,7 @@ Construction
 --------
 
 .. image:: ./images/1.jpg
-    :scale: 75 %
+    :scale: 40 %
     :align: center
 
 .. image:: ./images/2.jpg
@@ -24,7 +24,7 @@ Construction
     :align: center
 
 .. image:: ./images/3.jpg
-    :scale: 75 %
+    :scale: 40 %
     :align: center
 
 .. image:: ./images/4.jpg
@@ -32,7 +32,7 @@ Construction
     :align: center
 
 .. image:: ./images/5.jpg
-    :scale: 75 %
+    :scale: 40 %
     :align: center
 
 
