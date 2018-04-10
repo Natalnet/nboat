@@ -15,16 +15,22 @@ All this process is explained below.
 Construction
 --------
 
+At the beggining we bought a comerctial RC controlled sailboat called RC Moonsoon Nauticus (link). This kind of sailboat is usually used for entartainement. The idea was to personalize this sailboat for our needs. The sailboat is shown in the image bellow.
+
 .. image:: ./images/1.jpg
-    :scale: 40 %
+    :scale: 20 %
     :align: center
+
+We first tried to brute force opena an aperture in the front of the sailboat to better allow the intruction of our needed eletronics as shown in the image bellow. 
 
 .. image:: ./images/2.jpg
     :scale: 75 %
     :align: center
 
+After some experiments we realized that this wanst enough, because as soon as the water get inside the hull, our eletrocnits would be affected. So we decided to buil a safer compartiment in the same area to isolate our eletronics from watter.
+
 .. image:: ./images/3.jpg
-    :scale: 40 %
+    :scale: 20 %
     :align: center
 
 .. image:: ./images/4.jpg
@@ -32,7 +38,7 @@ Construction
     :align: center
 
 .. image:: ./images/5.jpg
-    :scale: 40 %
+    :scale: 20 %
     :align: center
 
 
