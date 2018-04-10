@@ -21,6 +21,7 @@ Compass::Compass(float gridNorth){
 }
 
 float Compass::readHeading(){
+  sum = 0;
   for (int j = 1; j <= 10; j++){
     Wire.beginTransmission(slaveAddress);
     Wire.write("A");
