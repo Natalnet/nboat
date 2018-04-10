@@ -15,6 +15,25 @@ All this process is explained below.
 Construction
 --------
 
+.. image:: ./images/1.jpg
+    :scale: 75 %
+    :align: center
+
+.. image:: ./images/2.jpg
+    :scale: 75 %
+    :align: center
+
+.. image:: ./images/3.jpg
+    :scale: 75 %
+    :align: center
+
+.. image:: ./images/4.jpg
+    :scale: 75 %
+    :align: center
+
+.. image:: ./images/5.jpg
+    :scale: 75 %
+    :align: center
 
 
 Electronics
