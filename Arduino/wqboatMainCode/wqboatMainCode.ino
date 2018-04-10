@@ -1,8 +1,7 @@
-#include "SailingControl.h"
+#include "BoatControl.h"
 #include "Navigation.h"
 
-SailingControl movementControl;
-Navigation sailboatNavigation;
+BoatControl movementControl;
 GPS gps;
 WeatherSensors windSensors;
 vector<Location> waypoints, tackWaypoints;
@@ -10,11 +9,13 @@ vector<Location> waypoints, tackWaypoints;
 
 Location nextLocation, lastLocation, currentLocation;
 int waypoints_id, waypointsT_id, contador_bug;
-float start, tempo, distanciaPercorrida, distanceToTarget, lastDistanciaDestino;
+float start, tempo, distanciaPercorrida, distanceToTarget, lastDistanciaDestino, desiredDistance;
 bool isTacking;
 
 void setup() {
-  // put your setup code here, to run once:
+  desiredDistance = 10;
+  //waypoint 1
+  //waypoint 2
 
 }
 
@@ -24,39 +25,25 @@ void loop() {
   // check the availability of the sensors
   // gps.isWorking(); compass.isWorking();
   // recieve a target position
-  // adjust rudder and sail accordingly
-  // store sailboat state
-  // send sailboat state to base
+  // adjust rudder and thruster accordingly
+  // store boat state (position, velocity, orientation, actuators position)
   // check if the desired point was achieved
   // if yes, go to next target point
 
   while (1) {
     // navigation control (current waypoint)
     if (waypoints.size() != 0) {
-      if (distanceToTarget < 10) { //in meters
-        if (isTacking) {
-          if (waypointsT_id < tackWaypoints.size() - 1) {
-            waypointsT_id += 1;
-            nextLocation = tackWaypoints.at(waypointsT_id);
-          } else {
-            isTacking = false;
-            waypointsT_id = 0;
-          }
-        } else {
+      if (distanceToTarget < desiredDistance) { //in meters
           waypoints_id += 1;
           waypoints_id = waypoints_id % waypoints.size();
           nextLocation = waypoints.at(waypoints_id);          
-        }
       } else {
-        if (isTacking) {
-          nextLocation = tackWaypoints.at(waypointsT_id);
-        } else {
           nextLocation = waypoints.at(waypoints_id);
-        }
       }
 
       // adjust rudder and sail accordingly
       movementControl.rudderHeadingControl(nextLocation);
+      movementControl.thrusterControl(nextLocation);
       //control done by the arduino uno on the sail actuator compartiment
       //movementControl.sailControl();
 
@@ -66,7 +53,7 @@ void loop() {
 
       distanciaPercorrida += gps.computeDistance(lastLocation, currentLocation);
       
-      // caso o veleiro não esteja avançando ao destino. solução: selecionar outro waypoint
+      // caso o barco não esteja avançando ao destino. solução: selecionar outro waypoint
       if(distanceToTarget >= lastDistanciaDestino){
         if(contador_bug == 0){
           start = millis();
@@ -75,17 +62,11 @@ void loop() {
       } else {
         contador_bug = 0;
       }
-
+      
       tempo = millis();
-
+      
       if((tempo - start) > 20000){
         distanceToTarget = 0;
-      }
-
-      // check if it needs to tack
-      if (fabs(windSensors.readWindDirection()) < 30 && !isTacking) {
-        isTacking = true;
-        tackWaypoints = sailboatNavigation.findTackingPoints(lastLocation, nextLocation);
       }
       
       lastLocation = currentLocation;
