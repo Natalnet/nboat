@@ -18,6 +18,10 @@ ActuatorsDrivers::ActuatorsDrivers(){
   sailLowerLimit = 980; //0 degrees
   sailUpperLimit = 350; //90 degrees
 
+   //TODO
+  _rudderBoatLowerLimit = 50;
+  _rudderBoatUpperLimit = 110;
+
   Serial.begin(9600);  //rx of arduino uno
   Serial1.begin(9600); //tx of arduino mega
 
@@ -57,6 +61,20 @@ void ActuatorsDrivers::setRudderPosition(float rudderAngle){
   //send this information to the appropriated driver
   Serial1.print(auxTemp);
 }
+
+void ActuatorsDrivers::setRudderPositionBoat(float rudderAngle, int rudderPin){
+  //TODO measure rudder limits angle to valid angles
+  //use the constrain(x, a, b)
+  rudder.attach(rudderPin);
+  rudder.write(map(rudderAngle, -90, 90, _rudderBoatLowerLimit, _rudderBoatUpperLimit));
+}
+
+void ActuatorsDrivers::setThrusterPower(float thrusterPower, int thrusterPin){
+  thruster.attach(thrusterPin);
+  //thruster.write(map(thrusterPower, 0, 100, 0, 179));
+  thruster.write(thrusterPower);
+}
+
 
 //describe what this function should do!
 int ActuatorsDrivers::angleToColor(float sensor) {
