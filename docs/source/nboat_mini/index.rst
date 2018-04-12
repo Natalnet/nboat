@@ -1,5 +1,5 @@
 
-.. _nboatmini:
+    .. _nboatmini:
 
 =========================
 Nboat (Version 1.0)
