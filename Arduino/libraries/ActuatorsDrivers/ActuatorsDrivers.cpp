@@ -19,8 +19,8 @@ ActuatorsDrivers::ActuatorsDrivers(){
   sailUpperLimit = 350; //90 degrees
 
    //TODO
-  _rudderBoatLowerLimit = 50;
-  _rudderBoatUpperLimit = 110;
+  _rudderBoatLowerLimit = 50; //boat turns counter clockwise
+  _rudderBoatUpperLimit = 110; //boat turns clockwise
 
   Serial.begin(9600);  //rx of arduino uno
   Serial1.begin(9600); //tx of arduino mega
@@ -71,8 +71,9 @@ void ActuatorsDrivers::setRudderPositionBoat(float rudderAngle, int rudderPin){
 
 void ActuatorsDrivers::setThrusterPower(float thrusterPower, int thrusterPin){
   thruster.attach(thrusterPin);
+  _tempThrusterPower = map(thrusterPower, 0, 100, 30, 140);
   //thruster.write(map(thrusterPower, 0, 100, 0, 179));
-  thruster.write(thrusterPower);
+  thruster.write(_tempThrusterPower);
 }
 
 

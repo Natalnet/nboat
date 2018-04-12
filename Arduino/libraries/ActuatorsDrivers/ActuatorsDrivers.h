@@ -29,7 +29,7 @@ class ActuatorsDrivers
     void moveRudderToCenter();
     void readCurrentRGB();
   private:
-    float sensorReading, desiredPosition, _sailAngleMaxValue, sensorError, _rudderBoatLowerLimit, _rudderBoatUpperLimit;
+    float sensorReading, desiredPosition, _sailAngleMaxValue, sensorError, _rudderBoatLowerLimit, _rudderBoatUpperLimit, _tempThrusterPower;
     float _id, _aux, _decpart, lux, r_red, r_green, r_blue;
     int sailUpperLimit, sailLowerLimit;
     int _command, _currentColor;

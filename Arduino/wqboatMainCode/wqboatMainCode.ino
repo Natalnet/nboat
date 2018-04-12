@@ -8,8 +8,8 @@ vector<Location> waypoints, tackWaypoints;
 
 
 Location nextLocation, lastLocation, currentLocation;
-int waypoints_id, waypointsT_id, contador_bug;
-float start, tempo, distanciaPercorrida, distanceToTarget, lastDistanciaDestino, desiredDistance;
+int waypoints_id, waypointsT_id, bugManager;
+float startTime, endTime, travelledDistance, distanceToTarget, lastDistanciaDestino, desiredDistance;
 bool isTacking;
 
 void setup() {
@@ -20,7 +20,6 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   
   // check the availability of the sensors
   // gps.isWorking(); compass.isWorking();
@@ -28,7 +27,7 @@ void loop() {
   // adjust rudder and thruster accordingly
   // store boat state (position, velocity, orientation, actuators position)
   // check if the desired point was achieved
-  // if yes, go to next target point
+  // if positive, go to next target point
 
   while (1) {
     // navigation control (current waypoint)
@@ -41,32 +40,30 @@ void loop() {
           nextLocation = waypoints.at(waypoints_id);
       }
 
-      // adjust rudder and sail accordingly
+      // adjust rudder and thruster power accordingly
       movementControl.rudderHeadingControl(nextLocation);
       movementControl.thrusterControl(nextLocation);
-      //control done by the arduino uno on the sail actuator compartiment
-      //movementControl.sailControl();
 
       // keep track of distance to target
       lastDistanciaDestino = distanceToTarget;
       distanceToTarget = gps.computeDistance(currentLocation, nextLocation);
-
-      distanciaPercorrida += gps.computeDistance(lastLocation, currentLocation);
+      travelledDistance += gps.computeDistance(lastLocation, currentLocation);
       
-      // caso o barco não esteja avançando ao destino. solução: selecionar outro waypoint
+      // in case the boat isnt getting closer to the desired target -> select the next one
       if(distanceToTarget >= lastDistanciaDestino){
-        if(contador_bug == 0){
-          start = millis();
-          contador_bug = 1;
+        if(bugManager == 0){
+          startTime = millis();
+          bugManager = 1;
         }
       } else {
-        contador_bug = 0;
+        bugManager = 0;
       }
       
-      tempo = millis();
-      
-      if((tempo - start) > 20000){
-        distanceToTarget = 0;
+      endTime = millis();
+
+      // if 20 seconds passes and the boat isnt advancing to the target, go to the next one
+      if((endTime - startTime) > 20000){
+        distanceToTarget = 0; //TODO generate error message
       }
       
       lastLocation = currentLocation;
