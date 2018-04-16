@@ -1,0 +1,16 @@
+- embark all the necessary systems on the boats
+    - sensors
+    - main code on arduino
+
+- use serial communications to test some cases. example:
+    - the test begins.
+    - waypoints are set
+    - we see if the rudder and propeller are working accordingly
+    - after some seconds, we say (on the code) to the system that the boat is approaching the target
+    - we see if the propeler change its behavior
+    - we manually turn the boat side to side and see if the rudder adjusts accordingly
+    - after some seconds we say that the boat is even closer to the target
+    - we see if the propeler change its behavior
+    - we say that the boat reached the target
+    - and see if the propeler stops
+    - after some seconds we see if the system get the new waypoint and try to go there

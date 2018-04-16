@@ -86,7 +86,8 @@ float BoatControl::rudderAngleSaturation(float sensor) {
 void BoatControl::thrusterControl(Location target, float mediumDistance, float closeDistance){
   // get distance to target
   _currentPosition = _gps.readPosition(); // TODO in case of exception (or null response...)
-  _distanceToTarget = _gps.computeDistance(_currentPosition, target);
+  //_distanceToTarget = _gps.computeDistance(_currentPosition, target);
+  _distanceToTarget = _distanceToTarget;
   
   if (_distanceToTarget > mediumDistance){
     _actuators.setThrusterPower(100);
