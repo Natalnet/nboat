@@ -2,13 +2,13 @@
 #include "Navigation.h"
 
 BoatControl movementControl;
-GPS gps;
+GPS_EM506 gps;
 WeatherSensors windSensors;
 vector<Location> waypoints, tackWaypoints;
 
 Location nextLocation, lastLocation, currentLocation, tempLocation;
 int waypoints_id, waypointsT_id, bugManager;
-float startTime, endTime, travelledDistance, distanceToTarget, lastDistanciaDestino, desiredDistance;
+float startTime, endTime, travelledDistance, distanceToTarget, lastDistanciaDestino, desiredDistance, timeInterval;
 bool isTacking;
 
 void setup() {

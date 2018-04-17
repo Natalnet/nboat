@@ -1,21 +1,21 @@
 /*
 
-  GPS.cpp - Library for getting curent position from GPS, compute heading and distance between two locations (lat, lon) using TinyGPS library.
+  GPS_EM506.cpp - Library for getting curent position from GPS model EM506, compute heading and distance between two locations (lat, lon) using TinyGPS library.
   Created by Davi H. dos Santos, March 28, 2018.
   BSD license, all text above must be included in any redistribution.
 
 */
 
 #include "Arduino.h"
-#include "GPS.h"
+#include "GPS_EM506.h"
 
-GPS::GPS(){
+GPS_EM506::GPS_EM506(){
   Serial3.begin(4800);
   ms = 500;
   start = 0.0;
 }
 
-Location GPS::readPosition(){  
+Location GPS_EM506::readPosition(){  
   start = millis();
   do 
   {
@@ -33,11 +33,11 @@ Location GPS::readPosition(){
   return _p1;
 }
 
-float GPS::computeDistance(Location p1, Location p2){
+float GPS_EM506::computeDistance(Location p1, Location p2){
   return TinyGPS::distance_between(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
 }
 
-float GPS::computeHeading(Location p1, Location p2){
+float GPS_EM506::computeHeading(Location p1, Location p2){
   heading = TinyGPS::course_to(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
   if(heading > 180){
     heading = heading-360;

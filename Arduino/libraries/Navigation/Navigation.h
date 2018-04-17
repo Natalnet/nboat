@@ -13,9 +13,9 @@
 #include "Location.h"
 #include <StandardCplusplus.h>
 #include <vector>
-#include "Compass.h"
+#include "Compass_HMC6352.h"
 #include "WeatherSensors.h"
-#include "GPS.h"
+#include "GPS_EM506.h"
 
 using namespace std;
 
@@ -31,9 +31,9 @@ class Navigation
     int num_pontos, bom, ruim, numberOfTackingPoints;
     Location aux_loc, controle_loc, controle1, p0l1, p0l2, p0m, ponto_projetado, pontoProj, temp1, temp2;
     vector<Location> TackingPointsVector;
-    Compass _compass;
+    Compass_HMC6352 _compass;
     WeatherSensors _weatherSensors;
-    GPS _gps;
+    GPS_EM506 _gps;
     Location projection2dMod(float lat, float lon, float a, float b, float a_p, float b_p);
     Location projection2d(float lat, float lon, float a, float b);
 

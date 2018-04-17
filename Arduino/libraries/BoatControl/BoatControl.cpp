@@ -83,9 +83,15 @@ float BoatControl::rudderAngleSaturation(float sensor) {
   return sensor;
 }
 
+//SOTL
+void BoatControl::setDistanceToTarget(float distance){
+  _distanceToTarget = distance;
+}
+
 void BoatControl::thrusterControl(Location target, float mediumDistance, float closeDistance){
   // get distance to target
   _currentPosition = _gps.readPosition(); // TODO in case of exception (or null response...)
+  //SOTL
   //_distanceToTarget = _gps.computeDistance(_currentPosition, target);
   _distanceToTarget = _distanceToTarget;
   
