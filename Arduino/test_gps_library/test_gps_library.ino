@@ -4,7 +4,7 @@
 GPS_EM506 gps;
 Location loc;
 Compass_HMC6352 comp;
-float startTime, endTime;
+float startTime, endTime, heading;
 
 void setup() {
   Serial.begin(9600);
@@ -21,7 +21,8 @@ void loop() {
   Serial.print(endTime-startTime);
   startTime = millis();
   Serial.print("---------------- ");
-  Serial.print(comp.readHeading());
+  heading = comp.readHeading();
+  Serial.print(heading);
   endTime = millis();
   Serial.print("---------------- ");
   Serial.print(endTime-startTime);

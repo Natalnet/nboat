@@ -20,7 +20,7 @@ class ActuatorsDrivers
     ActuatorsDrivers();
     void setSailPosition(float sailAngle, int sensorPin = A4);
     void setRudderPosition(float rudderAngle);
-    void setRudderPositionBoat(float rudderAngle, int rudderPin = 8);
+    void setRudderPositionBoat(float rudderAngle, int rudderPin = 7);
     void setThrusterPower(float thrusterPower, int thrusterPin = 6);
     int angleToColor(float sensor);
     void getRudderPosition();

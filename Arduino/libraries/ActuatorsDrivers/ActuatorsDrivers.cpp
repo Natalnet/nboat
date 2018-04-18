@@ -18,7 +18,7 @@ ActuatorsDrivers::ActuatorsDrivers(){
   sailLowerLimit = 980; //0 degrees
   sailUpperLimit = 350; //90 degrees
 
-   //TODO
+   //TODO 50 - 110
   _rudderBoatLowerLimit = 50; //boat turns counter clockwise
   _rudderBoatUpperLimit = 110; //boat turns clockwise
 
@@ -66,7 +66,11 @@ void ActuatorsDrivers::setRudderPositionBoat(float rudderAngle, int rudderPin){
   //TODO measure rudder limits angle to valid angles
   //use the constrain(x, a, b)
   rudder.attach(rudderPin);
-  rudder.write(map(rudderAngle, -90, 90, _rudderBoatLowerLimit, _rudderBoatUpperLimit));
+  
+  int rudderAngleAux = map(rudderAngle, -90, 90, _rudderBoatLowerLimit, _rudderBoatUpperLimit);
+  Serial.println(rudderAngle);
+  rudder.write(rudderAngleAux);
+  Serial.println(rudderAngleAux);
 }
 
 void ActuatorsDrivers::setThrusterPower(float thrusterPower, int thrusterPin){

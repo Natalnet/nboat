@@ -36,6 +36,9 @@ float Compass_HMC6352::readHeading(){
       i++;
     }
     headingValue = headingData[0]*256 + headingData[1];
+    //if(headingValue == 0.0){
+    //  Serial.println("Compass not working properlly!!!");
+    //}
     heading = headingValue/numberOfReadings;
    //  heading = -heading;
     heading = heading - _gridNorth;

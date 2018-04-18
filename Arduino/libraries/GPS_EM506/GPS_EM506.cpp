@@ -11,7 +11,7 @@
 
 GPS_EM506::GPS_EM506(){
   Serial3.begin(4800);
-  ms = 500;
+  ms = 1000;
   start = 0.0;
 }
 
@@ -30,6 +30,11 @@ Location GPS_EM506::readPosition(){
       }
     }
   } while (millis() - start < ms);
+
+  if (_p1.latitude == NULL || _p1.longitude == NULL){
+    Serial.println("GPS still calibrating...");
+  }
+
   return _p1;
 }
 

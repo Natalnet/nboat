@@ -33,6 +33,7 @@ void setup() {
   tempLocation.latitude = -5.842417;
   tempLocation.longitude = -35.197069;
   waypoints.push_back(tempLocation);
+  Serial.begin(9600);
 
 }
 
@@ -84,19 +85,22 @@ void loop() {
       timeInterval = endTime - startTime;
 
       // if 20 seconds passes and the boat isnt advancing to the target, go to the next one
-      if(timeInterval > 5000){
+      if(timeInterval > 10000){
         movementControl.setDistanceToTarget(0);
+        distanceToTarget = 0;
         //distanceToTarget = 0; //TODO generate error message
       }
-      if(timeInterval < 5000 && timeInterval > 3000){
+      if(timeInterval < 10000 && timeInterval > 5000){
         movementControl.setDistanceToTarget(9);
         //distanceToTarget = 9;
       }
-      if(timeInterval < 3000){
+      if(timeInterval < 5000){
         movementControl.setDistanceToTarget(15);
       }
       
       lastLocation = currentLocation;
+      Serial.print("Going to waypoint -> ");
+      Serial.println(waypoints_id);
       
       //record and send data to base station
       //salvar_dados();

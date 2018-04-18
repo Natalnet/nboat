@@ -20,23 +20,27 @@ BoatControl::BoatControl(){
 void BoatControl::rudderHeadingControl(Location target) {
 
   _currentPosition = _gps.readPosition(); // TODO in case of exception (or null response...)
+//  Serial.println(_currentPosition.latitude);
+//  Serial.println(_currentPosition.longitude);
 
   _sp = _gps.computeHeading(_currentPosition, target);
+
   _sp = adjustFrame(_sp);
 
   _heading = _compass.readHeading();
 
   _currentError = _sp - _heading;
+
   _currentError = adjustFrame(_currentError);
   
   // control "equation" (removed) passing the raw error forward
   
-  _currentError = rudderAngle;
+//  _currentError = rudderAngle;
   rudderAngle = P(_currentError) + I(_currentError);
   rudderAngle = rudderAngleSaturation(rudderAngle);
   //rudderAngle_sig = rudder_signal(rudderAngle);
 
-  _actuators.setRudderPosition(rudderAngle); //TODO
+  _actuators.setRudderPositionBoat(rudderAngle); //TODO
 
   //rudderAngle_sig = adjustFrame_atuador_cor(rudderAngle); vai pro driver
   //Serial1.print(rudderAngle_sig); vai pro driver
@@ -98,7 +102,7 @@ void BoatControl::thrusterControl(Location target, float mediumDistance, float c
   if (_distanceToTarget > mediumDistance){
     _actuators.setThrusterPower(100);
   } else if (_distanceToTarget < mediumDistance && _distanceToTarget > closeDistance){
-    _actuators.setThrusterPower(50);
+    _actuators.setThrusterPower(80);
   } else if (_distanceToTarget < closeDistance){
     _actuators.setThrusterPower(0);
   } 
