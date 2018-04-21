@@ -1,5 +1,6 @@
 // Código do veleiro maior. GPS, bússola, biruta e cartão sd (shiled ethernet). A cor correspondente
 // ao ângulo do leme é enviado para o driver do leme.
+// this code is for Arduino Mega
 
 #include <StandardCplusplus.h>
 #include <serstream>
