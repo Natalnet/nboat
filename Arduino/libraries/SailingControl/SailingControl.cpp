@@ -17,7 +17,7 @@ SailingControl::SailingControl(){
   I_prior = 0;
 }
 
-void SailingControl::rudderHeadingControl(Location target) {
+void SailingControl::rudderHeadingControl(Location target, File myFile) {
 
   _currentPosition = _gps.readPosition(); // TODO in case of exception (or null response...)
 

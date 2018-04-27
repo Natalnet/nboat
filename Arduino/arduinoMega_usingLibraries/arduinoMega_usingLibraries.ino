@@ -1,5 +1,8 @@
 #include "SailingControl.h"
 #include "Navigation.h"
+#include <SD.h>
+
+File myFile;
 
 SailingControl movementControl;
 Navigation sailboatNavigation;
@@ -14,8 +17,10 @@ float start, tempo, distanciaPercorrida, distanceToTarget, lastDistanciaDestino;
 bool isTacking;
 
 void setup() {
-  // put your setup code here, to run once:
-
+  if (!SD.begin(48)){
+    return;
+  }
+  myFile = SD.open("test.txt", FILE_WRITE);
 }
 
 void loop() {
@@ -56,7 +61,7 @@ void loop() {
       }
 
       // adjust rudder and sail accordingly
-      movementControl.rudderHeadingControl(nextLocation);
+      movementControl.rudderHeadingControl(nextLocation, myFile);
       //control done by the arduino uno on the sail actuator compartiment
       //movementControl.sailControl();
 

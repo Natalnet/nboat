@@ -15,12 +15,13 @@
 #include "Compass.h"
 #include "WeatherSensors.h"
 #include "ActuatorsDrivers.h"
+#include <SD.h>
 
 class SailingControl
 {
   public:
     SailingControl();
-    void rudderHeadingControl(Location target);
+    void rudderHeadingControl(Location target, File myFile);
     void sailControl();
     float adjustFrame(float angle);
     float P(float currentError);
