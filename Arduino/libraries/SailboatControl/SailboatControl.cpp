@@ -1,6 +1,6 @@
 /*
 
-  SailingControl.h - Library containing code for the movement controllers used in Nboat project.
+  SailboatControl.h - Library containing code for the movement controllers used in Nboat project.
   Created by Davi H. dos Santos, March 31, 2018.
   BSD license, all text above must be included in any redistribution.
 
@@ -8,16 +8,16 @@
 
 
 #include "Arduino.h"
-#include "SailingControl.h"
+#include "SailboatControl.h"
 
-SailingControl::SailingControl(){
+SailboatControl::SailboatControl(){
   _kp = 1;
   _ki = 0;
   _starttime = millis(); //TODO check if the time scale is correct (s, ms, micro s ???)
   I_prior = 0;
 }
 
-void SailingControl::rudderHeadingControl(Location target, File myFile) {
+void SailboatControl::rudderHeadingControl(Location target) {
 
   _currentPosition = _gps.readPosition(); // TODO in case of exception (or null response...)
 
@@ -42,12 +42,12 @@ void SailingControl::rudderHeadingControl(Location target, File myFile) {
   //Serial1.print(rudderAngle_sig); vai pro driver
 }
 
-float SailingControl::P(float currentError)
+float SailboatControl::P(float currentError)
 {
   return _kp * currentError;
 }
 
-float SailingControl::I(float currentError)
+float SailboatControl::I(float currentError)
 {
   _endtime = millis();
   _cycleTime = _endtime - _starttime;
@@ -63,7 +63,7 @@ float SailingControl::I(float currentError)
   return I_prior;
 }
 
-float SailingControl::adjustFrame(float angle) {
+float SailboatControl::adjustFrame(float angle) {
   if (angle > 180) {
     angle = angle - 360;
   }
@@ -73,7 +73,7 @@ float SailingControl::adjustFrame(float angle) {
   return angle;
 }
 
-float SailingControl::rudderAngleSaturation(float sensor) {
+float SailboatControl::rudderAngleSaturation(float sensor) {
   if (sensor > 90) {
     sensor = 90;
   }
@@ -83,7 +83,7 @@ float SailingControl::rudderAngleSaturation(float sensor) {
   return sensor;
 }
 
-void SailingControl::sailControl(){
+void SailboatControl::sailControl(){
   _windDir = _windSensors.readWindDirection();
   // angle that i want the sail to have
   _sailAngle =  _windDir/2;
