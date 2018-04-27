@@ -1,6 +1,6 @@
 /*
 
-  Compass.cpp - Library for getting curent heading from compass.
+  Compass_HMC6352.cpp - Library for getting curent heading from Compass model HMC6352.
   Created by Davi H. dos Santos, March 25, 2018.
   BSD license, all text above must be included in any redistribution.
 
@@ -8,21 +8,22 @@
 
 
 #include "Arduino.h"
-#include "Compass.h"
+#include "Compass_HMC6352.h"
 #include "Wire.h"
 
-Compass::Compass(float gridNorth){
+Compass_HMC6352::Compass_HMC6352(float gridNorth){
   HMC6352Address = 0x42;
   slaveAddress = HMC6352Address >> 1;
   Wire.begin();
   sum = 0;
   _gridNorth = gridNorth;
   i = 0;
+  numberOfReadings = 10;
 }
 
-float Compass::readHeading(){
+float Compass_HMC6352::readHeading(){
   sum = 0;
-  for (int j = 1; j <= 10; j++){
+  for (int j = 1; j <= numberOfReadings; j++){
     Wire.beginTransmission(slaveAddress);
     Wire.write("A");
     Wire.endTransmission();
@@ -35,7 +36,10 @@ float Compass::readHeading(){
       i++;
     }
     headingValue = headingData[0]*256 + headingData[1];
-    heading = headingValue/10;
+    //if(headingValue == 0.0){
+    //  Serial.println("Compass not working properlly!!!");
+    //}
+    heading = headingValue/numberOfReadings;
    //  heading = -heading;
     heading = heading - _gridNorth;
     
