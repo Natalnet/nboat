@@ -12,13 +12,13 @@
 #include "Arduino.h"
 #include "SensorManager.h"
 #include "ActuatorsDrivers.h"
-#include <SD.h>
+#include "Navigation.h"
 
 class SailboatControl
 {
   public:
-    SailboatControl();
-    void rudderHeadingControl(Location target, SensorManager sensors);
+    SailboatControl(float kp = 1, float ki = 0);
+    void rudderHeadingControl(SensorManager sensors, Location target);
     void sailControl(SensorManager sensors);
     float adjustFrame(float angle);
     float P(float currentError);
@@ -29,6 +29,7 @@ class SailboatControl
     float _heading, _sp, _currentError, rudderAngle_prior, rudderAngle, I_prior, _cycleTime, _kp, _ki, _starttime, _endtime, _windDir, _sailAngle;
     Location _currentPosition;
     ActuatorsDrivers _actuators;
+    Navigation nav;
 
 };
 

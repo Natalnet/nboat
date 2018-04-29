@@ -40,21 +40,6 @@ void GPS_EM506::read(){
   _gpsData.speed = _gpsSpeed;
 }
 
-float GPS_EM506::findDistance(Location p1, Location p2){
-  return TinyGPS::distance_between(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
-}
-
-float GPS_EM506::findHeading(Location p1, Location p2){
-  heading = TinyGPS::course_to(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
-  if(heading > 180){
-    heading = heading-360;
-  }
-  if(heading < -180){
-    heading = heading+360;
-  }
-  return heading;
-}
-
 GPSData GPS_EM506::get(){
   return _gpsData;
 }

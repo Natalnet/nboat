@@ -10,19 +10,19 @@
 #include "Arduino.h"
 #include "SailboatControl.h"
 
-SailboatControl::SailboatControl(){
-  _kp = 1;
-  _ki = 0;
+SailboatControl::SailboatControl(float kp, float ki){
+  _kp = kp;
+  _ki = ki;
   _starttime = millis(); //TODO check if the time scale is correct (s, ms, micro s ???)
   I_prior = 0;
 }
 
-void SailboatControl::rudderHeadingControl(Location target, SensorManager sensors) {
+void SailboatControl::rudderHeadingControl(SensorManager sensors, Location target) {
 
   _currentPosition = sensors.getGPS().location;
 
   //TODO fix this
-  _sp = sensors.getGPS().computeHeading(_currentPosition, target);
+  _sp = nav.findHeading(_currentPosition, target);
   _sp = adjustFrame(_sp);
 
   _heading = sensors.getCompass();

@@ -11,7 +11,7 @@
 #include "SensorManager.h"
 
 SensorManager::SensorManager(){
-   
+  
 }
 
 //TODO

@@ -9,9 +9,11 @@
 SailboatControl movementControl;
 SensorManager sensors;
 WindData wind;
+Navigation sailboatNavigation;
 //GPS_EM506 gps;
 //WeatherSensors windSensors;
-//vector<Location> waypoints, tackWaypoints;
+
+vector<Location> waypoints, tackWaypoints;
 
 Location nextLocation, lastLocation, currentLocation, tempLocation;
 int waypoints_id, waypointsT_id, bugHandler;
@@ -41,6 +43,7 @@ void setup() {
   tempLocation.latitude = -5.842417;
   tempLocation.longitude = -35.197069;
   waypoints.push_back(tempLocation);
+  
   Serial.begin(9600);
 
 }
@@ -68,13 +71,13 @@ void loop() {
       }
 
       // adjust rudder and thruster power accordingly
-      movementControl.rudderHeadingControl(nextLocation, sensors);
+      movementControl.rudderHeadingControl(sensors, nextLocation);
       movementControl.sailControl(sensors);
 
       // keep track of distance to target
       lastDistanceToTarget = distanceToTarget;
-      distanceToTarget = gps.computeDistance(currentLocation, nextLocation);
-      travelledDistance += gps.computeDistance(lastLocation, currentLocation);
+      distanceToTarget = sailboatNavigation.findDistance(currentLocation, nextLocation);
+      travelledDistance += sailboatNavigation.findDistance(lastLocation, currentLocation);
       
       // in case the boat isnt getting closer to the desired target -> select the next one
       if(distanceToTarget >= lastDistanceToTarget){
@@ -99,7 +102,7 @@ void loop() {
       wind = sensors.getWind();
       if (fabs(wind.direction) < 30 && !isTacking) {
         isTacking = true;
-        tackWaypoints = sailboatNavigation.findTackingPoints(lastLocation, nextLocation, sensors);
+        tackWaypoints = sailboatNavigation.findTackingPoints(sensors, lastLocation, nextLocation);
       }
       
       //record and send data to base station

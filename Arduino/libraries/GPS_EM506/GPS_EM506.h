@@ -22,8 +22,6 @@ class GPS_EM506
     void read();
     GPSData get();
 
-    float findDistance(Location p1, Location p2);
-    float findHeading(Location p1, Location p2);
   private:
     TinyGPS gps;
     unsigned long start, ms;
