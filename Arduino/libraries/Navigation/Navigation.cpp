@@ -17,7 +17,7 @@ vector<Location> Navigation::findTackingPoints(Location current, Location target
 {
   // getting curent heeling value
   _heading = _compass.readHeading();
-  _windDirection = _weatherSensors.readWindDirection(); 
+  _windDirection = _weatherSensors.readWindDirection();
   _heeling = _windDirection - _heading;
   _sp = _gps.computeHeading(current, target);
 

@@ -2,13 +2,16 @@
  * Code associated to the circuit schematic in https://github.com/Natalnet/nboat/blob/sailboat_mini/sailboatSchematics.fzz
  */
 
+#include "SensorManager.h"
 #include "SailboatControl.h"
 #include "Navigation.h"
 
 SailboatControl movementControl;
-GPS_EM506 gps;
-WeatherSensors windSensors;
-vector<Location> waypoints, tackWaypoints;
+SensorManager sensors;
+WindData wind;
+//GPS_EM506 gps;
+//WeatherSensors windSensors;
+//vector<Location> waypoints, tackWaypoints;
 
 Location nextLocation, lastLocation, currentLocation, tempLocation;
 int waypoints_id, waypointsT_id, bugHandler;
@@ -17,6 +20,7 @@ bool isTacking;
 
 void setup() {
   desiredDistance = 10;
+  
   //add waypoints example:
   //waypoint 1 - natalnet
   tempLocation.latitude = -5.842986;
@@ -52,6 +56,7 @@ void loop() {
   // if positive, go to next target point
 
   while (1) {
+    sensors.read();
     // navigation control (current waypoint)
     if (waypoints.size() != 0) {
       if (distanceToTarget < desiredDistance) { //in meters
@@ -63,8 +68,8 @@ void loop() {
       }
 
       // adjust rudder and thruster power accordingly
-      movementControl.rudderHeadingControl(nextLocation);
-      movementControl.sailControl();
+      movementControl.rudderHeadingControl(nextLocation, sensors);
+      movementControl.sailControl(sensors);
 
       // keep track of distance to target
       lastDistanceToTarget = distanceToTarget;
@@ -89,6 +94,13 @@ void loop() {
       }
            
       lastLocation = currentLocation;
+
+       // check if it needs to tack
+      wind = sensors.getWind();
+      if (fabs(wind.direction) < 30 && !isTacking) {
+        isTacking = true;
+        tackWaypoints = sailboatNavigation.findTackingPoints(lastLocation, nextLocation, sensors);
+      }
       
       //record and send data to base station
       //salvar_dados();

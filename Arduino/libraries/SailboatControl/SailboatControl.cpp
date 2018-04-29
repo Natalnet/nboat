@@ -17,14 +17,15 @@ SailboatControl::SailboatControl(){
   I_prior = 0;
 }
 
-void SailboatControl::rudderHeadingControl(Location target) {
+void SailboatControl::rudderHeadingControl(Location target, SensorManager sensors) {
 
-  _currentPosition = _gps.readPosition(); // TODO in case of exception (or null response...)
+  _currentPosition = sensors.getGPS().location;
 
-  _sp = _gps.computeHeading(_currentPosition, target);
+  //TODO fix this
+  _sp = sensors.getGPS().computeHeading(_currentPosition, target);
   _sp = adjustFrame(_sp);
 
-  _heading = _compass.readHeading();
+  _heading = sensors.getCompass();
 
   _currentError = _sp - _heading;
   _currentError = adjustFrame(_currentError);
@@ -36,7 +37,7 @@ void SailboatControl::rudderHeadingControl(Location target) {
   rudderAngle = rudderAngleSaturation(rudderAngle);
   //rudderAngle_sig = rudder_signal(rudderAngle);
 
-  _actuators.setRudderPosition(rudderAngle); //TODO
+  _actuators.setRudderPosition(rudderAngle);
 
   //rudderAngle_sig = adjustFrame_atuador_cor(rudderAngle); vai pro driver
   //Serial1.print(rudderAngle_sig); vai pro driver
@@ -83,10 +84,9 @@ float SailboatControl::rudderAngleSaturation(float sensor) {
   return sensor;
 }
 
-void SailboatControl::sailControl(){
-  _windDir = _windSensors.readWindDirection();
+void SailboatControl::sailControl(SensorManager sensors){
+  _windDir = sensors.getWind().direction;
   // angle that i want the sail to have
   _sailAngle =  _windDir/2;
   _actuators.setSailPosition(_sailAngle);
 }
-

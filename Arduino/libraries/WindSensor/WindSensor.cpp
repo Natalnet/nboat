@@ -1,6 +1,6 @@
 /*
 
-  WeatherSensors.cpp - Library for getting info from weather sensors used in N-Boat project.
+  WindSensor.cpp - Library for getting info from Wind sensors used in N-Boat project.
   Created by Davi H. dos Santos, March 28, 2018.
   BSD license, all text above must be included in any redistribution.
 
@@ -8,16 +8,22 @@
 
 
 #include "Arduino.h"
-#include "WeatherSensors.h"
+#include "WindSensor.h"
 
-WeatherSensors::WeatherSensors(){
+WindSensor::WindSensor(){
   starttime = millis();
   buttonState_ant = LOW;
   buttonState = LOW;
 }
 
-//TODO extend this reading for some time
-float WeatherSensors::readWindSpeed(int anemometerPin){
+//read sensor
+void WindSensor::read(){
+  _windData.speed = readSpeed();
+  _windData.direction = readDirection();
+}
+
+//TODO extend this reading for some time. use interruption to count states LOW to HIGH
+float WindSensor::readSpeed(int anemometerPin){
   buttonState_ant = buttonState;
   buttonState = digitalRead(anemometerPin);
   
@@ -26,10 +32,11 @@ float WeatherSensors::readWindSpeed(int anemometerPin){
     windSpeed = (((float) 1)/(endtime-starttime)*1000.0)*6.6667;
     starttime = millis();
   }
+  
   return windSpeed;
 }
 
-float WeatherSensors::readWindDirection(int windvanePin){
+float WindSensor::readDirection(int windvanePin){
   float sum = 0;
   for(int i = 0; i < 10; i++){
     windvaneRead = analogRead(windvanePin);
@@ -53,5 +60,19 @@ float WeatherSensors::readWindDirection(int windvanePin){
   if(windvaneRead >= 455 && windvaneRead <= 475) {windDirection = -45;}
   if(windvaneRead >= 400 && windvaneRead <= 420) {windDirection = -22.5;}
   if(windDirection < 0) {windDirection = -windDirection;}
+
   return windDirection;
+}
+
+//return values read from sensor
+WindData WindSensor::get(){
+  return _windData;
+}
+
+float WindSensor::getSpeed(){
+  return _windData.speed;
+}
+
+float WindSensor::getDirection(){
+  return _windData.direction;
 }

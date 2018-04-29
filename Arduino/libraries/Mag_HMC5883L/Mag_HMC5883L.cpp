@@ -12,13 +12,12 @@
 #include "Wire.h"
 
 Mag_HMC5883L::Mag_HMC5883L(float gridNorth){
-  Serial.println("test");
   HMC5883LAddress = 0x1E;
   Wire.begin();
   _ctrl = 1;
 }
 
-float Mag_HMC5883L::readHeading(){
+void Mag_HMC5883L::read(){
 
   if(_ctrl == 1) {
     Wire.beginTransmission(0x1E); //open communication with HMC5883
@@ -43,6 +42,15 @@ float Mag_HMC5883L::readHeading(){
     _y = Wire.read()<<8; //Y msb
     _y |= Wire.read(); //Y lsb
   }
+  _magnetometer.x = (float)_x;
+  _magnetometer.y = (float)_y;
+  _magnetometer.z = (float)_z;
+}
 
+Pose Mag_HMC5883L::get(){
+  return _magnetometer;
+}
+
+float Mag_HMC5883L::getHeading(){
   return atan2(_x,_y)*180/PI;
 }

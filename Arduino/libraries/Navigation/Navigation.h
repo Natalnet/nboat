@@ -10,12 +10,9 @@
 #define Navigation_h
 
 #include "Arduino.h"
-#include "Location.h"
+#include "SensorManager.h"
 #include <StandardCplusplus.h>
 #include <vector>
-#include "Mag_HMC5883L.h"
-#include "WeatherSensors.h"
-#include "GPS_EM506.h"
 
 using namespace std;
 
