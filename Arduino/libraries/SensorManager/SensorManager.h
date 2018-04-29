@@ -16,6 +16,7 @@
 #include "Compass_HMC6352.h"
 #include "GPS_EM506.h"
 #include "WindSensor.h"
+#include "IMU_GY80.h"
 
 #include "GPSData.h"
 #include "IMUData.h"
@@ -35,6 +36,7 @@ class SensorManager
     IMUData getIMU();
     float getCompass();
     WindData getWind();
+    Pose getMagnetometer();
   private:
     Mag_HMC5883L magnetometer1;
 
@@ -44,11 +46,14 @@ class SensorManager
 
     WindSensor wind;
 
+    IMU_GY80 imu1;
+
     WindData _windData;
     GPSData _GPSData;
     IMUData _IMUData;
 
     float _batCharge; //TODO
+
     float _rudderAngle, _sailAngle;
     
 };

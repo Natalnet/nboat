@@ -23,10 +23,15 @@ void SensorManager::read(){
   compass1.read();
   wind.read();
   magnetometer1.read();
+  imu1.read();
 }
 
 GPSData SensorManager::getGPS(){
   return gps1.get();
+}
+
+Pose SensorManager::getMagnetometer(){
+  return magnetometer1.get();
 }
 
 float SensorManager::getCompass(){
@@ -37,7 +42,6 @@ WindData SensorManager::getWind(){
   return wind.get();
 }
 
-//TODO
 IMUData SensorManager::getIMU(){
-  //return imu1.get();
+  return imu1.get();
 }
