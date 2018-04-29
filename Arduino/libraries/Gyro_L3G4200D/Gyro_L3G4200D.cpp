@@ -1,70 +1,56 @@
-// Programa : Teste Giroscopio L3G4200D
-// Adaptacoes : Arduino e Cia
+/*
 
-#include <Wire.h>
+  Gyro_L3G4200D.cpp - Library for getting curent heading from Compass model HMC6352.
+  Created by Davi H. dos Santos, March 25, 2018.
+  BSD license, all text above must be included in any redistribution.
 
-#define CTRL_REG1 0x20
-#define CTRL_REG2 0x21
-#define CTRL_REG3 0x22
-#define CTRL_REG4 0x23
-#define CTRL_REG5 0x24
+*/
 
-//Endereco I2C do L3G4200D
-int L3G4200D_Address = 105;
 
-int x;
-int y;
-int z;
+#include "Arduino.h"
+#include "Gyro_L3G4200D.h"
+#include "Wire.h"
 
-void setup()
-{
+Gyro_L3G4200D::Gyro_L3G4200D(int degreesPerSecond){
+  L3G4200D_Address = 105;
+  _degreesPerSecond = degreesPerSecond;
   Wire.begin();
-  Serial.begin(9600);
-
-  Serial.println("Inicializando o L3G4200D");
-  // Configura o L3G4200 para 200, 500 ou 2000 graus/seg
-  setupL3G4200D(200); 
-
-  // Aguarda a resposta do sensor
-  delay(1500);
+  _ctrl = 1;
 }
 
-void loop()
-{
-  // Atualiza os valores de X, Y e Z
-  getGyroValues();  
+void Gyro_L3G4200D::read(){
 
-  // Mostra os valores no serial monitor
-  Serial.print("X:");
-  Serial.print(x);
+  if(_ctrl == 1) {
+    setupL3G4200D(_degreesPerSecond);
+    //delay(1500);
+    _ctrl = 0;
+  }
+ 
+  getGyroValues();
 
-  Serial.print(" Y:");
-  Serial.print(y);
-
-  Serial.print(" Z:");
-  Serial.println(z);
-
-  // Aguarda 100ms e reinicia o processo
-  delay(100);
+  _gyroscope.x = (float)_x;
+  _gyroscope.y = (float)_y;
+  _gyroscope.z = (float)_z;
 }
 
-void getGyroValues()
-{
+void Gyro_L3G4200D::getGyroValues() {
+
   // Rotina para leitura dos valores de X, Y e Z
-  byte xMSB = readRegister(L3G4200D_Address, 0x29);
-  byte xLSB = readRegister(L3G4200D_Address, 0x28);
-  x = ((xMSB << 8) | xLSB);
+  xMSB = readRegister(L3G4200D_Address, 0x29);
+  xLSB = readRegister(L3G4200D_Address, 0x28);
+  _x = ((xMSB << 8) | xLSB);
 
-  byte yMSB = readRegister(L3G4200D_Address, 0x2B);
-  byte yLSB = readRegister(L3G4200D_Address, 0x2A);
-  y = ((yMSB << 8) | yLSB);
+  yMSB = readRegister(L3G4200D_Address, 0x2B);
+  yLSB = readRegister(L3G4200D_Address, 0x2A);
+  _y = ((yMSB << 8) | yLSB);
 
-  byte zMSB = readRegister(L3G4200D_Address, 0x2D);
-  byte zLSB = readRegister(L3G4200D_Address, 0x2C);
-  z = ((zMSB << 8) | zLSB);
+  zMSB = readRegister(L3G4200D_Address, 0x2D);
+  zLSB = readRegister(L3G4200D_Address, 0x2C);
+  _z = ((zMSB << 8) | zLSB);
 }
 
-int setupL3G4200D(int scale)
+
+int Gyro_L3G4200D::setupL3G4200D(int scale)
 {
   //From  Jim Lindblom of Sparkfun's code
 
@@ -93,7 +79,7 @@ int setupL3G4200D(int scale)
   writeRegister(L3G4200D_Address, CTRL_REG5, 0b00000000);
 }
 
-void writeRegister(int deviceAddress, byte address, byte val) 
+void Gyro_L3G4200D::writeRegister(int deviceAddress, byte address, byte val) 
 {
     Wire.beginTransmission(deviceAddress); // start transmission to device 
     Wire.write(address);       // send register address
@@ -101,7 +87,7 @@ void writeRegister(int deviceAddress, byte address, byte val)
     Wire.endTransmission();     // end transmission
 }
 
-int readRegister(int deviceAddress, byte address)
+int Gyro_L3G4200D::readRegister(int deviceAddress, byte address)
 {
     int v;
     Wire.beginTransmission(deviceAddress);
@@ -116,4 +102,8 @@ int readRegister(int deviceAddress, byte address)
     }
     v = Wire.read();
     return v;
+}
+
+Pose Gyro_L3G4200D::get(){
+  return _gyroscope;
 }
