@@ -10,6 +10,7 @@
 #define SensorManager_h
 
 #include "Arduino.h"
+#include <SD.h>
 
 //include all sensors lib available
 #include "Mag_HMC5883L.h"
@@ -30,6 +31,7 @@ class SensorManager
     SensorManager();
 
     void read();
+    void readImu()
     bool checkSensors();
 
     GPSData getGPS();
@@ -37,6 +39,7 @@ class SensorManager
     float getCompass();
     WindData getWind();
     Pose getMagnetometer();
+    void logSensorData();
   private:
     Mag_HMC5883L magnetometer1;
 
@@ -55,6 +58,8 @@ class SensorManager
     float _batCharge; //TODO
 
     float _rudderAngle, _sailAngle;
+
+    File dataFile;
     
 };
 

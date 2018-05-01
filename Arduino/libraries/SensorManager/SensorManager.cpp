@@ -26,6 +26,10 @@ void SensorManager::read(){
   imu1.read();
 }
 
+void SensorManager::readImu(){
+  imu1.read();
+}
+
 GPSData SensorManager::getGPS(){
   return gps1.get();
 }
@@ -44,4 +48,32 @@ WindData SensorManager::getWind(){
 
 IMUData SensorManager::getIMU(){
   return imu1.get();
+}
+
+void SensorManager::logSensorData(){
+  dataFile = SD.open("testecom.txt", FILE_WRITE);
+  if (dataFile) {
+    /*dataFile.print(currentLocation.latitude, 6);
+    dataFile.print(" ");
+    dataFile.print(currentLocation.longitude, 6);
+    dataFile.print(" ");
+    dataFile.print(startLocation.latitude, 6);
+    dataFile.print(" ");
+    dataFile.print(startLocation.longitude, 6);
+    dataFile.print(" ");
+    dataFile.print(nextLocation.latitude, 6);
+    dataFile.print(" ");
+    dataFile.print(nextLocation.longitude, 6);
+    dataFile.print(" ");
+    dataFile.print(heading, 2);
+    dataFile.print(" ");
+    dataFile.print(sp);
+    dataFile.print(" ");
+    dataFile.print(biruta, 2);
+    dataFile.print(" ");
+    dataFile.println(distanciaInicial);
+    dataFile.print(" ");
+    dataFile.print(distanciaAoDestino);*/
+    dataFile.close();
+  }
 }
