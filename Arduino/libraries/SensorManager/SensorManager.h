@@ -18,6 +18,7 @@
 #include "GPS_EM506.h"
 #include "WindSensor.h"
 #include "IMU_GY80.h"
+#include "SailboatMiniActuatorDrivers.h"
 
 #include "GPSData.h"
 #include "IMUData.h"
@@ -31,16 +32,21 @@ class SensorManager
     SensorManager();
 
     void read();
-    void readImu()
+    void readImu();
     bool checkSensors();
+
+    void logState();
 
     GPSData getGPS();
     IMUData getIMU();
     float getCompass();
     WindData getWind();
     Pose getMagnetometer();
-    void logSensorData();
+    void logState(String experimentName = "test00.txt");
   private:
+    
+    SailboatMiniActuatorDrivers actDrivers;
+    
     Mag_HMC5883L magnetometer1;
 
     Compass_HMC6352 compass1;

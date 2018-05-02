@@ -11,7 +11,7 @@
 
 GPS_EM506::GPS_EM506(){
   Serial3.begin(4800);
-  ms = 1000;
+  ms = 50;
   start = 0.0;
 }
 
@@ -27,6 +27,8 @@ void GPS_EM506::read(){
         gps.f_get_position(&_p1.latitude, &_p1.longitude);
         _gpsCourse = gps.f_course();
         _gpsSpeed = gps.f_speed_kmph();
+        gps.crack_datetime(&_year, &_month, &_day, &_hour, &_minute, &_second, &_hundredths, &_age);
+        sprintf(_gpsDate, "%02d/%02d/%02d %02d:%02d:%02d", _day, _month, _year, _hour, _minute, _second);
       }
     }
   } while (millis() - start < ms);
@@ -38,6 +40,8 @@ void GPS_EM506::read(){
   _gpsData.location = _p1;
   _gpsData.course = _gpsCourse;
   _gpsData.speed = _gpsSpeed;
+  _gpsData.date = String(_gpsDate);
+
 }
 
 GPSData GPS_EM506::get(){

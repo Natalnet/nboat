@@ -23,6 +23,11 @@ class GPS_EM506
     GPSData get();
 
   private:
+    int _year;
+    byte _day, _month, _hour, _minute, _second, _hundredths;
+    unsigned long _age;
+    char _gpsDate[32];
+
     TinyGPS gps;
     unsigned long start, ms;
     int c;
