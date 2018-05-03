@@ -28,7 +28,9 @@ void GPS_EM506::read(){
         _gpsCourse = gps.f_course();
         _gpsSpeed = gps.f_speed_kmph();
         gps.crack_datetime(&_year, &_month, &_day, &_hour, &_minute, &_second, &_hundredths, &_age);
-        sprintf(_gpsDate, "%02d/%02d/%02d %02d:%02d:%02d", _day, _month, _year, _hour, _minute, _second);
+        if (_age == TinyGPS::GPS_INVALID_AGE){
+          sprintf(_gpsDate, "%02d/%02d/%02d %02d:%02d:%02d", _day, _month, _year, _hour, _minute, _second);
+        }
       }
     }
   } while (millis() - start < ms);

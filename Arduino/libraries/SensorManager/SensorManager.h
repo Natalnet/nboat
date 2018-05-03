@@ -42,7 +42,6 @@ class SensorManager
     float getCompass();
     WindData getWind();
     Pose getMagnetometer();
-    void logState(String experimentName = "test00.txt");
   private:
     
     SailboatMiniActuatorDrivers actDrivers;
@@ -62,10 +61,13 @@ class SensorManager
     IMUData _IMUData;
 
     float _batCharge; //TODO
-
     float _rudderAngle, _sailAngle;
 
     File dataFile;
+
+    int gpsDateCtrl = 0;
+
+    String _experimentName;
     
 };
 
