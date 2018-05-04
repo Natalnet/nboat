@@ -15,29 +15,32 @@ SailboatMiniActuatorDrivers::SailboatMiniActuatorDrivers(int rudderPin, int sail
   _rudderPin = rudderPin;
   _sailPin = sailPin;
 
-   //TODO calibrate
-  _rudderLowerLimit = 50;  //-90 degrees
-  _rudderUpperLimit = 110; //-90 degrees
-
-  //TODO calibrate
-  _sailLowerLimit = 980; //0 degrees
-  _sailUpperLimit = 350; //90 degrees
-
   rudder.attach(_rudderPin);
   sail.attach(_sailPin);
 
 }
 
+SailboatMiniActuatorDrivers::SailboatMiniActuatorDrivers(){
+  rudder.attach(_rudderPin);
+  sail.attach(_sailPin);
+}
+
 void SailboatMiniActuatorDrivers::setSailAngle(float sailAngle){
-  sailAngle = constrain(sailAngle, 0, 90);
-  sailAngle = map(sailAngle, 0, 90, _sailLowerLimit, _sailUpperLimit);
+  rudder.attach(_rudderPin);
+  sail.attach(_sailPin);
+  //sailAngle = constrain(sailAngle, 0, 90);
+  //sailAngle = map(sailAngle, 0, 90, _sailLowerLimit, _sailUpperLimit);
   sail.write(sailAngle);
+  //delay(10000);
 }
 
 void SailboatMiniActuatorDrivers::setRudderAngle(float rudderAngle){
-  rudderAngle = constrain(rudderAngle, -90, 90);
-  rudderAngle = map(rudderAngle, -90, 90, _rudderLowerLimit, _rudderUpperLimit);
-  rudder.write(rudderAngle);  
+  rudder.attach(_rudderPin);
+  sail.attach(_sailPin);
+  //rudderAngle = constrain(rudderAngle, -90, 90);
+  //rudderAngle = map(rudderAngle, -90, 90, _rudderLowerLimit, _rudderUpperLimit);
+  rudder.write(rudderAngle);
+  //delay(10000);
 }
 
 float SailboatMiniActuatorDrivers::getSailAngle(){

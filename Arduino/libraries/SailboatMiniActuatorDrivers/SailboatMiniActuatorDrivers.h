@@ -1,4 +1,4 @@
-/*
+/*3
 
   SailboatMiniActuatorDrivers.h - Library for the low level commands to put the Actuator in a desired position.
   Created by Davi H. dos Santos, March 31, 2018.
@@ -10,22 +10,26 @@
 #define SailboatMiniActuatorDrivers_h
 
 #include "Arduino.h"
-#include "Servo.h"
+#include <Servo.h>
 
 class SailboatMiniActuatorDrivers
 {
   public:
-    SailboatMiniActuatorDrivers(int rudderPin = 9, int sailPin = 8);
+    SailboatMiniActuatorDrivers(int rudderPin, int sailPin);
+    SailboatMiniActuatorDrivers();
 
-    void setRudderAngle(float sailAngle);
+    void setRudderAngle(float rudderAngle);
     void setSailAngle(float sailAngle);
 
     float getRudderAngle();
     float getSailAngle();    
   private:
     Servo rudder, sail;
-    int _rudderPin, _sailPin;
-    float _rudderLowerLimit, _rudderUpperLimit, _sailLowerLimit, _sailUpperLimit;
+    int _rudderPin = 8, _sailPin = 9;
+
+    //TODO calibrate for sailboat_mini
+    float _rudderLowerLimit = 50, _rudderUpperLimit = 100;
+    float _sailLowerLimit = 980, _sailUpperLimit = 350;
 };
 
 #endif

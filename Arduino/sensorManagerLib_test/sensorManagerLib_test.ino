@@ -46,7 +46,7 @@ void loop() {
   Serial.print(test.getIMU().magnetometer.z, 2);
   Serial.print(" ");
   Serial.print(test.getCompass(), 2);
-  Serial.print(" ");
+  Serial.println(" ");
 }
 
 
