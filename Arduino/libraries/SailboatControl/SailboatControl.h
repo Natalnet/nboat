@@ -11,7 +11,7 @@
 
 #include "Arduino.h"
 #include "SensorManager.h"
-#include "ActuatorsDrivers.h"
+#include "SailboatMiniActuatorDrivers.h"
 #include "Navigation.h"
 
 class SailboatControl
@@ -28,7 +28,7 @@ class SailboatControl
   private:
     float _heading, _sp, _currentError, rudderAngle_prior, rudderAngle, I_prior, _cycleTime, _kp, _ki, _starttime, _endtime, _windDir, _sailAngle;
     Location _currentPosition;
-    ActuatorsDrivers _actuators;
+    SailboatMiniActuatorDrivers *_actuators;
     Navigation nav;
 
 };

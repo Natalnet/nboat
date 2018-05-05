@@ -6,7 +6,7 @@
 #include "SailboatControl.h"
 #include "Navigation.h"
 
-SailboatControl movementControl;
+SailboatControl *movementControl;
 SensorManager sensors;
 WindData wind;
 Navigation sailboatNavigation;
@@ -20,7 +20,26 @@ int waypoints_id, waypointsT_id, bugHandler;
 float startTime, endTime, travelledDistance, distanceToTarget, lastDistanceToTarget, desiredDistance, timeInterval;
 bool isTacking;
 
+//task scheduler
+typedef struct t  {
+    unsigned long tStart;
+    unsigned long tTimeout;
+};
+
+//Tasks and their Schedules.
+t t_func1 = {0, 200}; //Run every 100ms
+//t t_func2 = {0, 2000}; //Run every 2 seconds.
+
+bool tCheck (struct t *t ) {
+  if (millis() > t->tStart + t->tTimeout) return true;    
+}
+
+void tRun (struct t *t) {
+    t->tStart = millis();
+}
+
 void setup() {
+  movementControl = new SailboatControl(1,1);
   desiredDistance = 10;
   
   //add waypoints example:
@@ -45,7 +64,6 @@ void setup() {
   waypoints.push_back(tempLocation);
   
   Serial.begin(9600);
-
 }
 
 void loop() {
@@ -59,7 +77,13 @@ void loop() {
   // if positive, go to next target point
 
   while (1) {
-    sensors.read();
+    //float startTime = millis();
+    if (tCheck(&t_func1)) {
+      sensors.read();
+      Serial.println("REAAAD: ");
+      tRun(&t_func1);
+    }
+    
     // navigation control (current waypoint)
     if (waypoints.size() != 0) {
       if (distanceToTarget < desiredDistance) { //in meters
@@ -71,8 +95,8 @@ void loop() {
       }
 
       // adjust rudder and thruster power accordingly
-      movementControl.rudderHeadingControl(sensors, nextLocation);
-      movementControl.sailControl(sensors);
+      movementControl->rudderHeadingControl(sensors, nextLocation);
+      movementControl->sailControl(sensors);
 
       // keep track of distance to target
       lastDistanceToTarget = distanceToTarget;
@@ -104,7 +128,8 @@ void loop() {
         isTacking = true;
         tackWaypoints = sailboatNavigation.findTackingPoints(sensors, lastLocation, nextLocation);
       }
-      
+      //Serial.print("TEMPO: ");
+      //Serial.println(millis()-startTime);
       //record and send data to base station
       //salvar_dados();
     }

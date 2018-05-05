@@ -9,10 +9,10 @@ void setup() {
 }
 
 void loop() {
-  //sailboatAct->setRudderAngle(10);
-  //sailboatAct->setSailAngle(90);
+  sailboatAct->setRudderAngle(40);
+  sailboatAct->setSailAngle(12);
   //delay(15);
-  for(int i = 0; i <= 180; i = i+1){
+  /*for(int i = 0; i <= 180; i = i+1){
     sailboatAct->setRudderAngle(i);
     sailboatAct->setSailAngle(i);
     Serial.println(i);
@@ -24,7 +24,7 @@ void loop() {
     sailboatAct->setSailAngle(i);
     Serial.println(i);
     delay(50);
-  }
+  }*/
 }
 
 

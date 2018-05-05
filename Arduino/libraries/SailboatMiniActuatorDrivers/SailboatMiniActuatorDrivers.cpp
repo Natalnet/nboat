@@ -26,27 +26,27 @@ SailboatMiniActuatorDrivers::SailboatMiniActuatorDrivers(){
 }
 
 void SailboatMiniActuatorDrivers::setSailAngle(float sailAngle){
-  rudder.attach(_rudderPin);
-  sail.attach(_sailPin);
-  //sailAngle = constrain(sailAngle, 0, 90);
-  //sailAngle = map(sailAngle, 0, 90, _sailLowerLimit, _sailUpperLimit);
+  sailAngle = constrain(sailAngle, 0, 90);
+  sailAngle = map(sailAngle, 0, 90, _sailLowerLimit, _sailUpperLimit);
   sail.write(sailAngle);
   //delay(10000);
 }
 
 void SailboatMiniActuatorDrivers::setRudderAngle(float rudderAngle){
-  rudder.attach(_rudderPin);
-  sail.attach(_sailPin);
-  //rudderAngle = constrain(rudderAngle, -90, 90);
-  //rudderAngle = map(rudderAngle, -90, 90, _rudderLowerLimit, _rudderUpperLimit);
+  rudderAngle = constrain(rudderAngle, -90, 90);
+  rudderAngle = map(rudderAngle, -90, 90, _rudderLowerLimit, _rudderUpperLimit);
+//  Serial.print("SERVO ANGLE: ");
+//  Serial.println(rudderAngle);
   rudder.write(rudderAngle);
   //delay(10000);
 }
 
+//transform from servo angle to sail angle
 float SailboatMiniActuatorDrivers::getSailAngle(){
   return sail.read();
 }
 
+//transform from servo angle to rudder angle
 float SailboatMiniActuatorDrivers::getRudderAngle(){
   return rudder.read();
 }

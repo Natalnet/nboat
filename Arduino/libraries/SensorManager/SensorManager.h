@@ -42,9 +42,11 @@ class SensorManager
     float getCompass();
     WindData getWind();
     Pose getMagnetometer();
+    float getSailAngle();
+    float getRudderAngle();
   private:
     
-    SailboatMiniActuatorDrivers actDrivers;
+    SailboatMiniActuatorDrivers *actDrivers;
     
     Mag_HMC5883L magnetometer1;
 

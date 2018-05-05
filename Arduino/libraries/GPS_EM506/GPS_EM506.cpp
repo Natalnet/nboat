@@ -11,7 +11,7 @@
 
 GPS_EM506::GPS_EM506(){
   Serial3.begin(4800);
-  ms = 50;
+  ms = 30;
   start = 0.0;
 }
 

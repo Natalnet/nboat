@@ -49,6 +49,14 @@ IMUData SensorManager::getIMU(){
   return imu1.get();
 }
 
+float SensorManager::getSailAngle(){
+  return actDrivers->getSailAngle();
+}
+
+float SensorManager::getRudderAngle(){
+  return actDrivers->getRudderAngle();
+}
+
 //posição, velocidade do vento, posição dos atuadores, velocidade e orientação do gps, orientação da bussola, informações do IMU.
 void SensorManager::logState(){
   if (gps1.get().date != "" && gpsDateCtrl == 0) {
