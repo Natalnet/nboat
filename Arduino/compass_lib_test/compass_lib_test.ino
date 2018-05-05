@@ -1,6 +1,6 @@
-#include <Compass.h>
+#include <Compass_HMC6352.h>
 
-Compass compass(104.0);
+Compass_HMC6352 compass;
 
 void setup(){
   Serial.begin(9600);
@@ -8,5 +8,6 @@ void setup(){
 
 
 void loop() {
-  Serial.println(compass.readHeading());  
+  compass.read();
+  Serial.println(compass.getHeading());  
 }

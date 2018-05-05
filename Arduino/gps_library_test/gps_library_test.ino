@@ -31,6 +31,8 @@ void loop() {
   Serial.print("---------------- ");
   Serial.print(gps.get().course, 2);
   Serial.print("---------------- ");
+  Serial.print(gps.get().date);
+  Serial.print("---------------- ");
   //Serial.print(comp.readHeading());
 }
 

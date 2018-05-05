@@ -1,6 +1,7 @@
 #include "SensorManager.h"
  
 SensorManager test;
+float time1, time2;
 
 //task scheduler
 typedef struct t  {
@@ -13,7 +14,13 @@ t t_func1 = {0, 200}; //Run every 100ms
 t t_func2 = {0, 2000}; //Run every 2 seconds.
 
 bool tCheck (struct t *t ) {
-  if (millis() > t->tStart + t->tTimeout) return true;
+  if (millis() > t->tStart + t->tTimeout){
+    //Serial.print("IS TRUE? ");
+    //Serial.println(millis() - t->tStart);
+    return true;
+  } else {
+    return false;
+  }
 }
 
 void tRun (struct t *t) {
@@ -22,26 +29,31 @@ void tRun (struct t *t) {
  
 void setup() {
   Serial.begin(9600);
+  time1 = millis();
 }
  
 void loop() {
-  float time1, time2;
-  time1 = millis();
   if (tCheck(&t_func1)) {
-      test.read();
-      tRun(&t_func1);
-      time2 = millis();
-      Serial.print("Time func 1: ");
-      Serial.println(time2-time1);
+    test.read();
+    test.logState();
+    Serial.print(t_func1.tStart/1000);
+    tRun(&t_func1);
   }
-  
-  if (tCheck(&t_func2)) {
+  //Serial.print("teste");
+  //test.read();
+  //time1 = millis();
+  //test.logState();
+  //time2 = millis();
+  //Serial.println(time2-time1);
+  //test.read();
+  //print_data();
+  /*if (tCheck(&t_func2)) {
       //print_data();
       tRun(&t_func2);
       time2 = millis();
       Serial.print("Time func 2: ");
       Serial.println(time2-time1);
-  }
+  }*/
 }
 
 void print_data(){

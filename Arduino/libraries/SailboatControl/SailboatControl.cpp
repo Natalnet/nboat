@@ -70,20 +70,18 @@ float SailboatControl::I(float currentError)
   _cycleTime = (_endtime - _starttime)/1000;
   _starttime = millis();
  
-  Serial.print("CYCLE TIME: ");
-  Serial.print(_cycleTime);
-  Serial.print("------");
+//  Serial.print("CYCLE TIME: ");
+//  Serial.print(_cycleTime);
+//  Serial.print("------");
  
- /* if ((I_prior > 0 && currentError < 0) || (I_prior < 0 && currentError > 0))
+  if ((I_prior > 0 && currentError < 0) || (I_prior < 0 && currentError > 0))
   {
-    I_prior = I_prior + _ki * currentError * 50 * _cycleTime;
+    I_prior = I_prior + _ki * 5* currentError * _cycleTime;
   }
   else
   {
     I_prior = I_prior + _ki * currentError * _cycleTime;
-  }*/
-
-  I_prior = I_prior + _ki * currentError * _cycleTime;
+  }
 
 //  Serial.print("I PRIOR: ");
 //  Serial.print(I_prior);

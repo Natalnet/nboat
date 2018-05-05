@@ -31,7 +31,11 @@ t t_func1 = {0, 200}; //Run every 100ms
 //t t_func2 = {0, 2000}; //Run every 2 seconds.
 
 bool tCheck (struct t *t ) {
-  if (millis() > t->tStart + t->tTimeout) return true;    
+  if (millis() > t->tStart + t->tTimeout){
+    return true;    
+  } else {
+    return false;
+  }
 }
 
 void tRun (struct t *t) {
@@ -39,7 +43,7 @@ void tRun (struct t *t) {
 }
 
 void setup() {
-  movementControl = new SailboatControl(1,1);
+  movementControl = new SailboatControl(2,1);
   desiredDistance = 10;
   
   //add waypoints example:
@@ -77,10 +81,10 @@ void loop() {
   // if positive, go to next target point
 
   while (1) {
-    //float startTime = millis();
+    // run sensors.read() at 5Hz
     if (tCheck(&t_func1)) {
       sensors.read();
-      Serial.println("REAAAD: ");
+      sensors.logState();
       tRun(&t_func1);
     }
     
@@ -130,6 +134,7 @@ void loop() {
       }
       //Serial.print("TEMPO: ");
       //Serial.println(millis()-startTime);
+      
       //record and send data to base station
       //salvar_dados();
     }

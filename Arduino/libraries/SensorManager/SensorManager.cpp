@@ -11,6 +11,7 @@
 #include "SensorManager.h"
 
 SensorManager::SensorManager(){
+  SD.begin(48);
 }
 
 //TODO
@@ -66,8 +67,8 @@ void SensorManager::logState(){
 
   if (gpsDateCtrl == 1){
     dataFile = SD.open(_experimentName, FILE_WRITE);
+    Serial.print("teste");
     if (dataFile) {
-      /*
       dataFile.print(gps1.get().location.latitude, 6);
       dataFile.print(" ");
       dataFile.print(gps1.get().location.longitude, 6);
@@ -76,9 +77,9 @@ void SensorManager::logState(){
       dataFile.print(" ");
       dataFile.print(wind.get().speed, 2);
       dataFile.print(" ");
-      dataFile.print(actDrivers.getRudderAngle(), 2);
+      dataFile.print(actDrivers->getRudderAngle(), 2);
       dataFile.print(" ");
-      dataFile.print(actDrivers.getSailAngle(), 2);
+      dataFile.print(actDrivers->getSailAngle(), 2);
       dataFile.print(" ");
       dataFile.print(gps1.get().course, 2);
       dataFile.print(" ");
@@ -102,9 +103,8 @@ void SensorManager::logState(){
       dataFile.print(" ");
       dataFile.print(imu1.get().magnetometer.z, 2);
       dataFile.print(" ");
-      dataFile.print(compass1.get().heading, 2);
-      dataFile.print(" ");
-      */
+      dataFile.println(compass1.getHeading(), 2);
+      
       dataFile.close();
     }
   }

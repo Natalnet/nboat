@@ -11,6 +11,7 @@
 
 #include "Arduino.h"
 #include <SD.h>
+#include <SPI.h>
 
 //include all sensors lib available
 #include "Mag_HMC5883L.h"
