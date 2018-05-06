@@ -4,10 +4,10 @@
  This example shows how to read and write data to and from an SD card file
  The circuit:
  * SD card attached to SPI bus as follows:
- ** MOSI - pin 51
- ** MISO - pin 50
- ** SCK - pin 52
- ** CS - pin 48 (for MKRZero SD: SDCARD_SS_PIN)
+ ** MOSI - pin 11
+ ** MISO - pin 12
+ ** CLK - pin 13
+ ** CS - pin 4 (for MKRZero SD: SDCARD_SS_PIN)
 
  created   Nov 2010
  by David A. Mellis
@@ -42,6 +42,18 @@ void setup() {
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
   myFile = SD.open("test.txt", FILE_WRITE);
+
+  // if the file opened okay, write to it:
+  if (myFile) {
+    Serial.print("Writing to test.txt...");
+    myFile.println("testing 1, 2, 3.");
+    // close the file:
+    myFile.close();
+    Serial.println("done.");
+  } else {
+    // if the file didn't open, print an error:
+    Serial.println("error opening test.txt");
+  }
 
   // re-open the file for reading:
   myFile = SD.open("test.txt");

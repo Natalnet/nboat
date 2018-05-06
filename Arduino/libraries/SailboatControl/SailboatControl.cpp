@@ -36,8 +36,8 @@ void SailboatControl::rudderHeadingControl(SensorManager sensors, Location targe
 //  Serial.print(_heading);
 //  Serial.print("------");
 
-  //_currentError = _sp - _heading;
-  _currentError = _heading;
+  _currentError = _sp - _heading;
+  //_currentError = _heading;
   _currentError = adjustFrame(_currentError);
 
 //  Serial.print("CURRENTERROR: ");

@@ -81,7 +81,7 @@ void loop() {
   // if positive, go to next target point
 
   while (1) {
-    // run sensors.read() at 5Hz
+    // run sensors.read() at 10Hz
     if (tCheck(&t_func1)) {
       sensors.read();
       sensors.logState();
