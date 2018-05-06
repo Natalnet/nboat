@@ -1,27 +1,73 @@
 #include "BoatControl.h"
-#include "Navigation.h"
-
-BoatControl movementControl;
-GPS gps;
-WeatherSensors windSensors;
-vector<Location> waypoints, tackWaypoints;
+#include "SensorManager.h"
+#include "NavigationFunctions.h"
 
 
-Location nextLocation, lastLocation, currentLocation;
+BoatControl *movementControl;
+
+//go to SensorManager to setup sensors on the robot
+SensorManager sensors;
+
+NavigationFunctions navigationFunc;
+
+vector<Location> waypoints;
+
+Location nextLocation, lastLocation, currentLocation, tempLocation;
 int waypoints_id, waypointsT_id, bugManager;
-float startTime, endTime, travelledDistance, distanceToTarget, lastDistanciaDestino, desiredDistance;
-bool isTacking;
+float startTime, endTime, travelledDistance, distanceToTarget, lastDistanciaDestino, desiredDistance, timeInterval;
+
+//task scheduler
+typedef struct t  {
+    unsigned long tStart;
+    unsigned long tTimeout;
+};
+
+//Tasks and their Schedules.
+t t_func1 = {0, 200}; //Run every 100ms
+//t t_func2 = {0, 2000}; //Run every 2 seconds.
+
+bool tCheck (struct t *t ) {
+  if (millis() > t->tStart + t->tTimeout){
+    return true;    
+  } else {
+    return false;
+  }
+}
+
+void tRun (struct t *t) {
+    t->tStart = millis();
+}
 
 void setup() {
+  movementControl = new BoatControl(2,1);  
   desiredDistance = 10;
-  //add waypoints:
-  //waypoint 1
-  //waypoint 2
+
+  //add waypoints example:
+  //waypoint 1 - natalnet
+  tempLocation.latitude = -5.842986;
+  tempLocation.longitude = -35.197465;
+  waypoints.push_back(tempLocation);
+  
+  //waypoint 2 - rua das engenharias
+  tempLocation.latitude = -5.842044;
+  tempLocation.longitude = -35.197449;
+  waypoints.push_back(tempLocation);
+
+  //waypoint 3 - larhisa
+  tempLocation.latitude = -5.842544;
+  tempLocation.longitude = -35.197839;
+  waypoints.push_back(tempLocation);
+
+  //waypoint 4 - pet elétrica
+  tempLocation.latitude = -5.842417;
+  tempLocation.longitude = -35.197069;
+  waypoints.push_back(tempLocation);
+
+  Serial.begin(9600);
+
 }
 
 void loop() {
-
-  //TODO how to test this code on software? (Software on the Loope tests??)
 
   // program flow:
   // check the availability of the sensors (inside libraries) --> OdometrySensors.isWorking() gps.isWorking(); compass.isWorking();
@@ -32,6 +78,13 @@ void loop() {
   // if positive, go to next target point
 
   while (1) {
+    // run sensors.read() at 5Hz
+    if (tCheck(&t_func1)) {
+      sensors.read();
+      sensors.logState();
+      tRun(&t_func1);
+    }
+    
     // navigation control (current waypoint)
     if (waypoints.size() != 0) {
       if (distanceToTarget < desiredDistance) { //in meters
@@ -43,13 +96,13 @@ void loop() {
       }
 
       // adjust rudder and thruster power accordingly
-      movementControl.rudderHeadingControl(nextLocation);
-      movementControl.thrusterControl(nextLocation);
+      movementControl->rudderHeadingControl(sensors, nextLocation);
+      movementControl->thrusterControl(sensors, nextLocation);
 
       // keep track of distance to target
       lastDistanciaDestino = distanceToTarget;
-      distanceToTarget = gps.computeDistance(currentLocation, nextLocation);
-      travelledDistance += gps.computeDistance(lastLocation, currentLocation);
+      distanceToTarget = navigationFunc.findDistance(currentLocation, nextLocation);
+      travelledDistance += navigationFunc.findDistance(lastLocation, currentLocation);
       
       // in case the boat isnt getting closer to the desired target -> select the next one
       if(distanceToTarget >= lastDistanciaDestino){
@@ -62,16 +115,15 @@ void loop() {
       }
       
       endTime = millis();
+      timeInterval = endTime - startTime;
 
       // if 20 seconds passes and the boat isnt advancing to the target, go to the next one
-      if((endTime - startTime) > 20000){
+      if(timeInterval > 20000){
         distanceToTarget = 0; //TODO generate error message
       }
       
       lastLocation = currentLocation;
-      
-      //record and send data to base station
-      //salvar_dados();
     }
   }
 }
+

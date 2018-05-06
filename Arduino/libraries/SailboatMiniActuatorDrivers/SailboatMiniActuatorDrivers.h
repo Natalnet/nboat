@@ -27,8 +27,10 @@ class SailboatMiniActuatorDrivers
     Servo rudder, sail;
     int _rudderPin = 8, _sailPin = 9;
 
-    //TODO calibrate for sailboat_mini
+    //TODO calibrate. lower limit = sailboat turns counterclockwise
     float _rudderLowerLimit = 5, _rudderUpperLimit = 75;
+
+    //TODO calibrate. lower limit = sail parallel to sailboat
     float _sailLowerLimit = 6, _sailUpperLimit = 12;
 };
 

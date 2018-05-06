@@ -12,20 +12,28 @@
 #include "Arduino.h"
 #include "TinyGPS.h"
 #include "Location.h"
+#include "GPSData.h"
 
 class GPS_EM506
 {
   public:
     GPS_EM506();
-    Location readPosition();
-    float computeDistance(Location p1, Location p2);
-    float computeHeading(Location p1, Location p2);
+
+    void read();
+    GPSData get();
+
   private:
+    int _year;
+    byte _day, _month, _hour, _minute, _second, _hundredths;
+    unsigned long _age;
+    char _gpsDate[32];
+
     TinyGPS gps;
     unsigned long start, ms;
     int c;
-    Location _p1, _p2;
-    float heading;
+    GPSData _gpsData;
+    Location _p1;
+    float heading, _gpsCourse, _gpsSpeed;
 };
 
 #endif

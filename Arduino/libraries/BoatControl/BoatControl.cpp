@@ -10,40 +10,33 @@
 #include "Arduino.h"
 #include "BoatControl.h"
 
-BoatControl::BoatControl(){
-  _kp = 1;
-  _ki = 0;
+BoatControl::BoatControl(float kp, float ki){
+  _kp = kp;
+  _ki = ki;
   _starttime = millis(); //TODO check if the time scale is correct (s, ms, micro s ???)
   I_prior = 0;
+  _actuators = new wqboatActuatorDrivers();
 }
 
-void BoatControl::rudderHeadingControl(Location target) {
+void BoatControl::rudderHeadingControl(SensorManager sensors, Location target) {
 
-  _currentPosition = _gps.readPosition(); // TODO in case of exception (or null response...)
+  _currentPosition = sensors.getGPS().location; // TODO in case of exception (or null response...)
 //  Serial.println(_currentPosition.latitude);
 //  Serial.println(_currentPosition.longitude);
 
-  _sp = _gps.computeHeading(_currentPosition, target);
+  _sp = _navFunc.findHeading(_currentPosition, target); //TODO put navigation functions in another library
 
-  _sp = adjustFrame(_sp);
+  _sp = _navFunc.adjustFrame(_sp);
 
-  _heading = _compass.readHeading();
+  _heading = sensors.getCompass();
 
   _currentError = _sp - _heading;
-
-  _currentError = adjustFrame(_currentError);
-  
-  // control "equation" (removed) passing the raw error forward
-  
-//  _currentError = rudderAngle;
+  _currentError = _navFunc.adjustFrame(_currentError);
+ 
   rudderAngle = P(_currentError) + I(_currentError);
   rudderAngle = rudderAngleSaturation(rudderAngle);
-  //rudderAngle_sig = rudder_signal(rudderAngle);
 
-  _actuators.setRudderPositionBoat(rudderAngle); //TODO
-
-  //rudderAngle_sig = adjustFrame_atuador_cor(rudderAngle); vai pro driver
-  //Serial1.print(rudderAngle_sig); vai pro driver
+  _actuators->setRudderAngle(rudderAngle); //TODO
 }
 
 float BoatControl::P(float currentError)
@@ -54,27 +47,17 @@ float BoatControl::P(float currentError)
 float BoatControl::I(float currentError)
 {
   _endtime = millis();
-  _cycleTime = _endtime - _starttime;
+  _cycleTime = (_endtime - _starttime)/1000;
   _starttime = millis();
   if ((I_prior > 0 && currentError < 0) || (I_prior < 0 && currentError > 0))
   {
-    I_prior = I_prior + _ki * currentError * 50 * _cycleTime;
+    I_prior = I_prior + _ki * currentError * 5 * _cycleTime;
   }
   else
   {
     I_prior = I_prior + _ki * currentError * _cycleTime;
   }
   return I_prior;
-}
-
-float BoatControl::adjustFrame(float angle) {
-  if (angle > 180) {
-    angle = angle - 360;
-  }
-  if (angle < -180) {
-    angle = angle + 360;
-  }
-  return angle;
 }
 
 float BoatControl::rudderAngleSaturation(float sensor) {
@@ -87,23 +70,17 @@ float BoatControl::rudderAngleSaturation(float sensor) {
   return sensor;
 }
 
-//SOTL
-void BoatControl::setDistanceToTarget(float distance){
-  _distanceToTarget = distance;
-}
-
-void BoatControl::thrusterControl(Location target, float mediumDistance, float closeDistance){
+void BoatControl::thrusterControl(SensorManager sensors, Location target){
   // get distance to target
-  _currentPosition = _gps.readPosition(); // TODO in case of exception (or null response...)
-  //SOTL
-  //_distanceToTarget = _gps.computeDistance(_currentPosition, target);
-  _distanceToTarget = _distanceToTarget;
+  _currentPosition = sensors.getGPS().location; // TODO in case of exception (or null response...)
+
+  _distanceToTarget = _navFunc.findDistance(_currentPosition, target);
   
-  if (_distanceToTarget > mediumDistance){
-    _actuators.setThrusterPower(100);
-  } else if (_distanceToTarget < mediumDistance && _distanceToTarget > closeDistance){
-    _actuators.setThrusterPower(80);
-  } else if (_distanceToTarget < closeDistance){
-    _actuators.setThrusterPower(0);
+  if (_distanceToTarget > _mediumDistance){
+    _actuators->setThrusterPower(100);
+  } else if (_distanceToTarget < _mediumDistance && _distanceToTarget > _closeDistance){
+    _actuators->setThrusterPower(80);
+  } else if (_distanceToTarget < _closeDistance){
+    _actuators->setThrusterPower(0);
   } 
 }

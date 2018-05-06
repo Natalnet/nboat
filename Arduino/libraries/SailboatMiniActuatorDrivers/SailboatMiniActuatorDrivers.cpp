@@ -43,7 +43,7 @@ void SailboatMiniActuatorDrivers::setRudderAngle(float rudderAngle){
 
 //transform from servo angle to sail angle
 float SailboatMiniActuatorDrivers::getSailAngle(){
-  return map(sail.read(), _sailLowerLimit, _sailUpperLimit, -90, 90);
+  return map(sail.read(), _sailLowerLimit, _sailUpperLimit, 0, 90);
 }
 
 //transform from servo angle to rudder angle
