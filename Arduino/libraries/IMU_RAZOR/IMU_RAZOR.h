@@ -10,11 +10,8 @@
 #define IMU_RAZOR_h
 
 #include "Arduino.h"
-#include "Accel_ADXL345.h"
-#include "Gyro_L3G4200D.h"
-#include "Mag_HMC5883L.h"
+#include "Razor9DOF.h"
 #include "IMUData.h"
-#include "Wire.h"
 
 class IMU_RAZOR
 {
@@ -24,9 +21,7 @@ class IMU_RAZOR
     IMUData get();
 
   private:
-    Accel_ADXL345 _accelerometer;
-    Gyro_L3G4200D _gyroscope;
-    Mag_HMC5883L _magnetometer;
+    Razor9DOF _imuRazor;
     IMUData _imu;
 
 };

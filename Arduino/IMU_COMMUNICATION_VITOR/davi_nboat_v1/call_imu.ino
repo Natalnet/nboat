@@ -1,4 +1,3 @@
-
 int call_IMU(int select){
     
   Serial2.begin(9600);
@@ -24,12 +23,12 @@ int call_IMU(int select){
   call[1] = Serial2.parseInt();
   call[2] = Serial2.parseInt();
   
-   Serial.print("c- "); Serial.print(call[0]); Serial.print(" ");
+  Serial.print("c- "); Serial.print(call[0]); Serial.print(" ");
   Serial.print(call[1]); Serial.print(" "); Serial.println(call[2]);
    
   Serial2.end(); 
    
-  } 
+  }
   return &call;
 }
 

@@ -14,14 +14,12 @@ IMU_RAZOR::IMU_RAZOR(){
 }
 
 void IMU_RAZOR::read(){
-  _accelerometer.read();
-  _magnetometer.read();
-  _gyroscope.read();
+  _imuRazor.read();
 }
 
 IMUData IMU_RAZOR::get(){
-  _imu.accelerometer = _accelerometer.get();
-  _imu.magnetometer = _magnetometer.get();
-  _imu.gyroscope = _gyroscope.get();
+  _imu.accelerometer = _imuRazor.getAccelerometer();
+  _imu.magnetometer = _imuRazor.getMagnetometer();
+  _imu.gyroscope = _imuRazor.getGyroscope();
   return _imu;
 }
