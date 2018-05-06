@@ -21,7 +21,11 @@ Compass_HMC6352::Compass_HMC6352(float gridNorth){
   numberOfReadings = 10;
 }
 
+<<<<<<< HEAD:Arduino/libraries/Compass_HMC6352/Compass_HMC6352.cpp
 float Compass_HMC6352::readHeading(){
+=======
+void Compass_HMC6352::read(){
+>>>>>>> sailboat_mini:Arduino/libraries/Compass_HMC6352/Compass_HMC6352.cpp
   sum = 0;
   for (int j = 1; j <= numberOfReadings; j++){
     Wire.beginTransmission(slaveAddress);
@@ -36,19 +40,26 @@ float Compass_HMC6352::readHeading(){
       i++;
     }
     headingValue = headingData[0]*256 + headingData[1];
+<<<<<<< HEAD:Arduino/libraries/Compass_HMC6352/Compass_HMC6352.cpp
     //if(headingValue == 0.0){
     //  Serial.println("Compass not working properlly!!!");
     //}
     heading = headingValue/numberOfReadings;
+=======
+    _heading = headingValue/numberOfReadings;
+>>>>>>> sailboat_mini:Arduino/libraries/Compass_HMC6352/Compass_HMC6352.cpp
    //  heading = -heading;
-    heading = heading - _gridNorth;
+    _heading = _heading - _gridNorth;
     
-    if (heading > 180) heading = heading - 360;
-    if (heading < -180) heading = heading + 360;
+    if (_heading > 180) _heading = _heading - 360;
+    if (_heading < -180) _heading = _heading + 360;
     
-    sum += heading;
+    sum += _heading;
   }
 
- //  delay(100);
-  return sum/10;
+  _heading = sum/10;
+}
+
+float Compass_HMC6352::getHeading(){
+  return _heading;
 }

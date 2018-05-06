@@ -13,20 +13,20 @@
 Navigation::Navigation(){
 }
 
-vector<Location> Navigation::findTackingPoints(Location current, Location target, float tackingAngle, float tackingWidenessRate)
+vector<Location> Navigation::findTackingPoints(SensorManager sensors, Location current, Location target, float tackingAngle, float tackingWidenessRate)
 {
   // getting curent heeling value
-  _heading = _compass.readHeading();
-  _windDirection = _weatherSensors.readWindDirection(); 
+  _heading = sensors.getCompass();
+  _windDirection = sensors.getWind().direction;
   _heeling = _windDirection - _heading;
-  _sp = _gps.computeHeading(current, target);
+  _sp = findHeading(current, target);
 
   x0 = current.latitude;
   y0 = current.longitude;
   x = target.latitude;
   y = target.longitude;
 
-  initialDistance = _gps.computeDistance(current, target);
+  initialDistance = findDistance(current, target);
   tackingWideness = tackingWidenessRate * initialDistance;
 
   //finds the line between inital and target
@@ -225,4 +225,19 @@ Location Navigation::projection2d(float lat, float lon, float a, float b)
   float lonProj = a * latProj + b;
 
   return Navigation::angleToLocation(latProj, lonProj);
+}
+
+float Navigation::findDistance(Location p1, Location p2){
+  return TinyGPS::distance_between(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
+}
+
+float Navigation::findHeading(Location p1, Location p2){
+  headingTmp = TinyGPS::course_to(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
+  if(headingTmp > 180){
+    headingTmp = headingTmp-360;
+  }
+  if(headingTmp < -180){
+    headingTmp = headingTmp+360;
+  }
+  return headingTmp;
 }

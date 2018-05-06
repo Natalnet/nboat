@@ -10,15 +10,30 @@
 #define Mag_HMC5883L_h
 
 #include "Arduino.h"
+<<<<<<< HEAD
+=======
+#include "Pose.h"
+>>>>>>> sailboat_mini
 
 class Mag_HMC5883L
 {
   public:
+<<<<<<< HEAD
     //calibration
     Mag_HMC5883L(float gridNorth = 0.0);
     float readHeading();
   private:
     int HMC5883LAddress, _x, _y, _z, _ctrl;
+=======
+    Mag_HMC5883L(float gridNorth = 0.0);
+    float getHeading();
+    void read();
+    Pose get();
+  private:
+    //calibration
+    int HMC5883LAddress, _x, _y, _z, _ctrl;
+    Pose _magnetometer;
+>>>>>>> sailboat_mini
 };
 
 #endif

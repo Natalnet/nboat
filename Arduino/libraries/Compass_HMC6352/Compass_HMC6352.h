@@ -15,9 +15,17 @@ class Compass_HMC6352
 {
   public:
     Compass_HMC6352(float gridNorth = 104.00);
+<<<<<<< HEAD
     float readHeading();
   private:
     float heading, sum, _gridNorth;
+=======
+    void read();
+    float getHeading();
+
+  private:
+    float _heading, sum, _gridNorth;
+>>>>>>> sailboat_mini
     int slaveAddress, i, headingValue, HMC6352Address, numberOfReadings;
     byte headingData[2];
 
