@@ -186,10 +186,10 @@
 
 // Select your startup output mode and format here!
 int output_mode = OUTPUT__MODE_ANGLES;
-int output_format = OUTPUT__FORMAT_BINARY;
+int output_format = OUTPUT__FORMAT_TEXT;
 
 // Select if serial continuous streaming output is enabled per default on startup.
-#define OUTPUT__STARTUP_STREAM_ON false  // true or false
+#define OUTPUT__STARTUP_STREAM_ON true  // true or false
 
 // If set true, an error message will be output if we fail to read sensor data.
 // Message format: "!ERR: reading <sensor>", followed by "\r\n".
@@ -213,21 +213,21 @@ boolean output_errors = false;  // true or false
 // Put MIN/MAX and OFFSET readings for your board here!
 // Accelerometer
 // "accel x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
-#define ACCEL_X_MIN ((float) -299)
+#define ACCEL_X_MIN ((float) -304)
 #define ACCEL_X_MAX ((float) 277)
 #define ACCEL_Y_MIN ((float) -286)
-#define ACCEL_Y_MAX ((float) 280)
+#define ACCEL_Y_MAX ((float) 270)
 #define ACCEL_Z_MIN ((float) -308)
 #define ACCEL_Z_MAX ((float) 211)
 
 // Magnetometer (standard calibration mode)
 // "magn x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
-#define MAGN_X_MIN ((float) -410)
-#define MAGN_X_MAX ((float) 384)
-#define MAGN_Y_MIN ((float) -372)
-#define MAGN_Y_MAX ((float) 355)
-#define MAGN_Z_MIN ((float) -457)
-#define MAGN_Z_MAX ((float) -43)
+#define MAGN_X_MIN ((float) -333)
+#define MAGN_X_MAX ((float) 225)
+#define MAGN_Y_MIN ((float) -273)
+#define MAGN_Y_MAX ((float) 253)
+#define MAGN_Z_MIN ((float) -534)
+#define MAGN_Z_MAX ((float) 75)
 
 // Magnetometer (extended calibration mode)
 // Uncommend to use extended magnetometer calibration (compensates hard & soft iron errors)
@@ -237,9 +237,9 @@ boolean output_errors = false;  // true or false
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
-#define GYRO_AVERAGE_OFFSET_X ((float) -51.01)
+#define GYRO_AVERAGE_OFFSET_X ((float) -53.01)
 #define GYRO_AVERAGE_OFFSET_Y ((float) 43.99)
-#define GYRO_AVERAGE_OFFSET_Z ((float) -6.65)
+#define GYRO_AVERAGE_OFFSET_Z ((float) -7.25)
 
 /*
 // Calibration example:
