@@ -43,7 +43,7 @@ void tRun (struct t *t) {
 }
 
 void setup() {
-  movementControl = new SailboatControl(2,1);
+  movementControl = new SailboatControl(1,0);
   desiredDistance = 10;
   
   //add waypoints example:

@@ -58,7 +58,7 @@ float SensorManager::getRudderAngle(){
   return actDrivers->getRudderAngle();
 }
 
-//posição, velocidade do vento, posição dos atuadores, velocidade e orientação do gps, orientação da bussola, informações do IMU.
+//posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
 void SensorManager::logState(){
   if (gps1.get().date != "" && gpsDateCtrl == 0) {
     _experimentName = String(gps1.get().date+".txt");
@@ -67,7 +67,6 @@ void SensorManager::logState(){
 
   if (gpsDateCtrl == 1){
     dataFile = SD.open(_experimentName, FILE_WRITE);
-    Serial.print("teste");
     if (dataFile) {
       dataFile.print(gps1.get().location.latitude, 6);
       dataFile.print(" ");

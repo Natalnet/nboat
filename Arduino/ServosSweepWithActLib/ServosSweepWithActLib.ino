@@ -9,7 +9,7 @@ void setup() {
 }
 
 void loop() {
-  sailboatAct->setRudderAngle(40);
+  sailboatAct->setRudderAngle(0);
   sailboatAct->setSailAngle(12);
   //delay(15);
   /*for(int i = 0; i <= 180; i = i+1){
