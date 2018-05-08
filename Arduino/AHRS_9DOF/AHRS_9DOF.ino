@@ -62,26 +62,26 @@
 // Accelerometer
 // "accel x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
 #define ACCEL_X_MIN (-250.0f)
-#define ACCEL_X_MAX (250.0f)
-#define ACCEL_Y_MIN (-250.0f)
-#define ACCEL_Y_MAX (250.0f)
-#define ACCEL_Z_MIN (-250.0f)
-#define ACCEL_Z_MAX (250.0f)
+#define ACCEL_X_MAX (255.0f)
+#define ACCEL_Y_MIN (-275.0f)
+#define ACCEL_Y_MAX (235.0f)
+#define ACCEL_Z_MIN (-269.0f)
+#define ACCEL_Z_MAX (228.0f)
 
 // Magnetometer
 // "magn x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
-#define MAGN_X_MIN (-600.0f)
-#define MAGN_X_MAX (600.0f)
-#define MAGN_Y_MIN (-600.0f)
-#define MAGN_Y_MAX (600.0f)
-#define MAGN_Z_MIN (-600.0f)
-#define MAGN_Z_MAX (600.0f)
+#define MAGN_X_MIN (-542.0f)
+#define MAGN_X_MAX (-47.0f)
+#define MAGN_Y_MIN (-421.0f)
+#define MAGN_Y_MAX (75.0f)
+#define MAGN_Z_MIN (-178.0f)
+#define MAGN_Z_MAX (260.0f)
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
-#define GYRO_X_OFFSET (0.0f)
-#define GYRO_Y_OFFSET (0.0f)
-#define GYRO_Z_OFFSET (0.0f)
+#define GYRO_X_OFFSET (3.9f)
+#define GYRO_Y_OFFSET (-1.7f)
+#define GYRO_Z_OFFSET (6.25f)
 
 
 // Altymeter
@@ -151,16 +151,16 @@
 
 // RAW sensor data
 float accel[3];  // Actually stores the NEGATED acceleration (equals gravity, if board not moving).
-//float accel_min[3];
-//float accel_max[3];
+float accel_min[3];
+float accel_max[3];
 
 float magnetom[3];
-//float magnetom_min[3];
-//float magnetom_max[3];
+float magnetom_min[3];
+float magnetom_max[3];
 
 float gyro[3];
-//float gyro_average[3];
-//int gyro_num_samples = 0;
+float gyro_average[3];
+int gyro_num_samples = 0;
 
 float temperature;
 float pressure;
@@ -283,6 +283,75 @@ void ApplySensorMapping()
     Gyro_Vector[2] *= GYRO_Z_SCALE;
 }
 
+// Reset calibration session if reset_calibration_session_flag is set
+void check_reset_calibration_session()
+{
+  // Raw sensor values have to be read already, but no error compensation applied
+
+  // Reset this calibration session?
+  //if (!reset_calibration_session_flag) return;
+  
+  // Reset acc and mag calibration variables
+  for (int i = 0; i < 3; i++) {
+    accel_min[i] = accel_max[i] = accel[i];
+    magnetom_min[i] = magnetom_max[i] = magnetom[i];
+  }
+
+  // Reset gyro calibration variables
+  gyro_num_samples = 0;  // Reset gyro calibration averaging
+  gyro_average[0] = gyro_average[1] = gyro_average[2] = 0.0f;
+  
+  //reset_calibration_session_flag = false;
+}
+
+void output_calibration(int calibration_sensor)
+{
+  if (calibration_sensor == 0)  // Accelerometer
+  {
+    // Output MIN/MAX values
+    Serial.print("accel x,y,z (min/max) = ");
+    for (int i = 0; i < 3; i++) {
+      if (accel[i] < accel_min[i]) accel_min[i] = accel[i];
+      if (accel[i] > accel_max[i]) accel_max[i] = accel[i];
+      Serial.print(accel_min[i]);
+      Serial.print("/");
+      Serial.print(accel_max[i]);
+      if (i < 2) Serial.print("  ");
+      else Serial.println();
+    }
+  }
+  else if (calibration_sensor == 1)  // Magnetometer
+  {
+    // Output MIN/MAX values
+    Serial.print("magn x,y,z (min/max) = ");
+    for (int i = 0; i < 3; i++) {
+      if (magnetom[i] < magnetom_min[i]) magnetom_min[i] = magnetom[i];
+      if (magnetom[i] > magnetom_max[i]) magnetom_max[i] = magnetom[i];
+      Serial.print(magnetom_min[i]);
+      Serial.print("/");
+      Serial.print(magnetom_max[i]);
+      if (i < 2) Serial.print("  ");
+      else Serial.println();
+    }
+  }
+  else if (calibration_sensor == 2)  // Gyroscope
+  {
+    // Average gyro values
+    for (int i = 0; i < 3; i++)
+      gyro_average[i] += gyro[i];
+    gyro_num_samples++;
+      
+    // Output current and averaged gyroscope values
+    Serial.print("gyro x,y,z (current/average) = ");
+    for (int i = 0; i < 3; i++) {
+      Serial.print(gyro[i]);
+      Serial.print("/");
+      Serial.print(gyro_average[i] / (float) gyro_num_samples);
+      if (i < 2) Serial.print("  ");
+      else Serial.println();
+    }
+  }
+}
 
 void setup()
 {
@@ -332,5 +401,8 @@ void loop()
     Serial.print(pressure);       Serial.print(";");
     Serial.print(TO_DEG(MAG_Heading));    Serial.print(";");
     Serial.print(altitude);       Serial.println();
+    
+    //check_reset_calibration_session();
+    //output_calibration(1);
   }
 }

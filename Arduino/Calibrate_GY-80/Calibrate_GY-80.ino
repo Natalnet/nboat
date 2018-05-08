@@ -169,6 +169,8 @@
 // Set your serial port baud rate used to send out data here!
 #define OUTPUT__BAUD_RATE 57600
 
+//115200
+
 // Sensor data output interval in milliseconds
 // This may not work, if faster than 20ms (=50Hz)
 // Code is tuned for 20ms, so better leave it like that
@@ -213,33 +215,27 @@ boolean output_errors = false;  // true or false
 // Put MIN/MAX and OFFSET readings for your board here!
 // Accelerometer
 // "accel x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
-#define ACCEL_X_MIN ((float) -250)
-#define ACCEL_X_MAX ((float) 255)
-#define ACCEL_Y_MIN ((float) -275)
-#define ACCEL_Y_MAX ((float) 235)
-#define ACCEL_Z_MIN ((float) -269)
-#define ACCEL_Z_MAX ((float) 228)
+#define ACCEL_X_MIN (-250.0f)
+#define ACCEL_X_MAX (255.0f)
+#define ACCEL_Y_MIN (-275.0f)
+#define ACCEL_Y_MAX (235.0f)
+#define ACCEL_Z_MIN (-269.0f)
+#define ACCEL_Z_MAX (228.0f)
 
-// Magnetometer (standard calibration mode)
+// Magnetometer
 // "magn x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
-#define MAGN_X_MIN ((float) -542)
-#define MAGN_X_MAX ((float) -47)
-#define MAGN_Y_MIN ((float) -421)
-#define MAGN_Y_MAX ((float) 75)
-#define MAGN_Z_MIN ((float) -178)
-#define MAGN_Z_MAX ((float) 260)
-
-// Magnetometer (extended calibration mode)
-// Uncommend to use extended magnetometer calibration (compensates hard & soft iron errors)
-//#define CALIBRATION__MAGN_USE_EXTENDED true
-//const float magn_ellipsoid_center[3] = {0, 0, 0};
-//const float magn_ellipsoid_transform[3][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+#define MAGN_X_MIN (-542.0f)
+#define MAGN_X_MAX (-47.0f)
+#define MAGN_Y_MIN (-421.0f)
+#define MAGN_Y_MAX (75.0f)
+#define MAGN_Z_MIN (-178.0f)
+#define MAGN_Z_MAX (260.0f)
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
-#define GYRO_AVERAGE_OFFSET_X ((float) 3.9)
-#define GYRO_AVERAGE_OFFSET_Y ((float) -1.7)
-#define GYRO_AVERAGE_OFFSET_Z ((float) 6.25)
+#define GYRO_AVERAGE_OFFSET_X (3.9f)
+#define GYRO_AVERAGE_OFFSET_Y (-1.7f)
+#define GYRO_AVERAGE_OFFSET_Z (6.25f)
 
 /*
 // Calibration example:
@@ -326,6 +322,9 @@ const float magn_ellipsoid_transform[3][3] = {{0.902, -0.00354, 0.000636}, {-0.0
 #define GYRO_GAIN 0.06957 // Same gain on all axes
 #define GYRO_SCALED_RAD(x) (x * TO_RAD(GYRO_GAIN)) // Calculate the scaled gyro readings in radians per second
 
+// Altymeter
+#define ALT_SEA_LEVEL_PRESSURE 102133
+
 // DCM parameters
 #define Kp_ROLLPITCH 0.02f
 #define Ki_ROLLPITCH 0.00002f
@@ -351,6 +350,10 @@ float magnetom_tmp[3];
 float gyro[3];
 float gyro_average[3];
 int gyro_num_samples = 0;
+
+float temperature;
+float pressure;
+float altitude;
 
 // DCM variables
 float MAG_Heading;

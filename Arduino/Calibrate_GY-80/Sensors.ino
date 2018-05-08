@@ -134,3 +134,17 @@ void Read_Gyro()
   gyro[2] = gyroscope.g.z;
 }
 
+#include <Adafruit_BMP085.h>
+
+Adafruit_BMP085 press;
+
+void Pressure_Init() {
+  press.begin(BMP085_ULTRALOWPOWER);
+}
+
+void Read_Pressure() {
+  //press.update();
+  temperature = press.readTemperature();
+  pressure = 0.01f * press.readPressure();
+  altitude = press.readAltitude(ALT_SEA_LEVEL_PRESSURE);
+}

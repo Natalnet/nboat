@@ -30,26 +30,26 @@
 // Accelerometer
 // "accel x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
 #define ACCEL_X_MIN (-250.0f)
-#define ACCEL_X_MAX (250.0f)
-#define ACCEL_Y_MIN (-250.0f)
-#define ACCEL_Y_MAX (250.0f)
-#define ACCEL_Z_MIN (-250.0f)
-#define ACCEL_Z_MAX (250.0f)
+#define ACCEL_X_MAX (255.0f)
+#define ACCEL_Y_MIN (-275.0f)
+#define ACCEL_Y_MAX (235.0f)
+#define ACCEL_Z_MIN (-269.0f)
+#define ACCEL_Z_MAX (228.0f)
 
 // Magnetometer
 // "magn x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
-#define MAGN_X_MIN (-600.0f)
-#define MAGN_X_MAX (600.0f)
-#define MAGN_Y_MIN (-600.0f)
-#define MAGN_Y_MAX (600.0f)
-#define MAGN_Z_MIN (-600.0f)
-#define MAGN_Z_MAX (600.0f)
+#define MAGN_X_MIN (-542.0f)
+#define MAGN_X_MAX (-47.0f)
+#define MAGN_Y_MIN (-421.0f)
+#define MAGN_Y_MAX (75.0f)
+#define MAGN_Z_MIN (-178.0f)
+#define MAGN_Z_MAX (260.0f)
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
-#define GYRO_X_OFFSET (0.0f)
-#define GYRO_Y_OFFSET (0.0f)
-#define GYRO_Z_OFFSET (0.0f)
+#define GYRO_AVERAGE_OFFSET_X (3.9f)
+#define GYRO_AVERAGE_OFFSET_Y (-1.7f)
+#define GYRO_AVERAGE_OFFSET_Z (6.25f)
 
 // Sensor calibration scale and offset values
 #define ACCEL_X_OFFSET ((ACCEL_X_MIN + ACCEL_X_MAX) / 2.0f)
@@ -67,13 +67,8 @@
 #define MAGN_Z_SCALE (100.0f / (MAGN_Z_MAX - MAGN_Z_OFFSET))
 
 // Gain for gyroscope
-#define GYRO_GAIN_X (0.06957f)
-#define GYRO_GAIN_Y (0.06957f)
-#define GYRO_GAIN_Z (0.06957f)
-
-#define GYRO_X_SCALE (TO_RAD(GYRO_GAIN_X))
-#define GYRO_Y_SCALE (TO_RAD(GYRO_GAIN_Y))
-#define GYRO_Z_SCALE (TO_RAD(GYRO_GAIN_Z))
+#define GYRO_GAIN 0.06957 // Same gain on all axes
+#define GYRO_SCALED_RAD(x) (x * TO_RAD(GYRO_GAIN)) // Calculate the scaled gyro readings in radians per second
 
 // DCM parameters
 #define Kp_ROLLPITCH (0.02f)
@@ -130,7 +125,8 @@ class IMU_GY80
     void IMU_GY80::Compass_Heading();
     void IMU_GY80::ApplySensorMapping();
     void IMU_GY80::reset_sensor_fusion();
-    void IMU_GY80::ReadSensors();
+    void IMU_GY80::read_sensors();
+    void IMU_GY80::compensate_sensor_errors();
     
     // RAW sensor data
     float accel[3];  // Actually stores the NEGATED acceleration (equals gravity, if board not moving).

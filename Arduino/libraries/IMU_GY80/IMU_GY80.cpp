@@ -37,7 +37,9 @@ void IMU_GY80::read(){
     else
       G_Dt = 0;
 
-    ReadSensors();
+    read_sensors();
+
+    compensate_sensor_errors();
     
     // Run DCM algorithm
     Compass_Heading(); // Calculate magnetic heading
@@ -55,13 +57,13 @@ void IMU_GY80::read(){
     _imuData.heading = TO_DEG(TO_DEG(MAG_Heading));
     _imuData.altitude = TO_DEG(altitude);
     
-//    Serial.print(TO_DEG(yaw));    Serial.print(";");
-//    Serial.print(TO_DEG(pitch));  Serial.print(";");
-//    Serial.print(TO_DEG(roll));   Serial.print(";");
-//    Serial.print(temperature);    Serial.print(";");
-//    Serial.print(pressure);       Serial.print(";");
-//    Serial.print(TO_DEG(MAG_Heading));    Serial.print(";");
-//    Serial.print(altitude);       Serial.println();
+    /*Serial.print(TO_DEG(yaw));    Serial.print(" ");
+    Serial.print(TO_DEG(pitch));  Serial.print(" ");
+    Serial.print(TO_DEG(roll));   Serial.print(" ");
+    Serial.print(TO_DEG(MAG_Heading));    Serial.print(" ");
+    Serial.print(temperature);    Serial.print(" ");
+    Serial.print(pressure);       Serial.print(" ");
+    Serial.print(altitude);       Serial.println();*/
   }
 }
 
@@ -69,12 +71,12 @@ IMUData IMU_GY80::get(){
   return _imuData;
 }
 
-void IMU_GY80::ReadSensors() {
+void IMU_GY80::read_sensors() {
   Read_Pressure();
   Read_Gyro(); // Read gyroscope
   Read_Accel(); // Read accelerometer
   Read_Magn(); // Read magnetometer
-  ApplySensorMapping();  
+  //ApplySensorMapping();  
 }
 
 // Read every sensor and record a time stamp
@@ -86,7 +88,7 @@ void IMU_GY80::reset_sensor_fusion()
   float temp2[3];
   float xAxis[] = {1.0f, 0.0f, 0.0f};
 
-  ReadSensors();
+  read_sensors();
   
   timestamp = millis();
   
@@ -112,7 +114,7 @@ void IMU_GY80::reset_sensor_fusion()
 }
 
 // Apply calibration to raw sensor readings
-void IMU_GY80::ApplySensorMapping()
+/*void IMU_GY80::ApplySensorMapping()
 {
     // Magnetometer axis mapping
     Magn_Vector[1] = -magnetom[0];
@@ -152,7 +154,7 @@ void IMU_GY80::ApplySensorMapping()
     Gyro_Vector[1] *= GYRO_Y_SCALE;
     Gyro_Vector[2] -= GYRO_Z_OFFSET;
     Gyro_Vector[2] *= GYRO_Z_SCALE;
-}
+}*/
 
 /* This file is part of the Razor AHRS Firmware */
 
@@ -171,9 +173,9 @@ void IMU_GY80::Compass_Heading()
   sin_pitch = sin(pitch);
   
   // Tilt compensated magnetic field X
-  mag_x = Magn_Vector[0]*cos_pitch + Magn_Vector[1]*sin_roll*sin_pitch + Magn_Vector[2]*cos_roll*sin_pitch;
+  mag_x = magnetom[0] * cos_pitch + magnetom[1] * sin_roll * sin_pitch + magnetom[2] * cos_roll * sin_pitch;
   // Tilt compensated magnetic field Y
-  mag_y = Magn_Vector[1]*cos_roll - Magn_Vector[2]*sin_roll;
+  mag_y = magnetom[1] * cos_roll - magnetom[2] * sin_roll;
   // Magnetic Heading
   MAG_Heading = atan2(-mag_y, mag_x);
 }
@@ -254,10 +256,18 @@ void IMU_GY80::Drift_correction(void)
 
 void IMU_GY80::Matrix_update(void)
 {  
+  Gyro_Vector[0]=GYRO_SCALED_RAD(gyro[0]); //gyro x roll
+  Gyro_Vector[1]=GYRO_SCALED_RAD(gyro[1]); //gyro y pitch
+  Gyro_Vector[2]=GYRO_SCALED_RAD(gyro[2]); //gyro z yaw
+  
+  Accel_Vector[0]=accel[0];
+  Accel_Vector[1]=accel[1];
+  Accel_Vector[2]=accel[2];
+    
   Vector_Add(&Omega[0], &Gyro_Vector[0], &Omega_I[0]);  //adding proportional term
   Vector_Add(&Omega_Vector[0], &Omega[0], &Omega_P[0]); //adding Integrator term
   
-#if DEBUG_NO_DRIFT_CORRECTION
+#if DEBUG__NO_DRIFT_CORRECTION == true // Do not use drift correction
   Update_Matrix[0][0]=0;
   Update_Matrix[0][1]=-G_Dt*Gyro_Vector[2];//-z
   Update_Matrix[0][2]=G_Dt*Gyro_Vector[1];//y
@@ -412,7 +422,7 @@ void IMU_GY80::Accel_Init()
 // Reads x, y and z accelerometer registers
 void IMU_GY80::Read_Accel()
 {
-  int i = 0;
+ int i = 0;
   byte buff[6];
   
   Wire.beginTransmission(ACCEL_ADDRESS); 
@@ -511,4 +521,28 @@ void IMU_GY80::Read_Pressure() {
   temperature = press.readTemperature();
   pressure = 0.01f * press.readPressure();
   altitude = press.readAltitude(ALT_SEA_LEVEL_PRESSURE);
+}
+
+void IMU_GY80::compensate_sensor_errors() 
+{
+    // Compensate accelerometer error
+    accel[0] = (accel[0] - ACCEL_X_OFFSET) * ACCEL_X_SCALE;
+    accel[1] = (accel[1] - ACCEL_Y_OFFSET) * ACCEL_Y_SCALE;
+    accel[2] = (accel[2] - ACCEL_Z_OFFSET) * ACCEL_Z_SCALE;
+
+    // Compensate magnetometer error
+#if CALIBRATION__MAGN_USE_EXTENDED == true
+    for (int i = 0; i < 3; i++)
+      magnetom_tmp[i] = magnetom[i] - magn_ellipsoid_center[i];
+    Matrix_Vector_Multiply(magn_ellipsoid_transform, magnetom_tmp, magnetom);
+#else
+    magnetom[0] = (magnetom[0] - MAGN_X_OFFSET) * MAGN_X_SCALE;
+    magnetom[1] = (magnetom[1] - MAGN_Y_OFFSET) * MAGN_Y_SCALE;
+    magnetom[2] = (magnetom[2] - MAGN_Z_OFFSET) * MAGN_Z_SCALE;
+#endif
+
+    // Compensate gyroscope error
+    gyro[0] -= GYRO_AVERAGE_OFFSET_X;
+    gyro[1] -= GYRO_AVERAGE_OFFSET_Y;
+    gyro[2] -= GYRO_AVERAGE_OFFSET_Z;
 }
