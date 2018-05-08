@@ -21,8 +21,7 @@ class IMU_RAZOR
     IMUData get();
 
   private:
-    Razor9DOF _imuRazor;
-    IMUData _imu;
+    IMUData _imuData;
 
 };
 
