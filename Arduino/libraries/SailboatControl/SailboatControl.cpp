@@ -18,9 +18,9 @@ SailboatControl::SailboatControl(float kp, float ki){
   _actuators = new SailboatMiniActuatorDrivers();
 }
 
-void SailboatControl::rudderHeadingControl(SensorManager sensors, Location target) {
+void SailboatControl::rudderHeadingControl(SensorManager *sensors, Location target) {
 
-  _currentPosition = sensors.getGPS().location;
+  _currentPosition = sensors->getGPS().location;
 
   //TODO fix this
   _sp = nav.findHeading(_currentPosition, target);
@@ -30,7 +30,8 @@ void SailboatControl::rudderHeadingControl(SensorManager sensors, Location targe
 //  Serial.print(_sp);
 //  Serial.print("------");
 
-  _heading = sensors.getCompass();
+//  _heading = sensors->getCompass();
+    _heading = sensors->getIMU().eulerAngles.yaw;
 
 //  Serial.print("HEADING: ");
 //  Serial.print(_heading);
@@ -110,8 +111,8 @@ float SailboatControl::rudderAngleSaturation(float sensor) {
   return sensor;
 }
 
-void SailboatControl::sailControl(SensorManager sensors){
-  _windDir = sensors.getWind().direction;
+void SailboatControl::sailControl(SensorManager *sensors){
+  _windDir = sensors->getWind().direction;
   // angle that I want the sail to have
   _sailAngle =  _windDir/2;
   _actuators->setSailAngle(_sailAngle);

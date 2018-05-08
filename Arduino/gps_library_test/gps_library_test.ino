@@ -5,13 +5,13 @@
 #include "SensorManager.h"
 #include "SailboatControl.h"
 #include "IMU_GY80.h"
-//#include "Compass.h"
 
-SensorManager sensors;
-IMU_GY80 imu;
+//SensorManager sensors;
+//IMU_GY80 imu;
 GPS_EM506 gps;
-GPSData gpsData;
-Location loc;
+//SensorManager sensors;
+//GPSData gpsData;
+//Location loc;
 
 void setup() {
   Serial.begin(9600);
@@ -24,15 +24,17 @@ void loop() {
   //Serial.println(sensors.getGPS().location.latitude);
   float time1 = millis();
   gps.read();
-  Serial.println(millis()-time1);
-  Serial.print(gps.get().location.latitude,  6);
+  /*Serial.println(millis()-time1);
+  Serial.print(sensors.gps.get().location.latitude,  6);
   Serial.print("---------------- ");
-  Serial.print(gps.get().location.longitude, 6);
+  Serial.print(sensors.gps.get().location.longitude, 6);
   Serial.print("---------------- ");
-  Serial.print(gps.get().course, 2);
+  Serial.print(sensors.gps.get().course, 2);
   Serial.print("---------------- ");
-  Serial.print(gps.get().date);
+  Serial.print(sensors.gps.get().speed, 2);
   Serial.print("---------------- ");
+  Serial.print(sensors.gps.get().date);
+  Serial.print("---------------- ");*/
   //Serial.print(comp.readHeading());
 }
 

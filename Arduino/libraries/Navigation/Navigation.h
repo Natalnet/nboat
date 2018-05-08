@@ -22,7 +22,7 @@ class Navigation
     Navigation();
     float findDistance(Location p1, Location p2);
     float findHeading(Location p1, Location p2);
-    vector<Location> findTackingPoints(SensorManager sensors, Location current, Location target, float tackingAngle = 60, float tackingWidenessRate = 0.2);
+    vector<Location> findTackingPoints(SensorManager *sensors, Location current, Location target, float tackingAngle = 60, float tackingWidenessRate = 0.2);
     float adjustFrame(float sensor);
     Location angleToLocation(float lat, float lon);
   private:

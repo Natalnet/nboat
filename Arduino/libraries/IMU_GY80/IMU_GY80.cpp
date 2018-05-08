@@ -11,9 +11,6 @@
 #include "IMU_GY80.h"
 
 IMU_GY80::IMU_GY80(){
-   // Init serial output
-  Serial.begin(OUTPUT_BAUD_RATE);
-  
   // Init sensors
   delay(50);  // Give sensors enough time to start
   I2C_Init();
@@ -54,7 +51,7 @@ void IMU_GY80::read(){
     _imuData.eulerAngles.roll = TO_DEG(roll);
     _imuData.temperature = TO_DEG(temperature);
     _imuData.pressure = TO_DEG(pressure);
-    _imuData.heading = TO_DEG(TO_DEG(MAG_Heading));
+    _imuData.heading = TO_DEG(MAG_Heading);
     _imuData.altitude = TO_DEG(altitude);
     
     /*Serial.print(TO_DEG(yaw));    Serial.print(" ");

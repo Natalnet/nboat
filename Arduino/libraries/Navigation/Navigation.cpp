@@ -13,11 +13,11 @@
 Navigation::Navigation(){
 }
 
-vector<Location> Navigation::findTackingPoints(SensorManager sensors, Location current, Location target, float tackingAngle, float tackingWidenessRate)
+vector<Location> Navigation::findTackingPoints(SensorManager *sensors, Location current, Location target, float tackingAngle, float tackingWidenessRate)
 {
   // getting curent heeling value
-  _heading = sensors.getCompass();
-  _windDirection = sensors.getWind().direction;
+  _heading = sensors->getCompass();
+  _windDirection = sensors->getWind().direction;
   _heeling = _windDirection - _heading;
   _sp = findHeading(current, target);
 

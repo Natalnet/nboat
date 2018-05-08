@@ -7,7 +7,7 @@
 #include "Navigation.h"
 
 SailboatControl *movementControl;
-SensorManager sensors;
+SensorManager *sensors;
 WindData wind;
 Navigation sailboatNavigation;
 //GPS_EM506 gps;
@@ -66,6 +66,8 @@ void setup() {
   tempLocation.latitude = -5.842417;
   tempLocation.longitude = -35.197069;
   waypoints.push_back(tempLocation);
+
+  sensors = new SensorManager();
   
   Serial.begin(9600);
 }
@@ -73,7 +75,7 @@ void setup() {
 void loop() {
 
   // program flow:
-  // initialize and check the availability of the sensors (inside libraries) --> OdometrySensors.isWorking() gps.isWorking(); compass.isWorking();
+  // initialize and check the availability of the sensors (inside libraries) --> Odometrysensors->isWorking() gps.isWorking(); compass.isWorking();
   // recieve a target position
   // adjust rudder and sail accordingly
   // store sailboat state (gps info, imu info, actuators position, wind velocity, wind direction, batery charge)
@@ -81,10 +83,10 @@ void loop() {
   // if positive, go to next target point
 
   while (1) {
-    // run sensors.read() at 10Hz
+    // run sensors->read() at 10Hz
+    sensors->read();
     if (tCheck(&t_func1)) {
-      sensors.read();
-      sensors.logState();
+      sensors->logState();
       tRun(&t_func1);
     }
     
@@ -127,7 +129,7 @@ void loop() {
       lastLocation = currentLocation;
 
        // check if it needs to tack
-      wind = sensors.getWind();
+      wind = sensors->getWind();
       if (fabs(wind.direction) < 30 && !isTacking) {
         isTacking = true;
         tackWaypoints = sailboatNavigation.findTackingPoints(sensors, lastLocation, nextLocation);

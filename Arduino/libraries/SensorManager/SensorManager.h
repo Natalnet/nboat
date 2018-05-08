@@ -14,12 +14,13 @@
 #include <SPI.h>
 
 //include all sensors lib available
-#include "Mag_HMC5883L.h"
-#include "Compass_HMC6352.h"
+//#include "Mag_HMC5883L.h"
+//#include "Compass_HMC6352.h"
 #include "GPS_EM506.h"
 #include "WindSensor.h"
 #include "IMU_GY80.h"
 #include "SailboatMiniActuatorDrivers.h"
+#include "IMU_RAZOR.h"
 
 #include "GPSData.h"
 #include "IMUData.h"
@@ -49,15 +50,16 @@ class SensorManager
     
     SailboatMiniActuatorDrivers *actDrivers;
     
-    Mag_HMC5883L magnetometer1;
+//    Mag_HMC5883L magnetometer1;
 
-    Compass_HMC6352 compass1;
+//    Compass_HMC6352 compass1;
 
     GPS_EM506 gps1;
 
     WindSensor wind;
 
-    IMU_GY80 imu1;
+    //IMU_RAZOR imu1;
+    IMU_GY80 *imu2;
 
     WindData _windData;
     GPSData _GPSData;
