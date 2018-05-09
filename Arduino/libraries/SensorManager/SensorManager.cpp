@@ -55,12 +55,12 @@ IMUData SensorManager::getIMU(){
   return  imu2->get();
 }
 
-float SensorManager::getSailAngle(){
-  return actDrivers->getSailAngle();
+void SensorManager::setSailAngle(float sailAngle){
+  _sailAngle = sailAngle;
 }
 
-float SensorManager::getRudderAngle(){
-  return actDrivers->getRudderAngle();
+void SensorManager::setRudderAngle(float rudderAngle){
+  _rudderAngle = rudderAngle;
 }
 
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
@@ -82,9 +82,9 @@ void SensorManager::logState(){
       dataFile.print(" ");
       dataFile.print(wind.get().speed, 2);
       dataFile.print(" ");
-      dataFile.print(actDrivers->getRudderAngle(), 2);
+      dataFile.print(_rudderAngle, 2);
       dataFile.print(" ");
-      dataFile.print(actDrivers->getSailAngle(), 2);
+      dataFile.print(_sailAngle, 2);
       dataFile.print(" ");
       dataFile.print(gps1.get().course, 2);
       dataFile.print(" ");

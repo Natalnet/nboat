@@ -57,7 +57,7 @@ void SailboatControl::rudderHeadingControl(SensorManager *sensors, Location targ
 //  Serial.print("------");
 
   _actuators->setRudderAngle(rudderAngle);
-
+  sensors->setSailAngle(_actuators->getSailAngle());
 }
 
 float SailboatControl::P(float currentError)
@@ -116,5 +116,6 @@ void SailboatControl::sailControl(SensorManager *sensors){
   // angle that I want the sail to have
   _sailAngle =  _windDir/2;
   _actuators->setSailAngle(_sailAngle);
+  sensors->setRudderAngle(_actuators->getRudderAngle());
    //_actuators->setSailAngle(90);
 }

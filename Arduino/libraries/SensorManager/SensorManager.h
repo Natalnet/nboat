@@ -44,8 +44,8 @@ class SensorManager
     float getCompass();
     WindData getWind();
     Pose getMagnetometer();
-    float getSailAngle();
-    float getRudderAngle();
+    void setSailAngle(float sailAngle);
+    void setRudderAngle(float rudderAngle);
   private:
     
     SailboatMiniActuatorDrivers *actDrivers;
