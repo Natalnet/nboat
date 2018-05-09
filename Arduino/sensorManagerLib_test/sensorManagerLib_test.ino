@@ -1,7 +1,10 @@
 #include "SensorManager.h"
+#include "SailboatMiniActuatorDrivers.h"
  
-SensorManager test;
+SensorManager *test;
 float time1, time2;
+SailboatMiniActuatorDrivers *driver;
+//SailboatMiniActuatorDrivers driver1;
 
 //task scheduler
 typedef struct t  {
@@ -10,7 +13,7 @@ typedef struct t  {
 };
 
 //Tasks and their Schedules.
-t t_func1 = {0, 200}; //Run every 100ms
+t t_func1 = {0, 50}; //Run every 100ms
 t t_func2 = {0, 2000}; //Run every 2 seconds.
 
 bool tCheck (struct t *t ) {
@@ -29,14 +32,25 @@ void tRun (struct t *t) {
  
 void setup() {
   Serial.begin(9600);
+  test = new SensorManager();
+  driver = new SailboatMiniActuatorDrivers();
   time1 = millis();
 }
  
 void loop() {
+  test->read();
+  driver->setRudderAngle(90);
+  driver->setSailAngle(12);
+  Serial.print("VALOR DO LEME:  ");
+  Serial.println(driver->getRudderAngle());
+  Serial.print("VALOR DO SERVO LEME:  ");
+  Serial.println(driver->getRudderServo());
+  Serial.print("VALOR DO SERVO VELA:  ");
+  Serial.println(driver->getSailServo());
   if (tCheck(&t_func1)) {
-    test.read();
-    test.logState();
-    Serial.print(t_func1.tStart/1000);
+    print_data();
+    //test.logState();
+    //Serial.print(t_func1.tStart/1000);
     tRun(&t_func1);
   }
   //Serial.print("teste");
@@ -56,7 +70,7 @@ void loop() {
   }*/
 }
 
-void print_data(){
+/*void print_data(){
   Serial.print(test.getGPS().location.latitude, 6);
   Serial.print(" ");
   Serial.print(test.getGPS().location.longitude, 6);
@@ -73,25 +87,37 @@ void print_data(){
   Serial.print(" ");
   Serial.print(test.getGPS().speed, 2);
   Serial.print(" ");
-  Serial.print(test.getIMU().accelerometer.x, 2);
+  Serial.print(test.getIMU().eulerAngles.yaw, 2);
   Serial.print(" ");
-  Serial.print(test.getIMU().accelerometer.y, 2);
+  Serial.print(test.getIMU().eulerAngles.pitch, 2);
   Serial.print(" ");
-  Serial.print(test.getIMU().accelerometer.z, 2);
+  Serial.print(test.getIMU().eulerAngles.roll, 2);
   Serial.print(" ");
-  Serial.print(test.getIMU().gyroscope.x, 2);
-  Serial.print(" ");
-  Serial.print(test.getIMU().gyroscope.y, 2);
-  Serial.print(" ");
-  Serial.print(test.getIMU().gyroscope.z, 2);
-  Serial.print(" ");
-  Serial.print(test.getIMU().magnetometer.x, 2);
-  Serial.print(" ");
-  Serial.print(test.getIMU().magnetometer.y, 2);
-  Serial.print(" ");
-  Serial.print(test.getIMU().magnetometer.z, 2);
-  Serial.print(" ");
-  Serial.print(test.getCompass(), 2);
-  Serial.println(" ");
-}
+  Serial.println(test.getIMU().heading, 2);
+}*/
 
+void print_data(){
+  Serial.print(test->getGPS().location.latitude, 6);
+  Serial.print(" ");
+  Serial.print(test->getGPS().location.longitude, 6);
+  Serial.print(" ");
+  Serial.print(test->getWind().direction, 2);
+  Serial.print(" ");
+  Serial.print(test->getWind().speed, 2);
+  Serial.print(" ");
+  Serial.print(test->getSailAngle(), 2);
+  Serial.print(" ");
+  Serial.print(test->getRudderAngle(), 2);
+  Serial.print(" ");
+  Serial.print(test->getGPS().course, 2);
+  Serial.print(" ");
+  Serial.print(test->getGPS().speed, 2);
+  Serial.print(" ");
+  Serial.print(test->getIMU().eulerAngles.yaw, 2);
+  Serial.print(" ");
+  Serial.print(test->getIMU().eulerAngles.pitch, 2);
+  Serial.print(" ");
+  Serial.print(test->getIMU().eulerAngles.roll, 2);
+  Serial.print(" ");
+  Serial.println(test->getIMU().heading, 2);
+}

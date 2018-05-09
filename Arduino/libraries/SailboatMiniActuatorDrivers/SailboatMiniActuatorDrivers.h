@@ -22,7 +22,9 @@ class SailboatMiniActuatorDrivers
     void setSailAngle(float sailAngle);
 
     float getRudderAngle();
-    float getSailAngle();    
+    float getSailAngle();
+    float getRudderServo();
+    float getSailServo();        
   private:
     Servo rudder, sail;
     int _rudderPin = 8, _sailPin = 9;

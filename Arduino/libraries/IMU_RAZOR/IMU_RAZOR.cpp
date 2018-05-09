@@ -14,12 +14,28 @@ IMU_RAZOR::IMU_RAZOR(){
 }
 
 void IMU_RAZOR::read(){
-  _imuRazor.read();
+  Serial2.begin(57600);
+  
+  static float call[4];
+  while (Serial2.available() <= 0) {
+    Serial2.println("#f");
+  }
+  delay(50);
+  if(Serial2.available() > 2) {
+  
+    call[0] = Serial2.parseFloat();
+    call[1] = Serial2.parseFloat();
+    call[2] = Serial2.parseFloat();
+    call[3] = Serial2.parseFloat();
+  
+    Serial2.end();
+  }
+  _imuData.eulerAngles.yaw = call[0];
+  _imuData.eulerAngles.pitch = call[1];
+  _imuData.eulerAngles.roll = call[2];
+  _imuData.heading = call[3];
 }
 
 IMUData IMU_RAZOR::get(){
-  _imu.accelerometer = _imuRazor.getAccelerometer();
-  _imu.magnetometer = _imuRazor.getMagnetometer();
-  _imu.gyroscope = _imuRazor.getGyroscope();
-  return _imu;
+  return _imuData;
 }

@@ -9,12 +9,14 @@
 #ifndef IMUData_h
 #define IMUData_h
 
-#include "Pose.h"
+#include "YPR.h"
 
 struct IMUData {
-	Pose magnetometer;
-	Pose gyroscope;
-	Pose accelerometer;
+	YPR eulerAngles;
+	float heading;
+	float temperature;
+	float pressure;
+	float altitude;	
 };
 
 #endif

@@ -3,10 +3,19 @@
 #include "NavigationFunctions.h"
 
 
+<<<<<<< HEAD:Arduino/wqboatMainCode/wqboatMainCode.ino
 BoatControl *movementControl;
 
 //go to SensorManager to setup sensors on the robot
 SensorManager sensors;
+=======
+SailboatControl *movementControl;
+SensorManager *sensors;
+WindData wind;
+Navigation sailboatNavigation;
+//GPS_EM506 gps;
+//WeatherSensors windSensors;
+>>>>>>> sailboat_mini:Arduino/sailboatMiniMainCode/sailboatMiniMainCode.ino
 
 NavigationFunctions navigationFunc;
 
@@ -39,7 +48,11 @@ void tRun (struct t *t) {
 }
 
 void setup() {
+<<<<<<< HEAD:Arduino/wqboatMainCode/wqboatMainCode.ino
   movementControl = new BoatControl(2,1);  
+=======
+  movementControl = new SailboatControl(1,0);
+>>>>>>> sailboat_mini:Arduino/sailboatMiniMainCode/sailboatMiniMainCode.ino
   desiredDistance = 10;
 
   //add waypoints example:
@@ -63,6 +76,11 @@ void setup() {
   tempLocation.longitude = -35.197069;
   waypoints.push_back(tempLocation);
 
+<<<<<<< HEAD:Arduino/wqboatMainCode/wqboatMainCode.ino
+=======
+  sensors = new SensorManager();
+  
+>>>>>>> sailboat_mini:Arduino/sailboatMiniMainCode/sailboatMiniMainCode.ino
   Serial.begin(9600);
 
 }
@@ -70,7 +88,11 @@ void setup() {
 void loop() {
 
   // program flow:
+<<<<<<< HEAD:Arduino/wqboatMainCode/wqboatMainCode.ino
   // check the availability of the sensors (inside libraries) --> OdometrySensors.isWorking() gps.isWorking(); compass.isWorking();
+=======
+  // initialize and check the availability of the sensors (inside libraries) --> Odometrysensors->isWorking() gps.isWorking(); compass.isWorking();
+>>>>>>> sailboat_mini:Arduino/sailboatMiniMainCode/sailboatMiniMainCode.ino
   // recieve a target position
   // adjust rudder and thruster accordingly
   // store boat state (position, velocity, orientation, actuators position, wind velocity, wind direction)
@@ -78,10 +100,14 @@ void loop() {
   // if positive, go to next target point
 
   while (1) {
+<<<<<<< HEAD:Arduino/wqboatMainCode/wqboatMainCode.ino
     // run sensors.read() at 5Hz
+=======
+    // run sensors->read() at 10Hz
+    sensors->read();
+>>>>>>> sailboat_mini:Arduino/sailboatMiniMainCode/sailboatMiniMainCode.ino
     if (tCheck(&t_func1)) {
-      sensors.read();
-      sensors.logState();
+      sensors->logState();
       tRun(&t_func1);
     }
     
@@ -117,9 +143,17 @@ void loop() {
       endTime = millis();
       timeInterval = endTime - startTime;
 
+<<<<<<< HEAD:Arduino/wqboatMainCode/wqboatMainCode.ino
       // if 20 seconds passes and the boat isnt advancing to the target, go to the next one
       if(timeInterval > 20000){
         distanceToTarget = 0; //TODO generate error message
+=======
+       // check if it needs to tack
+      wind = sensors->getWind();
+      if (fabs(wind.direction) < 30 && !isTacking) {
+        isTacking = true;
+        tackWaypoints = sailboatNavigation.findTackingPoints(sensors, lastLocation, nextLocation);
+>>>>>>> sailboat_mini:Arduino/sailboatMiniMainCode/sailboatMiniMainCode.ino
       }
       
       lastLocation = currentLocation;
