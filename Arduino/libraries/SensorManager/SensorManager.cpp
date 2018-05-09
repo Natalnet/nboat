@@ -94,8 +94,6 @@ void SensorManager::logState(){
       dataFile.print(" ");
       dataFile.print(gps1.get().speed, 2); 
       dataFile.print(" ");
-
-      
       dataFile.print(imu2->get().eulerAngles.yaw, 2);
       dataFile.print(" ");
       dataFile.print(imu2->get().eulerAngles.pitch, 2);

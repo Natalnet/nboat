@@ -25,10 +25,10 @@ int call_IMU(int select){
   delay(50);
   if(Serial2.available() > 2) {
   
-    call[0] = Serial2.parseFloat();
-    call[1] = Serial2.parseFloat();
-    call[2] = Serial2.parseFloat();
-    call[3] = Serial2.parseFloat();
+    call[0] = Serial2.parseFloat()-180;
+    call[1] = Serial2.parseFloat()-180;
+    call[2] = Serial2.parseFloat()-180;
+    call[3] = Serial2.parseFloat()-180;
   
     Serial2.end(); 
   

@@ -39,17 +39,17 @@ void setup() {
  
 void loop() {
   test->read();
-  driver->setRudderAngle(90);
+  /*driver->setRudderAngle(90);
   driver->setSailAngle(12);
   Serial.print("VALOR DO LEME:  ");
   Serial.println(driver->getRudderAngle());
   Serial.print("VALOR DO SERVO LEME:  ");
   Serial.println(driver->getRudderServo());
   Serial.print("VALOR DO SERVO VELA:  ");
-  Serial.println(driver->getSailServo());
+  Serial.println(driver->getSailServo());*/
   if (tCheck(&t_func1)) {
-    print_data();
-    //test.logState();
+    //print_data();
+    test->printState();
     //Serial.print(t_func1.tStart/1000);
     tRun(&t_func1);
   }
@@ -96,7 +96,7 @@ void loop() {
   Serial.println(test.getIMU().heading, 2);
 }*/
 
-void print_data(){
+/*void print_data(){
   Serial.print(test->getGPS().location.latitude, 6);
   Serial.print(" ");
   Serial.print(test->getGPS().location.longitude, 6);
@@ -120,4 +120,4 @@ void print_data(){
   Serial.print(test->getIMU().eulerAngles.roll, 2);
   Serial.print(" ");
   Serial.println(test->getIMU().heading, 2);
-}
+}*/
