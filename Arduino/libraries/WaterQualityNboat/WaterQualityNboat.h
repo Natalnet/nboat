@@ -15,13 +15,15 @@ class WaterQualityNboat
 	public:
 		WaterQualityNboat();
 		WaterQualityNboat(int addr_ph, int addr_por, int addr_oxigen, int addr_temperature, int addr_condutivity);
-		void startCommunication();
+		void startCommunication(int address);
 		void closeCommunication();
 		float getData(int sensorId, char * cmd);
 		void sendData(char * cmd);
 		void requestData(int address);
-		void dataAvailable();
+		bool dataAvailable();
 		byte read();
+		float * WaterQualityNboat::getAllData();
+		float getDataTemperature();
 
 	private:
 		int _sensorId;
@@ -30,11 +32,12 @@ class WaterQualityNboat
 		int _addr_ph = 99;
 		int _addr_por = 98;
 		int _addr_oxigen = 97;
-		int _addr_temperature = 100;
-		int _addr_condutivity;
+		int _addr_temperature;
+		int _addr_condutivity = 100;
 		int time_ = 900;
 		char _data[20];
 		float _dataFloat;		
+
 };
 
 #endif
