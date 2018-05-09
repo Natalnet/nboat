@@ -19,8 +19,8 @@ class BoatControl
 {
   public:
     BoatControl(float kp = 1, float ki = 0);
-    void rudderHeadingControl(SensorManager sensors, Location target);
-    void thrusterControl(SensorManager sensors, Location target);
+    void rudderHeadingControl(SensorManager *sensors, Location target);
+    void thrusterControl(SensorManager *sensors, Location target);
     float P(float currentError);
     float I(float currentError);
     void setDistanceToTarget(float distance);

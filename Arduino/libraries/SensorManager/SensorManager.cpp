@@ -13,7 +13,7 @@
 SensorManager::SensorManager(){
   SD.begin(48);
   //Serial.print("TESTE");
-  imu2 = new IMU_GY80();  
+  //imu2 = new IMU_GY80();  
 }
 
 //TODO
@@ -25,13 +25,12 @@ void SensorManager::read(){
   //compass1.read();
   //wind.read();
   //magnetometer1.read();
-  //imu1.read();
-  imu2->read();
+  imu1.read();
 }
 
 void SensorManager::readImu(){
-//  imu1.read();
-  imu2->read();
+  imu1.read();
+//  imu2->read();
 }
 
 GPSData SensorManager::getGPS(){
@@ -51,12 +50,12 @@ WindData SensorManager::getWind(){
 }
 
 IMUData SensorManager::getIMU(){
-//  return imu1.get();
-  return  imu2->get();
+  return imu1.get();
+//  return  imu2->get();
 }
 
-void SensorManager::setSailAngle(float sailAngle){
-  _sailAngle = sailAngle;
+void SensorManager::setThrusterPower(float thrusterPower){
+  _thrusterPower = thrusterPower;
 }
 
 void SensorManager::setRudderAngle(float rudderAngle){
@@ -84,7 +83,7 @@ void SensorManager::logState(){
       dataFile.print(" ");
       dataFile.print(_rudderAngle, 2);
       dataFile.print(" ");
-      dataFile.print(_sailAngle, 2);
+      dataFile.print(_thrusterPower, 2);
       dataFile.print(" ");
       dataFile.print(gps1.get().course, 2);
       dataFile.print(" ");
@@ -92,15 +91,15 @@ void SensorManager::logState(){
       dataFile.print(" ");
 
       
-      dataFile.print(imu2->get().eulerAngles.yaw, 2);
+  /*    dataFile.print(imu2->get().eulerAngles.yaw, 2);
       dataFile.print(" ");
       dataFile.print(imu2->get().eulerAngles.pitch, 2);
       dataFile.print(" ");
       dataFile.print(imu2->get().eulerAngles.roll, 2);
       dataFile.print(" ");
-      dataFile.println(imu2->get().heading, 2);
+      dataFile.println(imu2->get().heading, 2);*/
 
-/*
+
       dataFile.print(imu1.get().eulerAngles.yaw, 2);
       dataFile.print(" ");
       dataFile.print(imu1.get().eulerAngles.pitch, 2);
@@ -108,7 +107,7 @@ void SensorManager::logState(){
       dataFile.print(imu1.get().eulerAngles.roll, 2);
       dataFile.print(" ");
       dataFile.println(imu1.get().heading, 2);
-  */    
+  
       dataFile.close();
     }
   }

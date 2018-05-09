@@ -19,7 +19,6 @@
 #include "GPS_EM506.h"
 #include "WindSensor.h"
 #include "IMU_GY80.h"
-#include "SailboatMiniActuatorDrivers.h"
 #include "IMU_RAZOR.h"
 
 #include "GPSData.h"
@@ -44,11 +43,9 @@ class SensorManager
     float getCompass();
     WindData getWind();
     Pose getMagnetometer();
-    void setSailAngle(float sailAngle);
+    void setThrusterPower(float ThrusterPower);
     void setRudderAngle(float rudderAngle);
   private:
-    
-    SailboatMiniActuatorDrivers *actDrivers;
     
 //    Mag_HMC5883L magnetometer1;
 
@@ -58,15 +55,15 @@ class SensorManager
 
     WindSensor wind;
 
-    //IMU_RAZOR imu1;
-    IMU_GY80 *imu2;
+    IMU_RAZOR imu1;
+    //IMU_GY80 *imu2;
 
     WindData _windData;
     GPSData _GPSData;
     IMUData _IMUData;
 
     float _batCharge; //TODO
-    float _rudderAngle, _sailAngle;
+    float _rudderAngle, _thrusterPower;
 
     File dataFile;
 

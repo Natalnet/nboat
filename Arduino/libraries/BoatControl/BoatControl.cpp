@@ -18,9 +18,10 @@ BoatControl::BoatControl(float kp, float ki){
   _actuators = new wqboatActuatorDrivers();
 }
 
-void BoatControl::rudderHeadingControl(SensorManager sensors, Location target) {
+void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) {
+  sensors->setThrusterPower(_actuators->getThrusterPower());
 
-  _currentPosition = sensors.getGPS().location; // TODO in case of exception (or null response...)
+  _currentPosition = sensors->getGPS().location; // TODO in case of exception (or null response...)
 //  Serial.println(_currentPosition.latitude);
 //  Serial.println(_currentPosition.longitude);
 
@@ -28,7 +29,7 @@ void BoatControl::rudderHeadingControl(SensorManager sensors, Location target) {
 
   _sp = _navFunc.adjustFrame(_sp);
 
-  _heading = sensors.getCompass();
+  _heading = sensors->getCompass();
 
   _currentError = _sp - _heading;
   _currentError = _navFunc.adjustFrame(_currentError);
@@ -70,9 +71,10 @@ float BoatControl::rudderAngleSaturation(float sensor) {
   return sensor;
 }
 
-void BoatControl::thrusterControl(SensorManager sensors, Location target){
+void BoatControl::thrusterControl(SensorManager *sensors, Location target){
   // get distance to target
-  _currentPosition = sensors.getGPS().location; // TODO in case of exception (or null response...)
+  sensors->setRudderAngle(_actuators->getRudderAngle());
+  _currentPosition = sensors->getGPS().location; // TODO in case of exception (or null response...)
 
   _distanceToTarget = _navFunc.findDistance(_currentPosition, target);
   
