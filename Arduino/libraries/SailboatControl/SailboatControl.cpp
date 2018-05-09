@@ -24,26 +24,27 @@ void SailboatControl::rudderHeadingControl(SensorManager *sensors, Location targ
 
   //TODO fix this
   _sp = nav.findHeading(_currentPosition, target);
+ /* Serial.print("currentLat: "); Serial.print(_currentPosition.latitude, 6);   Serial.print("------");
+  Serial.print("currentLon: "); Serial.print(_currentPosition.longitude, 6);   Serial.print("------");
+  Serial.print("targetLat: "); Serial.print(target.latitude, 6);   Serial.print("------");
+  Serial.print("targettLon: "); Serial.print(target.longitude, 6);   Serial.print("------");
+  Serial.print("SP: ");   Serial.print(_sp);   Serial.print("------");*/
   _sp = adjustFrame(_sp);
-
-//  Serial.print("SP: ");
-//  Serial.print(_sp);
-//  Serial.print("------");
 
 //  _heading = sensors->getCompass();
     _heading = sensors->getIMU().eulerAngles.yaw;
 
-//  Serial.print("HEADING: ");
-//  Serial.print(_heading);
-//  Serial.print("------");
+  /*Serial.print("HEADING: ");
+  Serial.print(_heading);
+  Serial.print("------");*/
 
   _currentError = _sp - _heading;
-  //_currentError = _heading;
+//  _currentError = _heading;
   _currentError = adjustFrame(_currentError);
 
-//  Serial.print("CURRENTERROR: ");
-//  Serial.print(_currentError);
-//  Serial.print("------");
+/*  Serial.print("CURRENTERROR: ");
+  Serial.print(_currentError);
+  Serial.println("------");*/
   
   // control "equation" (removed) passing the raw error forward
   //rudderAngle = _currentError;
@@ -114,7 +115,7 @@ float SailboatControl::rudderAngleSaturation(float sensor) {
 void SailboatControl::sailControl(SensorManager *sensors){
   _windDir = sensors->getWind().direction;
   // angle that I want the sail to have
-  _sailAngle =  _windDir/2;
+  _sailAngle =  fabs(_windDir)/2;
   _actuators->setSailAngle(_sailAngle);
   sensors->setRudderAngle(_actuators->getRudderAngle());
    //_actuators->setSailAngle(90);

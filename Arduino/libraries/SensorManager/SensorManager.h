@@ -46,6 +46,7 @@ class SensorManager
     Pose getMagnetometer();
     void setSailAngle(float sailAngle);
     void setRudderAngle(float rudderAngle);
+    void SensorManager::printState();
   private:
     
     SailboatMiniActuatorDrivers *actDrivers;

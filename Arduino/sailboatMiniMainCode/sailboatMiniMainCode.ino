@@ -86,18 +86,33 @@ void loop() {
     // run sensors->read() at 10Hz
     sensors->read();
     if (tCheck(&t_func1)) {
-      sensors->logState();
+      //sensors->logState();
+      sensors->printState();
       tRun(&t_func1);
     }
     
-    // navigation control (current waypoint)
+    // waypoints control
     if (waypoints.size() != 0) {
-      if (distanceToTarget < desiredDistance) { //in meters
+      if (distanceToTarget < desiredDistance) {
+        if (isTacking) {
+          if (waypointsT_id < tackWaypoints.size() - 1) {
+            waypointsT_id += 1;
+            nextLocation = tackWaypoints.at(waypointsT_id);
+          } else {
+            isTacking = false;
+            waypointsT_id = 0;
+          }
+        } else {
           waypoints_id += 1;
           waypoints_id = waypoints_id % waypoints.size();
-          nextLocation = waypoints.at(waypoints_id);
+          nextLocation = waypoints.at(waypoints_id);          
+        }
       } else {
+        if (isTacking) {
+          nextLocation = tackWaypoints.at(waypointsT_id);
+        } else {
           nextLocation = waypoints.at(waypoints_id);
+        }
       }
 
       // adjust rudder and thruster power accordingly
@@ -124,6 +139,7 @@ void loop() {
       
       if((timeInterval > 20000)){
         distanceToTarget = 0;
+        startTime = millis();
       }
            
       lastLocation = currentLocation;

@@ -11,7 +11,7 @@ void setup() {
 
 void loop() {
   sailboatAct->setRudderAngle(90);
-  sailboatAct->setSailAngle(12);
+  sailboatAct->setSailAngle(90);
   //delay(15);
   /*for(int i = 0; i <= 180; i = i+1){
     sailboatAct->setRudderAngle(i);

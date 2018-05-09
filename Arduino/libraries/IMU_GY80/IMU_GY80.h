@@ -127,6 +127,7 @@ class IMU_GY80
     void IMU_GY80::reset_sensor_fusion();
     void IMU_GY80::read_sensors();
     void IMU_GY80::compensate_sensor_errors();
+    float adjustFrame(float angle);
     
     // RAW sensor data
     float accel[3];  // Actually stores the NEGATED acceleration (equals gravity, if board not moving).
@@ -178,6 +179,9 @@ class IMU_GY80
     L3G4200D gyroscope;
     Adafruit_BMP085 press;
     IMUData _imuData;
+
+    float yaw_OFFSET = 115, roll_OFFSET = 0, pitch_OFFSET = 0;
+    float yawWFrame, pitchWFrame, rollWFrame;
   
 };
 

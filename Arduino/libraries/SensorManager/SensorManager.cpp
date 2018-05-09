@@ -23,7 +23,7 @@ bool SensorManager::checkSensors(){
 void SensorManager::read(){
   gps1.read();
   //compass1.read();
-  //wind.read();
+  wind.read();
   //magnetometer1.read();
   //imu1.read();
   imu2->read();
@@ -112,4 +112,31 @@ void SensorManager::logState(){
       dataFile.close();
     }
   }
+}
+
+void SensorManager::printState()
+{
+	Serial.print(gps1.get().location.latitude, 6);
+	Serial.print(" ");
+	Serial.print(gps1.get().location.longitude, 6);
+	Serial.print(" ");
+	Serial.print(wind.get ().direction, 2);
+	Serial.print(" ");
+	Serial.print(wind.get().speed, 2);
+	Serial.print(" ");
+	Serial.print(_rudderAngle, 2);
+	Serial.print(" ");
+	Serial.print(_sailAngle, 2);
+	Serial.print(" ");
+	Serial.print(gps1.get().course, 2);
+	Serial.print(" ");
+	Serial.print(gps1.get().speed, 2); 
+	Serial.print(" ");
+	Serial.print(imu2->get().eulerAngles.yaw, 2);
+	Serial.print(" ");
+	Serial.print(imu2->get().eulerAngles.pitch, 2);
+	Serial.print(" ");
+	Serial.print(imu2->get().eulerAngles.roll, 2);
+	Serial.print(" ");
+	Serial.println(imu2->get().heading, 2); 
 }

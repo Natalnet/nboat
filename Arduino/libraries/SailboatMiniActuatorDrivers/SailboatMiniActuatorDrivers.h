@@ -31,7 +31,7 @@ class SailboatMiniActuatorDrivers
 
     //TODO calibrate for sailboat_mini
     float _rudderLowerLimit = 5, _rudderUpperLimit = 75;
-    float _sailLowerLimit = 6, _sailUpperLimit = 12;
+    float _sailLowerLimit = 5, _sailUpperLimit = 15;
 };
 
 #endif

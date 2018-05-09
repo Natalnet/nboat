@@ -46,13 +46,25 @@ void IMU_GY80::read(){
     Drift_correction();
     Euler_angles();
     
-    _imuData.eulerAngles.yaw = TO_DEG(yaw);
+    yawWFrame = TO_DEG(yaw) + yaw_OFFSET;
+    pitchWFrame = TO_DEG(pitch) + pitch_OFFSET;
+    rollWFrame = TO_DEG(roll) + roll_OFFSET;
+
+    _imuData.eulerAngles.yaw = -adjustFrame(yawWFrame);
+    _imuData.eulerAngles.pitch = adjustFrame(pitchWFrame);
+    _imuData.eulerAngles.roll = adjustFrame(rollWFrame);
+    _imuData.temperature = TO_DEG(temperature);
+    _imuData.pressure = TO_DEG(pressure);
+    _imuData.heading = TO_DEG(MAG_Heading);
+    _imuData.altitude = TO_DEG(altitude);
+
+/*    _imuData.eulerAngles.yaw = TO_DEG(yaw);
     _imuData.eulerAngles.pitch = TO_DEG(pitch);
     _imuData.eulerAngles.roll = TO_DEG(roll);
     _imuData.temperature = TO_DEG(temperature);
     _imuData.pressure = TO_DEG(pressure);
     _imuData.heading = TO_DEG(MAG_Heading);
-    _imuData.altitude = TO_DEG(altitude);
+    _imuData.altitude = TO_DEG(altitude);*/
     
     /*Serial.print(TO_DEG(yaw));    Serial.print(" ");
     Serial.print(TO_DEG(pitch));  Serial.print(" ");
@@ -62,6 +74,12 @@ void IMU_GY80::read(){
     Serial.print(pressure);       Serial.print(" ");
     Serial.print(altitude);       Serial.println();*/
   }
+}
+
+float IMU_GY80::adjustFrame(float angle){
+  if (angle > 180) angle = angle - 360;
+  if (angle < -180) angle = angle + 360;
+  return angle;
 }
 
 IMUData IMU_GY80::get(){
