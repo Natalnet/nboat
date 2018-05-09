@@ -24,8 +24,7 @@
 #include "GPSData.h"
 #include "IMUData.h"
 #include "WindData.h"
-
-
+#include "WaterQualityNboat.h"
 
 class SensorManager
 {
@@ -43,13 +42,24 @@ class SensorManager
     float getCompass();
     WindData getWind();
     Pose getMagnetometer();
+    WaterQualityNboat getSensorsWaterQuality();
     void setThrusterPower(float ThrusterPower);
     void setRudderAngle(float rudderAngle);
+
+    void setDataWaterSensorsPermission(bool);
+    bool getDataWaterSensorsPermission();
   private:
     
 //    Mag_HMC5883L magnetometer1;
 
 //    Compass_HMC6352 compass1;
+
+    /*
+    *  Get Data Water Quality Sensors
+    */
+    WaterQualityNboat * wqNboat = WaterQualityNboat::getInstance();
+    bool dataWaterSensorsPermission = false;
+    //--------------------------------------------------------------
 
     GPS_EM506 gps1;
 

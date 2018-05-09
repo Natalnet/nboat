@@ -10,18 +10,32 @@
 
 #define SENSOR_NOT_USED 0
 
+WaterQualityNboat * WaterQualityNboat::wqNboat = 0;
+
+
+static WaterQualityNboat* WaterQualityNboat::getInstance(){
+	if(wqNboat == NULL){
+		wqNboat = new WaterQualityNboat();
+	}
+	return wqNboat;
+}
+
+
 WaterQualityNboat::WaterQualityNboat(){
+	
 	Wire.begin();
 	
 }
 
 WaterQualityNboat::WaterQualityNboat(int addr_ph, int addr_por, int addr_oxigen, int addr_temperature, int addr_condutivity)
 {	
+
 	_addr_ph = addr_ph;
 	_addr_por = addr_por;
 	_addr_oxigen = addr_oxigen;
 	_addr_temperature = addr_temperature;
 	_addr_condutivity = addr_condutivity;
+
 	Wire.begin();
 }
 
@@ -53,7 +67,7 @@ bool WaterQualityNboat::dataAvailable(){
 
 
 
-float WaterQualityNboat::getData(int sensorId, char * cmd){
+char * WaterQualityNboat::getData(int sensorId, char * cmd){
 	int address;
 	_sensorId = sensorId;
 	_cmd = cmd;
@@ -117,15 +131,26 @@ float WaterQualityNboat::getData(int sensorId, char * cmd){
 	      }
 	    }
 
-	    _dataFloat = atof(_data);
-	    return _dataFloat;
+	    //_dataFloat = atof(_data);
+	    if(code == 1)
+	    	return _data;
+
+	    return NULL;
 	}
 
 
 
 }
 
-float getDataTemperature(){
+int WaterQualityNboat::getNumberSensors(){
+	return this->numberSensors;
+}
+
+void WaterQualityNboat::setNumberSensors(int _numberSensors){
+	this->numberSensors = _numberSensors;
+}
+
+float WaterQualityNboat::getDataTemperature(){
 	float v_out;
 	float temp;
 	int sensorPin = A1;
@@ -136,17 +161,88 @@ float getDataTemperature(){
 	return temp;
 }
 
-float * WaterQualityNboat::getAllData(){
-  float * data;
-  data[0] = getData(_addr_ph,"R");
-  delay(1000);
-  data[1] = getData(_addr_por,"R");
-  delay(1000);
-  data[2] = getData(_addr_oxigen,"R");
-  delay(1000);
-  data[3] = getData(_addr_condutivity,"R");
-  delay(1000);
-  data[4] = getDataTemperature();
+String * WaterQualityNboat::getAllData(){
+  String * data = new String[this->getNumberSensors()];
+  for(int i=0; i<this->getNumberSensors();i++){
+    data[i] = this->getInstance()->getData(sensors[i], "R");
+    delay(1000);
+  }
   return data;
+}
+
+String * WaterQualityNboat::i2cScanner(){
+    byte error, address;
+    int nDevices;
+    int * sensorsId;
+    String * listFoundSensors = new String[5];
+ 
+  Serial.println("Scanning...");
+ 
+  nDevices = 0;
+  for(address = 1; address < 127; address++ )
+  {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+ 
+    if (error == 0)
+    {
+      Serial.print("I2C device found at address 0x");
+      if (address<16)
+        Serial.print("0");
+      Serial.print(address);
+      Serial.println("  !");
+      char * result = this->getInstance()->getData(address, "i");
+      listFoundSensors[nDevices] = result;
+      nDevices++;      
+      delay(1000);
+      
+      
+    }
+    else if (error==4)
+    {
+      Serial.print("Unknown error at address 0x");
+      if (address<16)
+        Serial.print("0");
+      Serial.println(address,HEX);
+    }    
+
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found\n");
+  else
+    Serial.println("done\n");
+  
+  listFoundSensors[nDevices+1] = "/0";
+  return listFoundSensors;
+  
+}
+
+void WaterQualityNboat::findAvailableSensors(){
+   list = i2cScanner();
+    int i = 0;
+    while(list[i] != "\0"){
+       
+       String result = list[i];
+       if(result[3] == 'D'){
+          Serial.println(list[i]);
+          sensors[i] = _addr_oxigen;
+       }else if(result[3] == 'p'){
+          sensors[i] = _addr_ph;
+          Serial.println(list[i]);
+       }else if(result[3] == 'E'){
+          sensors[i] = _addr_condutivity;
+          Serial.println(list[i]);
+       }else if(result[3] == 'O'){
+          sensors[i] = _addr_por;
+          Serial.println(list[i]);
+        }
+       i++;
+    }
+    this->setNumberSensors(i);
+
+    
 }
 

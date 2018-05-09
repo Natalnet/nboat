@@ -107,8 +107,29 @@ void SensorManager::logState(){
       dataFile.print(imu1.get().eulerAngles.roll, 2);
       dataFile.print(" ");
       dataFile.println(imu1.get().heading, 2);
+
+      //Get water quality data sensor and insert it into the file
+      if(wqNboat->getNumberSensors()>0 && this->getDataWaterSensorsPermission()){
+        String * data = wqNboat->getAllData();
+          for(int i=0; i<wqNboat->getNumberSensors();i++){
+              dataFile.print(data[i], 2);
+              dataFile.print(" ");
+          }
+      }
   
       dataFile.close();
     }
   }
+}
+
+WaterQualityNBoat SensorManager::getSensorsWaterQuality(){
+  return wqNboat->getInstance();
+}
+
+void SensorManager::setDataWaterSensorsPermission(bool permission){
+  this->dataWaterSensorsPermission = permission;
+}
+
+bool SensorManager::getDataWaterSensorsPermission(){
+  return this->dataWaterSensorsPermission;
 }
