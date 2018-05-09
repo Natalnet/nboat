@@ -63,6 +63,10 @@ void SensorManager::setRudderAngle(float rudderAngle){
   _rudderAngle = rudderAngle;
 }
 
+void SensorManager::setWindSpeed(float windSpeed){
+  _windData.speed = windSpeed;
+}
+
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
 void SensorManager::logState(){
   if (gps1.get().date != "" && gpsDateCtrl == 0) {

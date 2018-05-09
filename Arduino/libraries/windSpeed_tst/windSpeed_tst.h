@@ -7,7 +7,7 @@
 #include <medianFilter.h>
 #include "WindData.h"
 
-volatile static int revolutions = 0;
+static int revolutions = 0;
 
 class windSpeed_tst
 {

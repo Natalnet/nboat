@@ -3,17 +3,17 @@
 //#include "myLib.h"
 
 //WindSensor wind;
-windSpeed_tst wind;
+windSpeed_tst *wind;
 
 void setup() {
   Serial.begin(9600);
-//  wind = new WindSensor();
+  wind = new windSpeed_tst();
 
 }
 
 void loop() {
 //  wind.read();
-  wind.read();
+  wind->read();
   //Serial.print(wind.get().direction); Serial.print("  ");
   //Serial.print(wind.get().speed); Serial.println("  ");
 }

@@ -5,28 +5,38 @@
 #include "SensorManager.h"
 #include "SailboatControl.h"
 #include "Navigation.h"
+#include <medianFilter.h>
 
+//ANEMOMETER SETUP
+medianFilter Filter;
+float radius = 0.055; //m from center pin to middle of cup
+float mps;
+int revolutions = 0;
+int rpm = 0;
+unsigned long lastmillis = 0;
+
+
+//INSTANTIATING LIBS
 SailboatControl *movementControl;
 SensorManager *sensors;
 WindData wind;
 Navigation sailboatNavigation;
-//GPS_EM506 gps;
-//WeatherSensors windSensors;
 
+
+//WAYPOINTS SETUP
 vector<Location> waypoints, tackWaypoints;
-
 Location nextLocation, lastLocation, currentLocation, tempLocation;
 int waypoints_id, waypointsT_id, bugHandler;
 float startTime, endTime, travelledDistance, distanceToTarget, lastDistanceToTarget, desiredDistance, timeInterval;
 bool isTacking;
 
-//task scheduler
+
+//TASK SCHEDULER
 typedef struct t  {
     unsigned long tStart;
     unsigned long tTimeout;
 };
 
-//Tasks and their Schedules.
 t t_func1 = {0, 200}; //Run every 100ms
 //t t_func2 = {0, 2000}; //Run every 2 seconds.
 
@@ -41,6 +51,7 @@ bool tCheck (struct t *t ) {
 void tRun (struct t *t) {
     t->tStart = millis();
 }
+
 
 void setup() {
   movementControl = new SailboatControl(1,0);
@@ -70,7 +81,12 @@ void setup() {
   sensors = new SensorManager();
   
   Serial.begin(9600);
+
+  pinMode(2, INPUT_PULLUP);
+  attachInterrupt(0, rpm_fan, FALLING);
+  //interrupts();
 }
+
 
 void loop() {
 
@@ -85,6 +101,8 @@ void loop() {
   while (1) {
     // run sensors->read() at 10Hz
     sensors->read();
+    readWindSpeed();
+    sensors->setWindSpeed(mps);
     if (tCheck(&t_func1)) {
       //sensors->logState();
       sensors->printState();
@@ -157,4 +175,22 @@ void loop() {
       //salvar_dados();
     }
   }
+}
+
+void readWindSpeed(){
+    if (millis() - lastmillis == 1000) { //Update every one second, this will be equal to reading frequency (Hz).
+    detachInterrupt(0);//Disable interrupt when calculating
+    
+    revolutions=Filter.run(revolutions);
+    rpm = revolutions * 120; // Convert frequency to RPM, note: 60 works for one interruption per full rotation. For two interrupts per full rotation use half_revolutions * 30.
+    revolutions = 0; // Restart the RPM counter
+    lastmillis = millis(); // Update lastmillis
+    attachInterrupt(0, rpm_fan, FALLING); //enable interrupt
+    mps = 2*3.14*radius*rpm / 60;
+    mps = mps * 0.3; // calibration factor for anemometer accuracy, adjust as necessary
+  }
+}
+
+void rpm_fan() {
+  revolutions++;
 }
