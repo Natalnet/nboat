@@ -13,5 +13,8 @@ void loop() {
   imu->read();
   time2 = millis();
   //Serial.println(time2-time1);
-  Serial.println(imu->get().eulerAngles.yaw);
+  Serial.print(imu->get().eulerAngles.yaw); Serial.print(" ");
+  Serial.print(imu->get().eulerAngles.roll); Serial.print(" "); 
+  Serial.print(imu->get().eulerAngles.pitch); Serial.print(" ");
+  Serial.println(imu->get().heading);
 }
