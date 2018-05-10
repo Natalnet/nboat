@@ -9,6 +9,9 @@ void setup() {
 
 void loop() {
   imu.read();
+  Serial.print(imu.get().eulerAngles.yaw); Serial.print(" ");
+  Serial.print(imu.get().eulerAngles.roll); Serial.print(" "); 
+  Serial.print(imu.get().eulerAngles.pitch); Serial.print(" ");
   Serial.println(imu.get().heading);
 }
 

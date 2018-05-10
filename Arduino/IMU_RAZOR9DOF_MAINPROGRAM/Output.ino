@@ -14,10 +14,10 @@ void output_angles()
   else if (output_format == OUTPUT__FORMAT_TEXT)
   {
     //Serial.print("#YPR=");
-    Serial.print(TO_DEG(yaw)+180); //Serial.print(" ");
-    Serial.print(TO_DEG(pitch)+180); //Serial.print(" ");
-    Serial.print(TO_DEG(roll)+180); //Serial.print(" ");
-    Serial.print(TO_DEG(MAG_Heading)+180);
+    Serial.print(TO_DEG(yaw)); //Serial.print(" ");
+    Serial.print(TO_DEG(pitch)-360); //Serial.print(" ");
+    Serial.print(TO_DEG(roll)-360); //Serial.print(" ");
+    Serial.print(TO_DEG(MAG_Heading)-360);
   }
 }
 

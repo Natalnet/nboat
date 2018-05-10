@@ -19,9 +19,12 @@ class IMU_RAZOR
     IMU_RAZOR();
     void read();
     IMUData get();
+    float IMU_RAZOR::adjustFrame(float angle);
 
   private:
     IMUData _imuData;
+    float yaw_OFFSET = 180, pitch_OFFSET = 0, roll_OFFSET = 0;
+    float _yaw, _pitch, _roll, _heading;
 
 };
 
