@@ -75,6 +75,7 @@ class SensorManager
     int gpsDateCtrl = 0;
 
     String _experimentName;
+    float timeStamp = 0;
     
 };
 
