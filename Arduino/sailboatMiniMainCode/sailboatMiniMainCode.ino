@@ -111,8 +111,8 @@ void loop() {
     //float tst = get_wind_speed();
     //sensors->setWindSpeed(tst);
     if (tCheck(&t_func1)) {
-      sensors->logState();
-      //sensors->printState();
+      //sensors->logState();
+      sensors->printState();
       tRun(&t_func1);
     }
     

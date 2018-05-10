@@ -19,8 +19,13 @@ void setup() {
 }
 
 void loop() {
-  float test = 15;
+  float test = 120;
   myservo.write(test);              // tell servo to go to position in variable 'pos'
   delay(15);                       // waits 15ms for the servo to reach the position
 }
 
+//rudder min = 75;
+//rudder max = 130
+
+//sail min = 170
+//sail max = 120

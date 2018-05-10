@@ -17,7 +17,10 @@ SailboatMiniActuatorDrivers::SailboatMiniActuatorDrivers(int rudderPin, int sail
 
   rudder.attach(_rudderPin);
   sail.attach(_sailPin);
-
+  sail.write((_sailLowerLimit + _sailUpperLimit)/2);
+  delay(2000);
+  rudder.write((_rudderLowerLimit + _rudderUpperLimit)/2);
+  delay(2000);
 }
 
 SailboatMiniActuatorDrivers::SailboatMiniActuatorDrivers(){
