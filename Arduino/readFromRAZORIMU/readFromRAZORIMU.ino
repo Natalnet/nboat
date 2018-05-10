@@ -5,20 +5,9 @@ void setup() {
 }
 
 void loop() {
-  float *giro;
-  giro = call_IMU(0);
-  
-  Serial.print(giro[0]); Serial.print(" ");
-  Serial.print(giro[1]); Serial.print(" "); 
-  Serial.print(giro[2]); Serial.print(" ");
-  Serial.println(giro[3]);
-}
-
-int call_IMU(int select){
-    
   Serial2.begin(57600);
   
-  static float call[4];
+  static float call[3];
   while (Serial2.available() <= 0) {
     Serial2.println("#f");
   }
@@ -33,5 +22,9 @@ int call_IMU(int select){
     Serial2.end(); 
   
   }
-  return &call;
+  
+  Serial.print(call[0]); Serial.print(" ");
+  Serial.print(call[1]+360); Serial.print(" "); 
+  Serial.print(call[2]+360); Serial.print(" ");
+  Serial.println(call[3]+360);
 }

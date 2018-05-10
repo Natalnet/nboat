@@ -45,9 +45,10 @@ class SensorManager
     WaterQualityNboat getSensorsWaterQuality();
     void setThrusterPower(float ThrusterPower);
     void setRudderAngle(float rudderAngle);
-
     void setDataWaterSensorsPermission(bool);
     bool getDataWaterSensorsPermission();
+    void setWindSpeed(float windSpeed);
+    void SensorManager::printState();
   private:
     
 //    Mag_HMC5883L magnetometer1;
@@ -66,7 +67,7 @@ class SensorManager
     WindSensor wind;
 
     IMU_RAZOR imu1;
-    //IMU_GY80 *imu2;
+    //IMU_GY80 *imu1;
 
     WindData _windData;
     GPSData _GPSData;
@@ -80,6 +81,7 @@ class SensorManager
     int gpsDateCtrl = 0;
 
     String _experimentName;
+    float timeStamp = 0;
     
 };
 

@@ -38,18 +38,33 @@
 
 // Magnetometer
 // "magn x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
+/*
 #define MAGN_X_MIN (-542.0f)
 #define MAGN_X_MAX (-47.0f)
 #define MAGN_Y_MIN (-421.0f)
 #define MAGN_Y_MAX (75.0f)
 #define MAGN_Z_MIN (-178.0f)
 #define MAGN_Z_MAX (260.0f)
+*/
+
+#define MAGN_X_MIN (-547.0f)
+#define MAGN_X_MAX (-75.0f)
+#define MAGN_Y_MIN (-421.0f)
+#define MAGN_Y_MAX (61.0f)
+#define MAGN_Z_MIN (-217.0f)
+#define MAGN_Z_MAX (259.0f)
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
+/*
 #define GYRO_AVERAGE_OFFSET_X (3.9f)
 #define GYRO_AVERAGE_OFFSET_Y (-1.7f)
 #define GYRO_AVERAGE_OFFSET_Z (6.25f)
+*/
+
+#define GYRO_AVERAGE_OFFSET_X (3.0f)
+#define GYRO_AVERAGE_OFFSET_Y (-2.0f)
+#define GYRO_AVERAGE_OFFSET_Z (3.67f)
 
 // Sensor calibration scale and offset values
 #define ACCEL_X_OFFSET ((ACCEL_X_MIN + ACCEL_X_MAX) / 2.0f)
@@ -127,6 +142,7 @@ class IMU_GY80
     void IMU_GY80::reset_sensor_fusion();
     void IMU_GY80::read_sensors();
     void IMU_GY80::compensate_sensor_errors();
+    float adjustFrame(float angle);
     
     // RAW sensor data
     float accel[3];  // Actually stores the NEGATED acceleration (equals gravity, if board not moving).
@@ -178,6 +194,9 @@ class IMU_GY80
     L3G4200D gyroscope;
     Adafruit_BMP085 press;
     IMUData _imuData;
+
+    float yaw_OFFSET = 115, roll_OFFSET = 0, pitch_OFFSET = 0;
+    float yawWFrame, pitchWFrame, rollWFrame;
   
 };
 

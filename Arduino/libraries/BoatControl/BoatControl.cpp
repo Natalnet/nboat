@@ -29,7 +29,7 @@ void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) 
 
   _sp = _navFunc.adjustFrame(_sp);
 
-  _heading = sensors->getCompass();
+  _heading = sensors->getIMU().eulerAngles.yaw;
 
   _currentError = _sp - _heading;
   _currentError = _navFunc.adjustFrame(_currentError);
@@ -38,6 +38,7 @@ void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) 
   rudderAngle = rudderAngleSaturation(rudderAngle);
 
   _actuators->setRudderAngle(rudderAngle); //TODO
+  sensors->setThrusterPower(_actuators->getThrusterPower());
 }
 
 float BoatControl::P(float currentError)

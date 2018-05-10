@@ -19,7 +19,7 @@ void setup() {
 }
 
 void loop() {
-  float test = 30.5;
+  float test = 15;
   myservo.write(test);              // tell servo to go to position in variable 'pos'
   delay(15);                       // waits 15ms for the servo to reach the position
 }
