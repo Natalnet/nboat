@@ -107,6 +107,7 @@ void SensorManager::logState(){
       dataFile.print("S");             dataFile.print(",");
       dataFile.print("SG");             dataFile.print(",");
       dataFile.println("Water Temperature");
+      digitalWrite(LED_BUILTIN, HIGH);
     }
     dataFile.close();
   }
