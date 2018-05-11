@@ -13,7 +13,8 @@
 SensorManager::SensorManager(){
   SD.begin(48);
   //Serial.print("TESTE");
-  imu2 = new IMU_GY80();  
+  imu2 = new IMU_GY80();
+  pinMode(LED_BUILTIN, OUTPUT); 
 }
 
 //TODO
@@ -90,7 +91,11 @@ void SensorManager::logState(){
       dataFile.print("Yaw");              dataFile.print(",");
       dataFile.print("Pitch");            dataFile.print(",");
       dataFile.print("Roll");             dataFile.print(",");
-      dataFile.println("Magnetometer Heading");
+      dataFile.print("Magnetometer Heading");   dataFile.print(",");
+      dataFile.print("Temperature");      dataFile.print(",");
+      dataFile.print("Pressure");         dataFile.print(",");
+      dataFile.println("Altitude");
+      digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
     }
     dataFile.close();
   }
@@ -111,7 +116,10 @@ void SensorManager::logState(){
       dataFile.print(imu2->get().eulerAngles.yaw, 2);       dataFile.print(",");
       dataFile.print(imu2->get().eulerAngles.pitch, 2);     dataFile.print(",");
       dataFile.print(imu2->get().eulerAngles.roll, 2);      dataFile.print(",");
-      dataFile.println(imu2->get().heading, 2);
+      dataFile.print(imu2->get().heading, 2);               dataFile.print(",");
+      dataFile.print(imu2->get().temperature, 2);           dataFile.print(",");      
+      dataFile.print(imu2->get().pressure, 2);              dataFile.print(",");
+      dataFile.println(imu2->get().altitude, 2);
 
 /*
       dataFile.print(imu1.get().eulerAngles.yaw, 2);

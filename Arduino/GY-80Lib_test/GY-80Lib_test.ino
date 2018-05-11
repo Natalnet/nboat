@@ -14,4 +14,6 @@ void loop() {
   time2 = millis();
   //Serial.println(time2-time1);
   Serial.println(imu->get().eulerAngles.yaw);
+  Serial.println(imu->get().);
+  Serial.println(imu->get().eulerAngles.yaw);
 }
