@@ -61,6 +61,28 @@ void SailboatControl::rudderHeadingControl(SensorManager *sensors, Location targ
   sensors->setSailAngle(_actuators->getSailAngle());
 }
 
+void SailboatControl::rudderVelocityControl(SensorManager *sensors, Location target) {
+
+  _currentPosition = sensors->getGPS().location; // TODO in case of exception (or null response...)
+
+  _sp = nav.findHeading(_currentPosition, target);
+
+  _sp = nav.adjustFrame(_sp);
+
+//  _heading = sensors->getIMU().eulerAngles.yaw;
+  _heading = sensors->getGPS().course;
+
+  _currentError = _sp - _heading;
+  _currentError = adjustFrame(_currentError);
+ 
+  rudderAngle = P(_currentError) + I(_currentError);
+  rudderAngle = rudderAngleSaturation(rudderAngle);
+
+  _actuators->setRudderAngle(rudderAngle);
+  sensors->setSailAngle(_actuators->getSailAngle());
+}
+
+
 float SailboatControl::P(float currentError)
 {
   return _kp * currentError;

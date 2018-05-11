@@ -19,6 +19,7 @@ class SailboatControl
   public:
     SailboatControl(float kp = 1, float ki = 0);
     void rudderHeadingControl(SensorManager *sensors, Location target);
+    void rudderVelocityControl(SensorManager *sensors, Location target);
     void sailControl(SensorManager *sensors);
     float adjustFrame(float angle);
     float P(float currentError);
