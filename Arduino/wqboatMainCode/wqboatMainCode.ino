@@ -69,6 +69,14 @@ void setup() {
   wqMeasureTime = 30;
   wqMeasureTime *= 1000;  //from ms to s
 
+  //WAYPOINTS EXPERIMENT
+  //WAYPOINT 1: -5.765775, -35.204640
+  //WAYPOINT 2: -5.765494, -35.204913
+  //WAYPOINT 3: -5.765757, -35.205025
+  //WAYPOINT 4: -5.766014, -35.204724
+  //WAYPOINT 5: -5.765775, -35.204640
+  //WAYPOINT 6: -5.765757, -35.205025
+
   //add waypoints example:
   //waypoint 1 - natalnet9*
   tempLocation.latitude = -5.842986;

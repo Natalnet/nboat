@@ -77,6 +77,7 @@ void SensorManager::logState(){
 
     //first line of log file
     if (dataFile) {
+      dataFile.print("Date");             dataFile.print(",");
       dataFile.print("TimeStamp");        dataFile.print(",");
       dataFile.print("Latitude");         dataFile.print(",");
       dataFile.print("Longitude");        dataFile.print(",");
@@ -97,6 +98,7 @@ void SensorManager::logState(){
   if (gpsDateCtrl == 1){
     dataFile = SD.open(_experimentName, FILE_WRITE);
     if (dataFile) {
+      dataFile.print(gps1.get().dateFull);                  dataFile.print(",");
       dataFile.print(timeStamp, 2);                         dataFile.print(",");
       dataFile.print(gps1.get().location.latitude, 6);      dataFile.print(",");
       dataFile.print(gps1.get().location.longitude, 6);     dataFile.print(",");
