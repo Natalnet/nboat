@@ -45,6 +45,7 @@ class SensorManager
     WaterQualityNboat getSensorsWaterQuality();
     void setThrusterPower(float ThrusterPower);
     void setRudderAngle(float rudderAngle);
+    void setdistanceTravelled(double distanceTravelled);
     void setDataWaterSensorsPermission(bool);
     bool getDataWaterSensorsPermission();
     void setWindSpeed(float windSpeed);
@@ -82,6 +83,7 @@ class SensorManager
 
     String _experimentName;
     float timeStamp = 0;
+    double _distanceTravelled;
     
 };
 

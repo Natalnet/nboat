@@ -20,6 +20,7 @@ class BoatControl
   public:
     BoatControl(float kp = 1, float ki = 0);
     void rudderHeadingControl(SensorManager *sensors, Location target);
+    void rudderVelocityControl(SensorManager *sensors, Location target);
     void thrusterControl(SensorManager *sensors, Location target);
     float P(float currentError);
     float I(float currentError);
@@ -29,7 +30,7 @@ class BoatControl
     float _heading, _sp, _currentError, rudderAngle_prior, rudderAngle, I_prior, _cycleTime, _kp, _ki, _starttime, _endtime, _distanceToTarget;
     Location _currentPosition;
     wqboatActuatorDrivers *_actuators;
-    float _mediumDistance = 10.0, _closeDistance = 5.0;
+    float _mediumDistance = 10.0, _closeDistance = 3.0;
     NavigationFunctions _navFunc;
 };
 

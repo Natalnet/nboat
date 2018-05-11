@@ -29,7 +29,8 @@ long windClickNo=0;
 vector<Location> waypoints, tackWaypoints;
 Location nextLocation, lastLocation, currentLocation, tempLocation;
 int waypoints_id, waypointsT_id, bugManager;
-float startTime, endTime, travelledDistance, distanceToTarget, lastDistanciaDestino, desiredDistance, timeInterval;
+float startTime, endTime, distanceToTarget, lastDistanciaDestino, desiredDistance, timeInterval;
+double distanceTravelled;
 
 
 //TASK SCHEDULER
@@ -53,10 +54,20 @@ void tRun (struct t *t) {
     t->tStart = millis();
 }
 
+float stationKeepTime, wqMeasureTime;
+bool stationKeeping = false;
+
+char controlStrategy = 'h';
+float headingControlDistance;
+
 
 void setup() {
   movementControl = new BoatControl(1,0);  
-  desiredDistance = 10;
+  
+  desiredDistance = 5;
+  headingControlDistance = 15;
+  wqMeasureTime = 30;
+  wqMeasureTime *= 1000;  //from ms to s
 
   //add waypoints example:
   //waypoint 1 - natalnet9*
@@ -113,22 +124,38 @@ void loop() {
     
     // waypoints control
     if (waypoints.size() != 0) {
+      if (distanceToTarget < headingControlDistance){
+        controlStrategy = 'h';
+      } else {
+        controlStrategy = 'v';
+      }
       if (distanceToTarget < desiredDistance) {
+        if (!stationKeeping){
+          stationKeepTime = millis();
+          stationKeeping = true;
+        }
+        if ((millis() - stationKeeping) > wqMeasureTime){
           waypoints_id += 1;
           waypoints_id = waypoints_id % waypoints.size();
-          nextLocation = waypoints.at(waypoints_id);          
-      } else {
-          nextLocation = waypoints.at(waypoints_id);
+          stationKeeping = false;
+        }
       }
 
+      nextLocation = waypoints.at(waypoints_id);
+
       // adjust rudder and thruster power accordingly
-      movementControl->rudderHeadingControl(sensors, nextLocation);
+      if (controlStrategy == 'h'){
+        movementControl->rudderHeadingControl(sensors, nextLocation);
+      } else if (controlStrategy == 'v'){
+        movementControl->rudderVelocityControl(sensors, nextLocation);
+      }
       movementControl->thrusterControl(sensors, nextLocation);
+      
 
       // keep track of distance to target
       lastDistanciaDestino = distanceToTarget;
       distanceToTarget = navigationFunc.findDistance(currentLocation, nextLocation);
-      travelledDistance += navigationFunc.findDistance(lastLocation, currentLocation);
+      distanceTravelled += navigationFunc.findDistance(lastLocation, currentLocation);
       
       // in case the boat isnt getting closer to the desired target -> select the next one
       if(distanceToTarget >= lastDistanciaDestino){

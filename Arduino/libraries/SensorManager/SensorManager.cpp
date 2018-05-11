@@ -62,6 +62,10 @@ void SensorManager::setWindSpeed(float windSpeed){
   _windData.speed = windSpeed;
 }
 
+void SensorManager::setdistanceTravelled(double distanceTravelled){
+  _distanceTravelled = distanceTravelled;
+}
+
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
 void SensorManager::logState(){
 
