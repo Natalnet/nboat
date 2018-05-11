@@ -61,35 +61,7 @@ void setup() {
   movementControl = new SailboatControl(1,0);
   desiredDistance = 10;
 
-  //WAYPOINTS EXPERIMENT
-  //WAYPOINT 1: -5.765775, -35.204640
-  //WAYPOINT 2: -5.765494, -35.204913
-  //WAYPOINT 3: -5.765757, -35.205025
-  //WAYPOINT 4: -5.766014, -35.204724
-  //WAYPOINT 5: -5.765775, -35.204640
-  //WAYPOINT 6: -5.765757, -35.205025
-  
-  
-  //add waypoints example:
-  //waypoint 1 - natalnet
-  tempLocation.latitude = -5.842986;
-  tempLocation.longitude = -35.197465;
-  waypoints.push_back(tempLocation);
-  
-  //waypoint 2 - rua das engenharias
-  tempLocation.latitude = -5.842044;
-  tempLocation.longitude = -35.197449;
-  waypoints.push_back(tempLocation);
-
-  //waypoint 3 - larhisa
-  tempLocation.latitude = -5.842544;
-  tempLocation.longitude = -35.197839;
-  waypoints.push_back(tempLocation);
-
-  //waypoint 4 - pet elétrica
-  tempLocation.latitude = -5.842417;
-  tempLocation.longitude = -35.197069;
-  waypoints.push_back(tempLocation);
+  experiments1();
 
   sensors = new SensorManager();
   
@@ -99,6 +71,24 @@ void setup() {
   attachInterrupt(0, rpm_fan, FALLING);
   //attachInterrupt(0, wSpeedIRQ, FALLING);
   //interrupts();
+}
+
+void experiment1(){
+  //add waypoints example:
+  //waypoint 1
+  tempLocation.latitude = -5.764525;
+  tempLocation.longitude = -35.204070;
+  waypoints.push_back(tempLocation);
+  
+  //waypoint 2
+  tempLocation.latitude = -5.765012;
+  tempLocation.longitude = -35.204357;
+  waypoints.push_back(tempLocation);
+
+  //waypoint 3
+  tempLocation.latitude = -5.764724;
+  tempLocation.longitude = -35.204472;
+  waypoints.push_back(tempLocation);
 }
 
 
