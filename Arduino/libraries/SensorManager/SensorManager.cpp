@@ -24,6 +24,14 @@ void SensorManager::read(){
   wind.read();
   //magnetometer1.read();
   imu1.read();
+
+  while(Serial1.available()){
+    in_char = Serial1.read();
+    data1 = String(in_char);
+    if(in_char != '\n') {
+      data2 = data2 + data1;
+    }
+  }
 }
 
 void SensorManager::readImu(){
@@ -90,7 +98,15 @@ void SensorManager::logState(){
       dataFile.print("Yaw");              dataFile.print(",");
       dataFile.print("Pitch");            dataFile.print(",");
       dataFile.print("Roll");             dataFile.print(",");
-      dataFile.println("Magnetometer Heading");
+      dataFile.println("Magnetometer Heading");  dataFile.print(",");
+      dataFile.print("OD");             dataFile.print(",");
+      dataFile.print("POR");             dataFile.print(",");
+      dataFile.print("Ph");             dataFile.print(",");
+      dataFile.print("EC");             dataFile.print(",");
+      dataFile.print("TDS");             dataFile.print(",");
+      dataFile.print("S");             dataFile.print(",");
+      dataFile.print("SG");             dataFile.print(",");
+      dataFile.println("Water Temperature");
     }
     dataFile.close();
   }
@@ -111,19 +127,12 @@ void SensorManager::logState(){
       dataFile.print(imu1.get().eulerAngles.yaw, 2);        dataFile.print(",");
       dataFile.print(imu1.get().eulerAngles.pitch, 2);      dataFile.print(",");
       dataFile.print(imu1.get().eulerAngles.roll, 2);       dataFile.print(",");
-      dataFile.println(imu1.get().heading, 2);
-
-      //Get water quality data sensor and insert it into the file
-      /*if(wqNboat->getNumberSensors()>0 && this->getDataWaterSensorsPermission()){
-        String * data = wqNboat->getAllData();
-          for(int i=0; i<wqNboat->getNumberSensors();i++){
-              dataFile.print(data[i]);
-              dataFile.print(" ");
-          }
-      }*/
-  
+      dataFile.print(imu1.get().heading, 2);                dataFile.print(",");
+      dataFile.println(data2);
+     
       dataFile.close();
       timeStamp += 0.2;
+      data2 = "";
     }
   }
 }

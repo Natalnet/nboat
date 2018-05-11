@@ -122,6 +122,7 @@ void loop() {
     sensors->read();
     readWindSpeed();
     sensors->setWindSpeed(mps);
+    sensors->readWater();
     //float tst = get_wind_speed();
     //sensors->setWindSpeed(tst);
     if (tCheck(&t_func1)) {
@@ -227,6 +228,7 @@ void readWindSpeed(){
 void rpm_fan() {
   revolutions++;
 }
+
 
 
 
