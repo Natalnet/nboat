@@ -14,23 +14,26 @@ class WaterQualityNboat
 {
 	public:
 		static WaterQualityNboat* getInstance();
+		
 		WaterQualityNboat();
 		WaterQualityNboat(int addr_ph, int addr_por, int addr_oxigen, int addr_temperature, int addr_condutivity);
+
 		void startCommunication(int address);
 		void closeCommunication();
+
+		
 		char * getData(int sensorId, char * cmd);
 		void sendData(char * cmd);
 		void requestData(int address);
 		bool dataAvailable();
 		byte read();
-		String * getAllData();
+		float * getAllData(int *);
 		float getDataTemperature();
 		String * i2cScanner();
-		void findAvailableSensors();
+		int * findAvailableSensors();
 		int getNumberSensors();
 		void setNumberSensors(int);
-
-
+		
 
 	private:
 
@@ -43,11 +46,11 @@ class WaterQualityNboat
 		int _addr_temperature;
 		int _addr_condutivity = 100;
 		int time_ = 900;
-		char _data[20];
+		char * _data;
 		float _dataFloat;		
 		static WaterQualityNboat* wqNboat;
 		int numberSensors = 0;
-		int * sensors= new int[5];
+		//int * sensors= new int[5];
 		String * list;
 
 };
