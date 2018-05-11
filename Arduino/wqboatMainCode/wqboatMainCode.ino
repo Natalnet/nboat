@@ -77,8 +77,8 @@ void setup() {
   //WAYPOINT 5: -5.765775, -35.204640
   //WAYPOINT 6: -5.765757, -35.205025
 
-  //add waypoints example:
-  //waypoint 1 - natalnet9*
+  /*//add waypoints example:
+  //waypoint 1 - natalnet
   tempLocation.latitude = -5.842986;
   tempLocation.longitude = -35.197465;
   waypoints.push_back(tempLocation);
@@ -96,7 +96,7 @@ void setup() {
   //waypoint 4 - pet elétrica
   tempLocation.latitude = -5.842417;
   tempLocation.longitude = -35.197069;
-  waypoints.push_back(tempLocation);
+  waypoints.push_back(tempLocation);*/
 
   sensors = new SensorManager();
   Serial.begin(9600);

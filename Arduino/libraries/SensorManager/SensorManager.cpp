@@ -78,7 +78,7 @@ void SensorManager::setdistanceTravelled(double distanceTravelled){
 void SensorManager::logState(){
 
   if (gps1.get().date != "" && gpsDateCtrl == 0) {
-    _experimentName = String(gps1.get().date+".txt");
+    _experimentName = String(gps1.get().date+".csv");
     gpsDateCtrl = 1;
 
     dataFile = SD.open(_experimentName, FILE_WRITE);
@@ -98,14 +98,14 @@ void SensorManager::logState(){
       dataFile.print("Yaw");              dataFile.print(",");
       dataFile.print("Pitch");            dataFile.print(",");
       dataFile.print("Roll");             dataFile.print(",");
-      dataFile.println("Magnetometer Heading");  dataFile.print(",");
-      dataFile.print("OD");             dataFile.print(",");
-      dataFile.print("POR");             dataFile.print(",");
-      dataFile.print("Ph");             dataFile.print(",");
-      dataFile.print("EC");             dataFile.print(",");
-      dataFile.print("TDS");             dataFile.print(",");
-      dataFile.print("S");             dataFile.print(",");
-      dataFile.print("SG");             dataFile.print(",");
+      dataFile.print("Magnetometer Heading");  dataFile.print(",");
+      dataFile.print("OD");               dataFile.print(",");
+      dataFile.print("POR");              dataFile.print(",");
+      dataFile.print("Ph");               dataFile.print(",");
+      dataFile.print("EC");               dataFile.print(",");
+      dataFile.print("TDS");              dataFile.print(",");
+      dataFile.print("S");                dataFile.print(",");
+      dataFile.print("SG");               dataFile.print(",");
       dataFile.println("Water Temperature");
       digitalWrite(LED_BUILTIN, HIGH);
     }
