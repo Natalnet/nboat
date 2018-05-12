@@ -25,13 +25,14 @@ void SensorManager::read(){
   //magnetometer1.read();
   imu1.read();
 
-  while(Serial1.available()){
-    in_char = Serial1.read();
-    data1 = String(in_char);
-    if(in_char != '\n') {
-      data2 = data2 + data1;
-    }
-  }
+	  while(Serial1.available() > 0){
+	    in_char = Serial1.read();
+	    data1 = String(in_char);
+	    if(in_char != '\n') {
+	      data2 = data2 + data1;
+	    }
+	  }
+         //Serial.println(data2);
 }
 
 void SensorManager::readImu(){
@@ -57,7 +58,7 @@ WindData SensorManager::getWind(){
 IMUData SensorManager::getIMU(){
   return imu1.get();
 }
-
+  
 void SensorManager::setThrusterPower(float thrusterPower){
   _thrusterPower = thrusterPower;
 }
@@ -85,6 +86,7 @@ void SensorManager::logState(){
 
     //first line of log file
     if (dataFile) {
+      Serial.println("LOGGING");
       dataFile.print("Date");             dataFile.print(",");
       dataFile.print("TimeStamp");        dataFile.print(",");
       dataFile.print("Latitude");         dataFile.print(",");
@@ -105,7 +107,6 @@ void SensorManager::logState(){
       dataFile.print("EC");               dataFile.print(",");
       dataFile.print("TDS");              dataFile.print(",");
       dataFile.print("S");                dataFile.print(",");
-      dataFile.print("SG");               dataFile.print(",");
       dataFile.println("Water Temperature");
       digitalWrite(LED_BUILTIN, HIGH);
     }
@@ -115,6 +116,7 @@ void SensorManager::logState(){
   if (gpsDateCtrl == 1){
     dataFile = SD.open(_experimentName, FILE_WRITE);
     if (dataFile) {
+      //Serial.println("LOGGING2");
       dataFile.print(gps1.get().dateFull);                  dataFile.print(",");
       dataFile.print(timeStamp, 2);                         dataFile.print(",");
       dataFile.print(gps1.get().location.latitude, 6);      dataFile.print(",");
@@ -129,26 +131,14 @@ void SensorManager::logState(){
       dataFile.print(imu1.get().eulerAngles.pitch, 2);      dataFile.print(",");
       dataFile.print(imu1.get().eulerAngles.roll, 2);       dataFile.print(",");
       dataFile.print(imu1.get().heading, 2);                dataFile.print(",");
-      dataFile.println(data2);
+      dataFile.print(data2);       dataFile.print("\n");
      
       dataFile.close();
       timeStamp += 0.2;
-      data2 = "";
+      data2 = " ";
     }
   }
 }
-
-/*WaterQualityNboat SensorManager::getSensorsWaterQuality(){
-  return wqNboat->getInstance();
-}
-
-void SensorManager::setDataWaterSensorsPermission(bool permission){
-  this->dataWaterSensorsPermission = permission;
-}
-
-bool SensorManager::getDataWaterSensorsPermission(){
-  return this->dataWaterSensorsPermission;
-*/
 
 void SensorManager::printState()
 {

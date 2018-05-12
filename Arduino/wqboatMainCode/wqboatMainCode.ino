@@ -29,7 +29,7 @@ long windClickNo=0;
 vector<Location> waypoints, tackWaypoints;
 Location nextLocation, lastLocation, currentLocation, tempLocation;
 int waypoints_id, waypointsT_id, bugManager;
-float startTime, endTime, distanceToTarget, lastDistanciaDestino, desiredDistance, timeInterval;
+float startTime, endTime, distanceToTarget = 99999999, lastDistanciaDestino, desiredDistance, timeInterval;
 double distanceTravelled;
 
 
@@ -59,6 +59,7 @@ bool stationKeeping = false;
 
 char controlStrategy = 'h';
 float headingControlDistance;
+float testTimer;
 
 
 void setup() {
@@ -66,7 +67,7 @@ void setup() {
   
   desiredDistance = 5;
   headingControlDistance = 15;
-  wqMeasureTime = 30;
+  wqMeasureTime = -1;
   wqMeasureTime *= 1000;  //from ms to s
 
   //WAYPOINTS EXPERIMENT
@@ -77,36 +78,24 @@ void setup() {
   //WAYPOINT 5: -5.765775, -35.204640
   //WAYPOINT 6: -5.765757, -35.205025
 
-  /*//add waypoints example:
-  //waypoint 1 - natalnet
-  tempLocation.latitude = -5.842986;
-  tempLocation.longitude = -35.197465;
-  waypoints.push_back(tempLocation);
-  
-  //waypoint 2 - rua das engenharias
-  tempLocation.latitude = -5.842044;
-  tempLocation.longitude = -35.197449;
-  waypoints.push_back(tempLocation);
-
-  //waypoint 3 - larhisa
-  tempLocation.latitude = -5.842544;
-  tempLocation.longitude = -35.197839;
-  waypoints.push_back(tempLocation);
-
-  //waypoint 4 - pet elétrica
-  tempLocation.latitude = -5.842417;
-  tempLocation.longitude = -35.197069;
-  waypoints.push_back(tempLocation);*/
+  //add waypoints example:
+  //waypoint 1
+  setWaypoint(-5.76458, -35.20402);
+  //waypoint 2
+  setWaypoint(-5.76502, -35.20439);
+  //waypoint 3
+  setWaypoint(-5.76462, -35.20442);
 
   sensors = new SensorManager();
   Serial.begin(9600);
+  Serial1.begin(9600);
   
   //pinMode(2, INPUT_PULLUP);
   attachInterrupt(0, rpm_fan, FALLING);
   //attachInterrupt(0, wSpeedIRQ, FALLING);
   //interrupts();
+  testTimer = millis();
 }
-
 
 void loop() {
 
@@ -121,73 +110,87 @@ void loop() {
   while (1) {
     sensors->read();
     readWindSpeed();
-    sensors->setWindSpeed(mps);
-    //sensors->readWater();
-    //float tst = get_wind_speed();
-    //sensors->setWindSpeed(tst);
+    
     if (tCheck(&t_func1)) {
       sensors->logState();
+      
       //sensors->printState();
+      
+      //printLocation();
+      
       tRun(&t_func1);
     }
     
     // waypoints control
     if (waypoints.size() != 0) {
-      if (distanceToTarget < headingControlDistance){
-        controlStrategy = 'h';
-      } else {
-        controlStrategy = 'v';
-      }
+      //changeControlStrategy();
       if (distanceToTarget < desiredDistance) {
-        if (!stationKeeping){
+        if(!stationKeeping){
           stationKeepTime = millis();
           stationKeeping = true;
         }
-        if ((millis() - stationKeeping) > wqMeasureTime){
+        if((millis() - stationKeepTime) > wqMeasureTime){
           waypoints_id += 1;
-          waypoints_id = waypoints_id % waypoints.size();
+          waypoints_id = waypoints_id % waypoints.size(); 
           stationKeeping = false;
         }
       }
 
+      currentLocation = sensors->getGPS().location;
       nextLocation = waypoints.at(waypoints_id);
 
       // adjust rudder and thruster power accordingly
-      if (controlStrategy == 'h'){
+      /*if (controlStrategy == 'h'){
         movementControl->rudderHeadingControl(sensors, nextLocation);
       } else if (controlStrategy == 'v'){
         movementControl->rudderVelocityControl(sensors, nextLocation);
-      }
+      }*/
+      
+      movementControl->rudderHeadingControl(sensors, nextLocation);
       movementControl->thrusterControl(sensors, nextLocation);
       
-
       // keep track of distance to target
       lastDistanciaDestino = distanceToTarget;
       distanceToTarget = navigationFunc.findDistance(currentLocation, nextLocation);
       distanceTravelled += navigationFunc.findDistance(lastLocation, currentLocation);
-      
-      // in case the boat isnt getting closer to the desired target -> select the next one
-      if(distanceToTarget >= lastDistanciaDestino){
-        if(bugManager == 0){
-          startTime = millis();
-          bugManager = 1;
-        }
-      } else {
-        bugManager = 0;
-      }
-      
-      endTime = millis();
-      timeInterval = endTime - startTime;
-      
-      // if 20 seconds passes and the boat isnt advancing to the target, go to the next one
-      if(timeInterval > 20000){
-        distanceToTarget = 0; //TODO generate error message
-        startTime = millis();
-      }
+
+      // in case the boat isnt getting closer to the desired target
+      //bugCheck();
       
       lastLocation = currentLocation;
+       
+      /*if(millis() - testTimer > 5000){
+        distanceToTarget = 0;
+        testTimer = millis();
+      }*/
+      
     }
   }
+}
+
+void changeControlStrategy(){
+  if (distanceToTarget < headingControlDistance){
+    controlStrategy = 'h';
+  } else {
+    controlStrategy = 'v';
+  }
+}
+
+void printLocation(){
+      Serial.print("MeasureTime: ");
+      Serial.print(millis() - stationKeepTime); Serial.print("  ");
+      Serial.print("Current: ");
+      Serial.print(currentLocation.latitude, 6); Serial.print("  ");
+      Serial.print(currentLocation.longitude, 6); Serial.print("---");
+      Serial.print("Next: ");
+      Serial.print(nextLocation.latitude, 6); Serial.print("  ");
+      Serial.print(nextLocation.longitude, 6); Serial.print("---");
+      Serial.print("Distance: "); 
+      Serial.print(distanceToTarget); Serial.print("---");
+      Serial.print("Waypoint: "); 
+      Serial.print(waypoints_id); Serial.print("---");
+      Serial.print("Waypoint Size: "); 
+      Serial.println(waypoints.size());
 }
 
 void wSpeedIRQ()
@@ -223,12 +226,35 @@ void readWindSpeed(){
     mps = 2*3.14*radius*rpm / 60;
     mps = mps * 0.3; // calibration factor for anemometer accuracy, adjust as necessary
   }
+  sensors->setWindSpeed(mps);
 }
 
 void rpm_fan() {
   revolutions++;
 }
 
+void bugCheck(){
+      if(distanceToTarget >= lastDistanciaDestino){
+        if(bugManager == 0){
+          startTime = millis();
+          bugManager = 1;
+        }
+      } else {
+        bugManager = 0;
+      }
+      
+      endTime = millis();
+      timeInterval = endTime - startTime;
+      
+      // if 20 seconds passes and the boat isnt advancing to the target, go to the next one
+      if(timeInterval > 20000){
+        distanceToTarget = 0; //TODO generate error message
+        startTime = millis();
+      }
+}
 
-
-
+void setWaypoint(float latitude, float longitude){
+  tempLocation.latitude = latitude;
+  tempLocation.longitude = longitude;
+  waypoints.push_back(tempLocation);
+}

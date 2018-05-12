@@ -1,6 +1,7 @@
 char in_char = "";
 String data1;
 String data2;
+String dataTmp;
   
 int i = 0;
 void setup() {
@@ -13,23 +14,17 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   float t = millis();
-
-   while (Serial1.available()) {
-                 
+   while (Serial1.available() > 0) {
         in_char = Serial1.read();
         data1 = String(in_char);
-        
-        //sprintf(data, in_char);
-        //Serial.print(in_char);
-        if(in_char != '\n')           
+        //if(in_char != '\n') {
           data2 = data2 + data1;
-                                
-        
-      }
+        //}
+   }
    delay(100);
-  // if(data2 != "")
-    Serial.println(data2);
-  //data2 = "";
+   //if(dataTmp != "")
+   Serial.println(data2);
+   data2 = "";
 
     
   //Serial.print(data);

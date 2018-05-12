@@ -85,7 +85,7 @@ class SensorManager
     float timeStamp = 0;
     double _distanceTravelled;
     char in_char = "";
-    String data1, data2, dataAnt;
+    String data1, data2 = " ";
     
 };
 
