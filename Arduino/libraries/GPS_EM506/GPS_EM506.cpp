@@ -30,7 +30,7 @@ void GPS_EM506::read(){
         gps.crack_datetime(&_year, &_month, &_day, &_hour, &_minute, &_second, &_hundredths, &_age);
         if (_age != TinyGPS::GPS_INVALID_AGE){
           sprintf(_gpsDate, "%02d:%02d:%02d", _hour-3, _minute, _second);
-          sprintf(_gpsDateFull, "%02d/%02d/%02d %02d:%02d:%02d", _month, _day, _year, _hour-3, _minute, _second);
+          sprintf(_gpsDateFull, "%02d/%02d/%02d %02d:%02d:%02d", _day, _month, _year, _hour-3, _minute, _second);
         }
       }
     }
