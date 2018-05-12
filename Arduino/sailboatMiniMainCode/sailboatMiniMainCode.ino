@@ -39,6 +39,7 @@ float testTimer;
 bool flag = false;
 float heeling;
 float nextWindDir;
+float windSpd;
 
 //TASK SCHEDULER
 typedef struct t  {
@@ -46,8 +47,8 @@ typedef struct t  {
     unsigned long tTimeout;
 };
 
-t t_func1 = {0, 200}; //Run every 100ms
-//t t_func2 = {0, 2000}; //Run every 2 seconds.
+t t_func1 = {0, 200}; //Run every 200ms
+t t_func2 = {0, 200}; //Run every 1 seconds.
 
 bool tCheck (struct t *t ) {
   if (millis() > t->tStart + t->tTimeout){
@@ -75,8 +76,9 @@ void setup() {
   Serial.begin(9600);
 
   //pinMode(2, INPUT_PULLUP);
-  attachInterrupt(0, rpm_fan, FALLING);
-  //attachInterrupt(0, wSpeedIRQ, FALLING);
+  pinMode(2, INPUT_PULLUP);
+  //attachInterrupt(0, rpm_fan, FALLING);
+  attachInterrupt(0, wSpeedIRQ, FALLING);
   //interrupts();
   testTimer = millis();
 }
@@ -91,8 +93,8 @@ void experiment1(){
 }
 
 void testExperiment(){
-  setWaypoint(-5.841493, -35.197436);
   setWaypoint(-5.842880, -35.197379);
+  setWaypoint(-5.841493, -35.197436);
 }
 
 
@@ -109,11 +111,15 @@ void loop() {
   while (1) {
     // run sensors->read() at 10Hz
     sensors->read();
-    readWindSpeed();
-    sensors->setWindSpeed(mps);
     sensors->setTack(isTacking);
-    //float tst = get_wind_speed();
-    //sensors->setWindSpeed(tst);
+
+    if (tCheck(&t_func2)){
+      windSpd = get_wind_speed();
+      sensors->setWindSpeed(windSpd);
+      tRun(&t_func2);
+    }    
+    //sensors->setWindSpeed(mps);
+    
     if (tCheck(&t_func1)) {
       
       sensors->logState();
@@ -121,6 +127,9 @@ void loop() {
       //sensors->printState();
 
       //printLocation();
+
+      /*Serial.print("wind clicks: "); Serial.print(windClickNo); Serial.print("----");
+      Serial.print("windspeed: "); Serial.println(windSpd);*/
       
       tRun(&t_func1);
     }
@@ -168,7 +177,7 @@ void loop() {
       
       //heeling = windVane + heading
 
-      tack();
+      //tack();
 
       /*if (!isTacking && !flag) {
         isTacking = true;
@@ -181,15 +190,6 @@ void loop() {
       }*/
       lastLocation = currentLocation;
     }
-  }
-}
-
-void wSpeedIRQ()
-{
-  if (!millis()-lastWindIRQ<10)                      //Debounce the wind interrupt switch for 10ms after contact
-  {
-    lastWindIRQ = millis();                          //Set up last wind interrupt for the next interrupt
-    windClickNo++;                                   //Each click per second is 1.492MPH
   }
 }
 
@@ -212,22 +212,29 @@ float get_wind_speed()
   windSpeed = (float)windClickNo / dTime;           //3 / 0.750s = 4    
   windClickNo = 0;                                  //Reset and start watching for new wind
   lastWindChk = millis();    
-  //windSpeed *= 1.492;                               //Calculates the actual wind speed in mph (2 * 1.492 = 2.984mph)    
+  windSpeed = windSpeed/10;
+  //windSpeed *= 0.15;                               //Calculates the actual wind speed in mph (2 * 1.492 = 2.984mph)    
   return(windSpeed);
 }
 
+void wSpeedIRQ()
+{
+  if (!millis()-lastWindIRQ<10)                      //Debounce the wind interrupt switch for 10ms after contact
+  {
+    lastWindIRQ = millis();                          //Set up last wind interrupt for the next interrupt
+    windClickNo++;                                   //Each click per second is 1.492MPH
+  }
+}
+
 void readWindSpeed(){
-    if (millis() - lastmillis == 1000) { //Update every one second, this will be equal to reading frequency (Hz).
     detachInterrupt(0);//Disable interrupt when calculating
-    
     revolutions=Filter.run(revolutions);
     rpm = revolutions * 120; // Convert frequency to RPM, note: 60 works for one interruption per full rotation. For two interrupts per full rotation use half_revolutions * 30.
     revolutions = 0; // Restart the RPM counter
-    lastmillis = millis(); // Update lastmillis
     attachInterrupt(0, rpm_fan, FALLING); //enable interrupt
     mps = 2*3.14*radius*rpm / 60;
     mps = mps * 0.3; // calibration factor for anemometer accuracy, adjust as necessary
-  }
+    mps = mps/2;
 }
 
 void rpm_fan() {

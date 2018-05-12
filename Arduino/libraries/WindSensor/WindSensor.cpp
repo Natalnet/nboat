@@ -59,9 +59,9 @@ float WindSensor::readDirection(int windvanePin){
   if(windvaneRead >= 75 && windvaneRead <= 86) {windDirection = -67.5;}
   if(windvaneRead >= 455 && windvaneRead <= 475) {windDirection = -45;}
   if(windvaneRead >= 400 && windvaneRead <= 420) {windDirection = -22.5;}
-  if(windDirection < 0) {windDirection = -windDirection;}
+  //if(windDirection < 0) {windDirection = -windDirection;}
 
-  return windDirection;
+  return -windDirection;
 }
 
 //return values read from sensor

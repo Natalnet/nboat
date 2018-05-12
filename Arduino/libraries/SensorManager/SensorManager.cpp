@@ -116,7 +116,7 @@ void SensorManager::logState(){
       dataFile.print(gps1.get().location.latitude, 6);      dataFile.print(",");
       dataFile.print(gps1.get().location.longitude, 6);     dataFile.print(",");
       dataFile.print(wind.get().direction, 2);              dataFile.print(",");
-      dataFile.print(wind.get().speed, 2);                  dataFile.print(",");
+      dataFile.print(_windData.speed, 2);                   dataFile.print(",");
       dataFile.print(_rudderAngle, 2);                      dataFile.print(",");
       dataFile.print(_sailAngle, 2);                        dataFile.print(",");
       dataFile.print(gps1.get().course, 2);                 dataFile.print(",");
@@ -151,9 +151,9 @@ void SensorManager::printState()
 	Serial.print(" ");
 	Serial.print(gps1.get().location.longitude, 6);
 	Serial.print(" ");
-	Serial.print(wind.get ().direction, 2);
+	Serial.print(wind.get().direction, 2);
 	Serial.print(" ");
-	Serial.print(wind.get().speed, 2);
+	Serial.print(_windData.speed, 2);
 	Serial.print(" ");
 	Serial.print(_rudderAngle, 2);
 	Serial.print(" ");

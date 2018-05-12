@@ -137,7 +137,8 @@ float SailboatControl::rudderAngleSaturation(float sensor) {
 void SailboatControl::sailControl(SensorManager *sensors){
   _windDir = sensors->getWind().direction;
   // angle that I want the sail to have
-  _sailAngle =  fabs(_windDir)/2;
+  if(_windDir < 0) _windDir = -_windDir;
+  _sailAngle = _windDir/2;
   _actuators->setSailAngle(_sailAngle);
   sensors->setRudderAngle(_actuators->getRudderAngle());
    //_actuators->setSailAngle(90);

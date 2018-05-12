@@ -15,11 +15,11 @@ Servo myservo;  // create servo object to control a servo
 int pos = 0;    // variable to store the servo position
 
 void setup() {
-  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+  myservo.attach(8);  // attaches the servo on pin 9 to the servo object
 }
 
 void loop() {
-  float test = 95;
+  float test = 130;
   myservo.write(test);              // tell servo to go to position in variable 'pos'
   delay(15);                       // waits 15ms for the servo to reach the position
 }
