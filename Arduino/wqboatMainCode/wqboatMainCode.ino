@@ -112,9 +112,9 @@ void loop() {
     readWindSpeed();
     
     if (tCheck(&t_func1)) {
-      sensors->logState();
+      //sensors->logState();
       
-      //sensors->printState();
+      sensors->printState();
       
       //printLocation();
       

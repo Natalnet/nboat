@@ -23,7 +23,7 @@ class IMU_RAZOR
 
   private:
     IMUData _imuData;
-    float yaw_OFFSET = 180, pitch_OFFSET = 0, roll_OFFSET = 0;
+    float yaw_OFFSET = 105, pitch_OFFSET = 0, roll_OFFSET = -4;
     float _yaw, _pitch, _roll, _heading;
 
 };
