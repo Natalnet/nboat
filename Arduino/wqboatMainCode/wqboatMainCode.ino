@@ -63,7 +63,7 @@ float testTimer;
 
 
 void setup() {
-  movementControl = new BoatControl(1,0);  
+  movementControl = new BoatControl(2,0);  
   
   desiredDistance = 5;
   headingControlDistance = 15;
@@ -78,13 +78,9 @@ void setup() {
   //WAYPOINT 5: -5.765775, -35.204640
   //WAYPOINT 6: -5.765757, -35.205025
 
-  //add waypoints example:
-  //waypoint 1
-  setWaypoint(-5.76458, -35.20402);
-  //waypoint 2
-  setWaypoint(-5.76502, -35.20439);
-  //waypoint 3
-  setWaypoint(-5.76462, -35.20442);
+  experiment1();
+  //experiment2();
+  
 
   sensors = new SensorManager();
   Serial.begin(9600);
@@ -95,6 +91,20 @@ void setup() {
   //attachInterrupt(0, wSpeedIRQ, FALLING);
   //interrupts();
   testTimer = millis();
+}
+
+void experiment1(){
+  //add waypoints example:
+  //waypoint 1
+  setWaypoint(-5.76494, -35.20434);
+  //waypoint 2
+  setWaypoint(-5.76479, -35.20462);
+  //waypoint 3
+  setWaypoint(-5.76467, -35.20411);
+}
+
+void experiment2(){
+  setWaypoint(-5.766648, -35.209942);
 }
 
 void loop() {
@@ -112,9 +122,9 @@ void loop() {
     readWindSpeed();
     
     if (tCheck(&t_func1)) {
-      //sensors->logState();
+      sensors->logState();
       
-      sensors->printState();
+      //sensors->printState();
       
       //printLocation();
       
