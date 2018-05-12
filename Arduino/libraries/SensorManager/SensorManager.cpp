@@ -28,6 +28,7 @@ void SensorManager::read(){
   //magnetometer1.read();
   //imu1.read();
   imu2->read();
+  //trueWind = gps1.get().direction - wind.get().direction;
 }
 
 void SensorManager::readImu(){
@@ -68,17 +69,22 @@ void SensorManager::setWindSpeed(float windSpeed){
   _windData.speed = windSpeed;
 }
 
+void SensorManager::setTack(bool isTack){
+  _isTack = isTack;
+}
+
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
 void SensorManager::logState(){
 
   if (gps1.get().date != "" && gpsDateCtrl == 0) {
-    _experimentName = String(gps1.get().date+".txt");
+    _experimentName = String(gps1.get().date+".csv");
     gpsDateCtrl = 1;
 
     dataFile = SD.open(_experimentName, FILE_WRITE);
 
     //first line of log file
     if (dataFile) {
+      Serial.print("LOGGIN...");
       dataFile.print("Date");             dataFile.print(",");
       dataFile.print("TimeStamp");        dataFile.print(",");
       dataFile.print("Latitude");         dataFile.print(",");
@@ -95,7 +101,8 @@ void SensorManager::logState(){
       dataFile.print("Magnetometer Heading");   dataFile.print(",");
       dataFile.print("Temperature");      dataFile.print(",");
       dataFile.print("Pressure");         dataFile.print(",");
-      dataFile.println("Altitude");
+      dataFile.print("Altitude");         dataFile.print(",");
+      dataFile.println("Tacking?");
       digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
     }
     dataFile.close();
@@ -120,7 +127,8 @@ void SensorManager::logState(){
       dataFile.print(imu2->get().heading, 2);               dataFile.print(",");
       dataFile.print(imu2->get().temperature, 2);           dataFile.print(",");      
       dataFile.print(imu2->get().pressure, 2);              dataFile.print(",");
-      dataFile.println(imu2->get().altitude, 2);
+      dataFile.print(imu2->get().altitude, 2);              dataFile.print(",");
+      dataFile.println(_isTack);
 
 /*
       dataFile.print(imu1.get().eulerAngles.yaw, 2);

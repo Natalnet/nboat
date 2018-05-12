@@ -48,6 +48,7 @@ class SensorManager
     void setRudderAngle(float rudderAngle);
     void setWindSpeed(float windSpeed);
     void SensorManager::printState();
+    void SensorManager::setTack(bool isTack);
   private:
     
     SailboatMiniActuatorDrivers *actDrivers;
@@ -76,6 +77,7 @@ class SensorManager
 
     String _experimentName;
     float timeStamp = 0;
+    bool _isTack;
     
 };
 

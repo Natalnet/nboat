@@ -30,10 +30,15 @@ Navigation sailboatNavigation;
 //WAYPOINTS SETUP
 vector<Location> waypoints, tackWaypoints;
 Location nextLocation, lastLocation, currentLocation, tempLocation;
-int waypoints_id, waypointsT_id, bugHandler;
-float startTime, endTime, travelledDistance, distanceToTarget, lastDistanceToTarget, desiredDistance, timeInterval;
+int waypoints_id, waypointsT_id, bugManager;
+float startTime, endTime, travelledDistance, distanceToTarget = 999999, lastDistanceToTarget, desiredDistance, timeInterval;
+double distanceTravelled;
 bool isTacking;
 
+float testTimer;
+bool flag = false;
+float heeling;
+float nextWindDir;
 
 //TASK SCHEDULER
 typedef struct t  {
@@ -61,7 +66,9 @@ void setup() {
   movementControl = new SailboatControl(1,0);
   desiredDistance = 10;
 
-  experiments1();
+  //add waypoints
+  //experiment1();
+  testExperiment();
 
   sensors = new SensorManager();
   
@@ -71,24 +78,21 @@ void setup() {
   attachInterrupt(0, rpm_fan, FALLING);
   //attachInterrupt(0, wSpeedIRQ, FALLING);
   //interrupts();
+  testTimer = millis();
 }
 
 void experiment1(){
-  //add waypoints example:
   //waypoint 1
-  tempLocation.latitude = -5.764525;
-  tempLocation.longitude = -35.204070;
-  waypoints.push_back(tempLocation);
-  
+  setWaypoint(-5.76458, -35.20402);
   //waypoint 2
-  tempLocation.latitude = -5.765012;
-  tempLocation.longitude = -35.204357;
-  waypoints.push_back(tempLocation);
-
+  setWaypoint(-5.76502, -35.20439);
   //waypoint 3
-  tempLocation.latitude = -5.764724;
-  tempLocation.longitude = -35.204472;
-  waypoints.push_back(tempLocation);
+  setWaypoint(-5.76462, -35.20442);
+}
+
+void testExperiment(){
+  setWaypoint(-5.841493, -35.197436);
+  setWaypoint(-5.842880, -35.197379);
 }
 
 
@@ -107,11 +111,17 @@ void loop() {
     sensors->read();
     readWindSpeed();
     sensors->setWindSpeed(mps);
+    sensors->setTack(isTacking);
     //float tst = get_wind_speed();
     //sensors->setWindSpeed(tst);
     if (tCheck(&t_func1)) {
+      
       sensors->logState();
+      
       //sensors->printState();
+
+      //printLocation();
+      
       tRun(&t_func1);
     }
     
@@ -125,6 +135,7 @@ void loop() {
           } else {
             isTacking = false;
             waypointsT_id = 0;
+            flag = true;
           }
         } else {
           waypoints_id += 1;
@@ -139,8 +150,10 @@ void loop() {
         }
       }
 
+      currentLocation = sensors->getGPS().location;
       // adjust rudder and thruster power accordingly
       movementControl->rudderHeadingControl(sensors, nextLocation);
+      //movementControl->rudderVelocityControl(sensors, nextLocation);
       movementControl->sailControl(sensors);
 
       // keep track of distance to target
@@ -148,37 +161,25 @@ void loop() {
       distanceToTarget = sailboatNavigation.findDistance(currentLocation, nextLocation);
       travelledDistance += sailboatNavigation.findDistance(lastLocation, currentLocation);
       
-      // in case the boat isnt getting closer to the desired target -> select the next one
-      if(distanceToTarget >= lastDistanceToTarget){
-        if(bugHandler == 0){
-          startTime = millis();
-          bugHandler = 1;
-        }
-      } else {
-        bugHandler = 0;
-      }
-      
-      endTime = millis();
-      timeInterval = endTime - startTime;
-      
-      if((timeInterval > 20000)){
-        distanceToTarget = 0;
-        startTime = millis();
-      }
-           
-      lastLocation = currentLocation;
+      // in case the boat isnt getting closer to the desired target
+      //bugCheck();     
 
-       // check if it needs to tack
-      wind = sensors->getWind();
-      if (fabs(wind.direction) < 30 && !isTacking) {
+      // check if it needs to tack
+      
+      //heeling = windVane + heading
+
+      tack();
+
+      /*if (!isTacking && !flag) {
         isTacking = true;
         tackWaypoints = sailboatNavigation.findTackingPoints(sensors, lastLocation, nextLocation);
       }
-      //Serial.print("TEMPO: ");
-      //Serial.println(millis()-startTime);
-      
-      //record and send data to base station
-      //salvar_dados();
+
+      if(millis() - testTimer > 2000){
+        distanceToTarget = 0;
+        testTimer = millis();
+      }*/
+      lastLocation = currentLocation;
     }
   }
 }
@@ -189,6 +190,17 @@ void wSpeedIRQ()
   {
     lastWindIRQ = millis();                          //Set up last wind interrupt for the next interrupt
     windClickNo++;                                   //Each click per second is 1.492MPH
+  }
+}
+
+void tack(){
+  wind = sensors->getWind();
+  heeling = wind.direction + sensors->getIMU().eulerAngles.yaw;
+  nextWindDir = fabs(heeling) - fabs(sailboatNavigation.findHeading(currentLocation, nextLocation));
+  
+  if (nextWindDir < 30 && !isTacking) {
+    isTacking = true;
+    tackWaypoints = sailboatNavigation.findTackingPoints(sensors, lastLocation, nextLocation);
   }
 }
 
@@ -220,4 +232,49 @@ void readWindSpeed(){
 
 void rpm_fan() {
   revolutions++;
+}
+
+void setWaypoint(float latitude, float longitude){
+  tempLocation.latitude = latitude;
+  tempLocation.longitude = longitude;
+  waypoints.push_back(tempLocation);
+}
+
+void printLocation(){
+      Serial.print("MeasureTime: ");
+      Serial.print(millis() - testTimer); Serial.print("  ");
+      Serial.print("Current: ");
+      Serial.print(currentLocation.latitude, 6); Serial.print(", ");
+      Serial.print(currentLocation.longitude, 6); Serial.print("---");
+      Serial.print("Next: ");
+      Serial.print(nextLocation.latitude, 6); Serial.print(", ");
+      Serial.print(nextLocation.longitude, 6); Serial.print("---");
+      Serial.print("Distance: "); 
+      Serial.print(distanceToTarget); Serial.print("---");
+      Serial.print("Waypoint: "); 
+      Serial.print(waypoints_id); Serial.print("---");
+      Serial.print("WaypointTack: "); 
+      Serial.print(waypointsT_id); Serial.print("---");
+      Serial.print("Waypoint Size: "); 
+      Serial.println(tackWaypoints.size());
+}
+
+void bugCheck(){
+      if(distanceToTarget >= lastDistanceToTarget){
+        if(bugManager == 0){
+          startTime = millis();
+          bugManager = 1;
+        }
+      } else {
+        bugManager = 0;
+      }
+      
+      endTime = millis();
+      timeInterval = endTime - startTime;
+      
+      // if 20 seconds passes and the boat isnt advancing to the target, go to the next one
+      if(timeInterval > 20000){
+        distanceToTarget = 0; //TODO generate error message
+        startTime = millis();
+      }
 }
