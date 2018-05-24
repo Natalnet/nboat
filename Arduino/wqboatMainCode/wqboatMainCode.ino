@@ -63,7 +63,7 @@ float testTimer;
 
 
 void setup() {
-  movementControl = new BoatControl(2,0);  
+  movementControl = new BoatControl(1.5,0);  
   
   desiredDistance = 5;
   headingControlDistance = 15;
