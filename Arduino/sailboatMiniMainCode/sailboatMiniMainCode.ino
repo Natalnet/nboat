@@ -8,38 +8,38 @@
 #include <medianFilter.h>
 
 //ANEMOMETER SETUP
-medianFilter Filter;
-float radius = 0.055; //m from center pin to middle of cup
-float mps;
-int revolutions = 0;
-int rpm = 0;
-unsigned long lastmillis = 0;
-
-long lastWindIRQ=0;
-long lastWindChk=0;
-long windClickNo=0;
+  medianFilter Filter;
+  float radius = 0.055; //m from center pin to middle of cup
+  float mps;
+  int revolutions = 0;
+  int rpm = 0;
+  unsigned long lastmillis = 0;
+  
+  long lastWindIRQ=0;
+  long lastWindChk=0;
+  long windClickNo=0;
 
 
 //INSTANTIATING LIBS
-SailboatControl *movementControl;
-SensorManager *sensors;
-WindData wind;
-Navigation sailboatNavigation;
+  SailboatControl *movementControl;
+  SensorManager *sensors;
+  WindData wind;
+  Navigation sailboatNavigation;
 
 
 //WAYPOINTS SETUP
-vector<Location> waypoints, tackWaypoints;
-Location nextLocation, lastLocation, currentLocation, tempLocation;
-int waypoints_id, waypointsT_id, bugManager;
-float startTime, endTime, travelledDistance, distanceToTarget = 999999, lastDistanceToTarget, desiredDistance, timeInterval;
-double distanceTravelled;
-bool isTacking;
-
-float testTimer;
-bool flag = false;
-float heeling;
-float nextWindDir;
-float windSpd;
+  vector<Location> waypoints, tackWaypoints;
+  Location nextLocation, lastLocation, currentLocation, tempLocation;
+  int waypoints_id, waypointsT_id, bugManager;
+  float startTime, endTime, travelledDistance, distanceToTarget = 999999, lastDistanceToTarget, desiredDistance, timeInterval;
+  double distanceTravelled;
+  bool isTacking;
+  
+  float testTimer;
+  bool flag = false;
+  float heeling;
+  float nextWindDir;
+  float windSpd;
 
 //TASK SCHEDULER
 typedef struct t  {
@@ -62,7 +62,6 @@ void tRun (struct t *t) {
     t->tStart = millis();
 }
 
-
 void setup() {
   movementControl = new SailboatControl(1,0);
   desiredDistance = 10;
@@ -84,11 +83,8 @@ void setup() {
 }
 
 void experiment1(){
-  //waypoint 1
   setWaypoint(-5.76458, -35.20402);
-  //waypoint 2
   setWaypoint(-5.76502, -35.20439);
-  //waypoint 3
   setWaypoint(-5.76462, -35.20442);
 }
 
@@ -160,6 +156,7 @@ void loop() {
       }
 
       currentLocation = sensors->getGPS().location;
+      
       // adjust rudder and thruster power accordingly
       movementControl->rudderHeadingControl(sensors, nextLocation);
       //movementControl->rudderVelocityControl(sensors, nextLocation);
@@ -171,23 +168,11 @@ void loop() {
       travelledDistance += sailboatNavigation.findDistance(lastLocation, currentLocation);
       
       // in case the boat isnt getting closer to the desired target
-      //bugCheck();     
+      bugCheck();     
 
       // check if it needs to tack
+      tack();
       
-      //heeling = windVane + heading
-
-      //tack();
-
-      /*if (!isTacking && !flag) {
-        isTacking = true;
-        tackWaypoints = sailboatNavigation.findTackingPoints(sensors, lastLocation, nextLocation);
-      }
-
-      if(millis() - testTimer > 2000){
-        distanceToTarget = 0;
-        testTimer = millis();
-      }*/
       lastLocation = currentLocation;
     }
   }
