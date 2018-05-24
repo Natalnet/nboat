@@ -3,34 +3,34 @@
 #include "NavigationFunctions.h"
 #include <medianFilter.h>
 
-BoatControl *movementControl;
+  BoatControl *movementControl;
 
-//go to SensorManager to setup sensors on the robot
-SensorManager *sensors;
-
-NavigationFunctions navigationFunc;
-
-WindData wind;
+//go to SensorManager to config sensors on the robot
+  SensorManager *sensors;
+  
+  NavigationFunctions navigationFunc;
+  
+  WindData wind;
 
 //ANEMOMETER SETUP
-medianFilter Filter;
-float radius = 0.055; //m from center pin to middle of cup
-float mps;
-int revolutions = 0;
-int rpm = 0;
-unsigned long lastmillis = 0;
-
-long lastWindIRQ=0;
-long lastWindChk=0;
-long windClickNo=0;
+  medianFilter Filter;
+  float radius = 0.055; //m from center pin to middle of cup
+  float mps;
+  int revolutions = 0;
+  int rpm = 0;
+  unsigned long lastmillis = 0;
+  
+  long lastWindIRQ=0;
+  long lastWindChk=0;
+  long windClickNo=0;
 
 
 //WAYPOINTS SETUP
-vector<Location> waypoints, tackWaypoints;
-Location nextLocation, lastLocation, currentLocation, tempLocation;
-int waypoints_id, waypointsT_id, bugManager;
-float startTime, endTime, distanceToTarget = 99999999, lastDistanciaDestino, desiredDistance, timeInterval;
-double distanceTravelled;
+  vector<Location> waypoints, tackWaypoints;
+  Location nextLocation, lastLocation, currentLocation, tempLocation;
+  int waypoints_id, waypointsT_id, bugManager;
+  float startTime, endTime, distanceToTarget = 99999999, lastDistanciaDestino, desiredDistance, timeInterval;
+  double distanceTravelled;
 
 
 //TASK SCHEDULER
@@ -69,14 +69,6 @@ void setup() {
   headingControlDistance = 15;
   wqMeasureTime = -1;
   wqMeasureTime *= 1000;  //from ms to s
-
-  //WAYPOINTS EXPERIMENT
-  //WAYPOINT 1: -5.765775, -35.204640
-  //WAYPOINT 2: -5.765494, -35.204913
-  //WAYPOINT 3: -5.765757, -35.205025
-  //WAYPOINT 4: -5.766014, -35.204724
-  //WAYPOINT 5: -5.765775, -35.204640
-  //WAYPOINT 6: -5.765757, -35.205025
 
   experiment1();
   //experiment2();
@@ -149,7 +141,7 @@ void loop() {
       currentLocation = sensors->getGPS().location;
       nextLocation = waypoints.at(waypoints_id);
 
-      // adjust rudder and thruster power accordingly
+      // change control stragey with distance to target
       /*if (controlStrategy == 'h'){
         movementControl->rudderHeadingControl(sensors, nextLocation);
       } else if (controlStrategy == 'v'){
@@ -168,12 +160,6 @@ void loop() {
       //bugCheck();
       
       lastLocation = currentLocation;
-       
-      /*if(millis() - testTimer > 5000){
-        distanceToTarget = 0;
-        testTimer = millis();
-      }*/
-      
     }
   }
 }
