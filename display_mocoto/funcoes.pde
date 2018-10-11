@@ -65,8 +65,8 @@ void draw_position(float _latitude, float _longitude){
    
    textAlign(LEFT);
     
-   text(_latitude, 10 ,height-40); //GPS LAT
-   text(_longitude, 10 ,height-15); //GPS LON
+   text(String.format("%.5f", _latitude), 10 ,height-40); //GPS LAT
+   text(String.format("%.5f", _longitude), 10 ,height-15); //GPS LON
    
 }
      
@@ -75,16 +75,16 @@ void draw_waterQuality(float[] _waterQuality){
   textFont(f);
   fill(255);
    
-  text("Water Quality", 20 ,120);
-  text("P0 = "+_waterQuality[0], 30 ,160);
-  text("P1 = "+_waterQuality[1], 30 ,180);
-  text("P2 = "+_waterQuality[2], 30 ,200);
-  text("P3 = "+_waterQuality[3], 30 ,220);
-  text("P4 = "+_waterQuality[4], 30 ,240);
+  text("Water Quality", 20 ,100);
+  text("P0 = "+_waterQuality[0], 30 ,140);
+  text("P1 = "+_waterQuality[1], 30 ,160);
+  text("P2 = "+_waterQuality[2], 30 ,180);
+  text("P3 = "+_waterQuality[3], 30 ,200);
+  text("P4 = "+_waterQuality[4], 30 ,220);
    
   noFill();
   stroke(250,0,0);
-  rect(15,100,170,150,7);
+  rect(15,80,140,150,7);
 }
 
 void draw_windDir(float a) { 
@@ -259,7 +259,7 @@ void vela(float grad){
 void draw_course(int cx, int cy, int len, float angle){
   pushMatrix();
   strokeWeight(8);
-  stroke(255,255,255);
+  stroke(100);
   translate(cx, cy);
   rotate(radians(angle));
   line(0,0,len, 0);
