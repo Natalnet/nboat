@@ -7,11 +7,12 @@ void draw_verde(){
    text("Charge: "+batCharge+"%   ", width-20 ,90);
    text("Wind Spd: "+windVel+" m/s", width-20 ,110);
    text("Wind Dir.: "+windDir+"°", width-20 ,130);
+   text("Boat Spd: "+speed+" m/s", width-20 ,150);
    
    noFill();
    strokeWeight(2);
    stroke(0,255,0);
-   rect(width-190,10,180,140,7);
+   rect(width-190,10,180,160,7);
 }
    
 void draw_amarelo(){
@@ -65,8 +66,8 @@ void draw_position(float _latitude, float _longitude){
    
    textAlign(LEFT);
     
-   text(String.format("%.5f", _latitude), 10 ,height-40); //GPS LAT
-   text(String.format("%.5f", _longitude), 10 ,height-15); //GPS LON
+   text(String.format("%.6f", _latitude), 10 ,height-40); //GPS LAT
+   text(String.format("%.6f", _longitude), 10 ,height-15); //GPS LON
    
 }
      
@@ -259,7 +260,7 @@ void vela(float grad){
 void draw_course(int cx, int cy, int len, float angle){
   pushMatrix();
   strokeWeight(8);
-  stroke(100);
+  stroke(150);
   translate(cx, cy);
   rotate(radians(angle));
   line(0,0,len, 0);

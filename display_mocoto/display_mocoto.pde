@@ -32,6 +32,7 @@ float rudderAngle = 0.0;
 float sailAngle = 0.0;
 float sailAngleStep = 5;
 float rudderAngleStep = 2; 
+float speed;
  
 // mapa - waypointsetoria
 
@@ -76,11 +77,11 @@ void draw(){
     draw_windDir(windDir); //direcao do vento
     draw_position(latitude, longitude); //latitude e longitude
     draw_waterQuality(waterQuality); //vetor de dados
-    draw_course(width/2, height/2-200, 60, course);
     draw_verde();
     draw_amarelo();
     draw_mapa();
-    draw_barco(course,sailAngle,rudderAngle); 
+    draw_course(width/2, height/2, 100, course);
+    draw_barco(heading,sailAngle,rudderAngle); 
   }
   else{
     draw_mapa();

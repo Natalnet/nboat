@@ -39,17 +39,20 @@ void setup() {
  
 void loop() {
   test->read();
-  /*driver->setRudderAngle(90);
-  driver->setSailAngle(12);
+  driver->setRudderAngle(90);
+  driver->setSailAngle(50);
   Serial.print("VALOR DO LEME:  ");
   Serial.println(driver->getRudderAngle());
   Serial.print("VALOR DO SERVO LEME:  ");
   Serial.println(driver->getRudderServo());
   Serial.print("VALOR DO SERVO VELA:  ");
-  Serial.println(driver->getSailServo());*/
+  Serial.println(driver->getSailServo());
+  test->setSailAngle(driver->getSailAngle());
+  test->setRudderAngle(driver->getRudderAngle());
   if (tCheck(&t_func1)) {
     //print_data();
-    test->printState();
+    test->sendState();
+    Serial.println();
     //Serial.print(t_func1.tStart/1000);
     tRun(&t_func1);
   }

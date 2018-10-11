@@ -38,6 +38,7 @@ class SensorManager
     bool checkSensors();
 
     void logState();
+    void sendState();
 
     GPSData getGPS();
     IMUData getIMU();
@@ -49,6 +50,7 @@ class SensorManager
     void setWindSpeed(float windSpeed);
     void SensorManager::printState();
     void SensorManager::setTack(bool isTack);
+    void SensorManager::setWaypointId(int waypointId);
   private:
     
     SailboatMiniActuatorDrivers *actDrivers;
@@ -78,6 +80,7 @@ class SensorManager
     String _experimentName;
     float timeStamp = 0;
     bool _isTack;
+    int _waypointId;
     
 };
 

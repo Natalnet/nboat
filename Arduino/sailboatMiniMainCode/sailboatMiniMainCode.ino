@@ -118,9 +118,10 @@ void loop() {
     
     if (tCheck(&t_func1)) {
       
-      sensors->logState();
+      //sensors->logState();
       
       //sensors->printState();
+      sensors->sendState();
 
       //printLocation();
 
@@ -172,6 +173,8 @@ void loop() {
 
       // check if it needs to tack
       tack();
+      
+      sensors->setWaypointId(waypoints_id);
       
       lastLocation = currentLocation;
     }

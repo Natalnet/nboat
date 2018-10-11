@@ -73,6 +73,10 @@ void SensorManager::setTack(bool isTack){
   _isTack = isTack;
 }
 
+void SensorManager::setWaypointId(int waypointId){
+  _waypointId = waypointId;
+}
+
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
 void SensorManager::logState(){
 
@@ -170,4 +174,27 @@ void SensorManager::printState()
 	Serial.print(imu2->get().eulerAngles.roll, 2);
 	Serial.print(" ");
 	Serial.println(imu2->get().heading, 2); 
+}
+
+void SensorManager::sendState()
+{
+  Serial.print("{");
+  Serial.print(gps1.get().location.latitude, 6);
+  Serial.print(",");
+  Serial.print(gps1.get().location.longitude, 6);
+  Serial.print(",");
+  Serial.print(imu2->get().eulerAngles.yaw, 2);
+  Serial.print(",");
+  Serial.print(gps1.get().course, 2);
+  Serial.print(",");
+  Serial.print(wind.get().direction, 2);
+  Serial.print(",");
+  Serial.print(_rudderAngle, 2);
+  Serial.print(",");
+  Serial.print(_sailAngle, 2);
+  Serial.print(",");
+  Serial.print(gps1.get().speed, 2); 
+  Serial.print(",");
+  Serial.print(_waypointId); 
+  Serial.print("}");
 }
