@@ -10,8 +10,8 @@
 #define Location_h
 
 struct Location {
-	float latitude;
-	float longitude;
+	float latitude = 0;
+	float longitude = 0;
 };
 
 #endif

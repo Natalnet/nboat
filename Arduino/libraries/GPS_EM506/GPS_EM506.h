@@ -34,6 +34,8 @@ class GPS_EM506
     GPSData _gpsData;
     Location _p1;
     float heading, _gpsCourse, _gpsSpeed;
+    float _lat = 0;
+    float _lon = 0;
 };
 
 #endif

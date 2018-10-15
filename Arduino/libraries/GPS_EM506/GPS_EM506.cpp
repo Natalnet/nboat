@@ -24,7 +24,11 @@ void GPS_EM506::read(){
       c = Serial3.read();
       if(gps.encode(c))
       {
-        gps.f_get_position(&_p1.latitude, &_p1.longitude);
+        gps.f_get_position(&_lat, &_lon);
+        if(_lat != TinyGPS::GPS_INVALID_F_ANGLE && _lon != TinyGPS::GPS_INVALID_F_ANGLE){
+          _p1.latitude = _lat;
+          _p1.longitude = _lon;
+        }
         _gpsCourse = gps.f_course();
         _gpsSpeed = gps.f_speed_kmph();
         gps.crack_datetime(&_year, &_month, &_day, &_hour, &_minute, &_second, &_hundredths, &_age);
@@ -36,7 +40,7 @@ void GPS_EM506::read(){
     }
   } while (millis() - start < ms);
 
-  if (_p1.latitude == NULL || _p1.longitude == NULL){
+  if (_p1.latitude == TinyGPS::GPS_INVALID_F_ANGLE || _p1.longitude == TinyGPS::GPS_INVALID_F_ANGLE){
     Serial.println("GPS still calibrating...");
   }
 

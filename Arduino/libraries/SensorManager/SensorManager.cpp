@@ -80,9 +80,10 @@ void SensorManager::setWaypointId(int waypointId){
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
 void SensorManager::logState(){
 
-  if (gps1.get().date != "" && gpsDateCtrl == 0) {
+  if (gps1.get().location.latitude != 0 && gps1.get().location.longitude != 0 && gpsDateCtrl == 0) {
     _experimentName = String(gps1.get().date+".csv");
     gpsDateCtrl = 1;
+    _startTime = millis();
 
     dataFile = SD.open(_experimentName, FILE_WRITE);
 
@@ -115,6 +116,8 @@ void SensorManager::logState(){
   if (gpsDateCtrl == 1){
     dataFile = SD.open(_experimentName, FILE_WRITE);
     if (dataFile) {
+      _endTime = millis();
+      timeStamp += (_endTime-_startTime)/1000;
       dataFile.print(gps1.get().dateFull);                  dataFile.print(",");
       dataFile.print(timeStamp, 2);                         dataFile.print(",");
       dataFile.print(gps1.get().location.latitude, 6);      dataFile.print(",");
@@ -144,13 +147,16 @@ void SensorManager::logState(){
       dataFile.println(imu1.get().heading, 2);
   */    
       dataFile.close();
-      timeStamp += 0.2;
+      //Serial.println(_endTime-_startTime);
+      _startTime = millis();
     }
   }
 }
 
 void SensorManager::printState()
 {
+  Serial.print(gps1.get().dateFull); 
+  Serial.print(" ");
 	Serial.print(gps1.get().location.latitude, 6);
 	Serial.print(" ");
 	Serial.print(gps1.get().location.longitude, 6);
@@ -196,5 +202,7 @@ void SensorManager::sendState()
   Serial.print(gps1.get().speed, 2); 
   Serial.print(",");
   Serial.print(_waypointId); 
+  Serial.print(",");
+  Serial.print(gpsDateCtrl); 
   Serial.print("}");
 }

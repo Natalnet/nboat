@@ -8,7 +8,7 @@
 */
 
 TinyGPS gps;
-//SoftwareSerial ss(4, 3);
+SoftwareSerial ss(7, 6);
 
 static void smartdelay(unsigned long ms);
 static void print_float(float val, float invalid, int len, int prec);
@@ -18,7 +18,7 @@ static void print_str(const char *str, int len);
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   
   Serial.print("Testing TinyGPS library v. "); Serial.println(TinyGPS::library_version());
   Serial.println("by Mikal Hart");
@@ -27,7 +27,7 @@ void setup()
   Serial.println("          (deg)     (deg)      Age                      Age  (m)    --- from GPS ----  ---- to London  ----  RX    RX        Fail");
   Serial.println("-------------------------------------------------------------------------------------------------------------------------------------");
 
-  Serial3.begin(4800);
+  ss.begin(4800);
 }
 
 void loop()
@@ -66,14 +66,14 @@ static void smartdelay(unsigned long ms)
   unsigned long start = millis();
   do 
   {
-    while (Serial3.available())
-      gps.encode(Serial3.read());
+    while (ss.available())
+      gps.encode(ss.read());
   } while (millis() - start < ms);
 }
 
 static void print_float(float val, float invalid, int len, int prec)
 {
-  if (val != invalid)
+  if (val == invalid)
   {
     while (len-- > 1)
       Serial.print('*');

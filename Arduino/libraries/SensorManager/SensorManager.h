@@ -81,6 +81,7 @@ class SensorManager
     float timeStamp = 0;
     bool _isTack;
     int _waypointId;
+    float _startTime, _endTime;
     
 };
 

@@ -42,6 +42,7 @@ int maps = 0;
 float theta = 0;
  
 int waypointId;
+int logState = 0;
 //float[][] waypoints = { {240, 180}, {0,0}, {0,0}, {0,0}, {0, 0}, {0,0}, {0, 0} };
 float[][] waypoints = { {240, 180}, {260,160}, {280,180}, {0,0}, {0, 0}, {0,0}, {0, 0} };
 
@@ -59,7 +60,7 @@ void setup (){
   f = createFont("Arial",18,true); 
  
   printArray(Serial.list());
-  myPort = new Serial(this, Serial.list()[33],9600);
+  myPort = new Serial(this, Serial.list()[32],9600);
   myPort.clear();
 
 }

@@ -118,7 +118,7 @@ void loop() {
     
     if (tCheck(&t_func1)) {
       
-      //sensors->logState();
+      sensors->logState();
       
       //sensors->printState();
       sensors->sendState();
@@ -159,7 +159,9 @@ void loop() {
       currentLocation = sensors->getGPS().location;
       
       // adjust rudder and thruster power accordingly
-      movementControl->rudderHeadingControl(sensors, nextLocation);
+      if(currentLocation.latitude != 0 && currentLocation.longitude != 0){
+        movementControl->rudderHeadingControl(sensors, nextLocation);
+      }
       //movementControl->rudderVelocityControl(sensors, nextLocation);
       movementControl->sailControl(sensors);
 

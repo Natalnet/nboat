@@ -1,5 +1,5 @@
 void dataTransfer(){
-  int QTD_DATA = 9;
+  int QTD_DATA = 10;
     
   if(myPort != null){
     while (myPort.available() > 0) {
@@ -27,21 +27,24 @@ void dataTransfer(){
       int end = response.length();
       for (int i=0; i<subStrings.length; i++) subStrings[i] = "0";
       
-      for (int i=response.length()-1; i>0; i--) {
+      for (int i=response.length()-1; i>1; i--) {
         if (response.charAt(i)=='}'){
           end = i;
+          i = 0;
         }
-      }
+      } 
       
-      for (int i=end; i>0; i--) {
+      for (int i=end; i>1; i--) {
         if (response.charAt(i)=='{'){
           begin = i;
+          i = 0;
         }
       }
       
-      println(begin, ", ", end);
+      //println(begin, ", ", end);
       response = response.substring(begin, end+1);
-      println(response);
+      //println(response);
+      //println(response.charAt(0));
       
       if (response.charAt(0) == '{'){
         response = response.replace("{", "");
@@ -59,6 +62,7 @@ void dataTransfer(){
           sailAngle = Float.parseFloat(subStrings[6]);
           speed = Float.parseFloat(subStrings[7]);
           waypointId = Integer.parseInt(subStrings[8]);
+          logState = Integer.parseInt(subStrings[9]);
         }
         catch(NumberFormatException e) {
           //setAlert(e.toString(), "Exception");
@@ -70,7 +74,6 @@ void dataTransfer(){
           //setAlert(e.toString(), "Exception");
         }
       }
-      
       response="";
     }
   }

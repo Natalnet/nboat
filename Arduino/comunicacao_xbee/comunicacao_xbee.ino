@@ -22,7 +22,7 @@ void setup()
 {
   //Define o pino 13 - LED embutido no Arduino - como saida
   pinMode(13, OUTPUT);
-  Serial2.begin(9600);
+  Serial.begin(9600);
   delay(2000);
 }
   
@@ -56,17 +56,17 @@ void loop()
       curse = 10;
     }
 
-    Serial2.print("{");
-    Serial2.print(latitude, 6); Serial2.print(",");
-    Serial2.print(longitude); Serial2.print(",");
-    Serial2.print(heading); Serial2.print(",");
-    Serial2.print(curse); Serial2.print(",");
-    Serial2.print(windDir); Serial2.print(",");
-    Serial2.print(bateria); Serial2.print(",");
-    Serial2.print(rudderAngle); Serial2.print(",");
-    Serial2.print(sailAngle); Serial2.print(",");
-    Serial2.print(boatSpd); Serial2.print(",");
-    Serial2.print(waypointId); Serial2.print("}");
+    Serial.print("{");
+    Serial.print(latitude, 6); Serial.print(",");
+    Serial.print(longitude); Serial.print(",");
+    Serial.print(heading); Serial.print(",");
+    Serial.print(curse); Serial.print(",");
+    Serial.print(windDir); Serial.print(",");
+    Serial.print(bateria); Serial.print(",");
+    Serial.print(rudderAngle); Serial.print(",");
+    Serial.print(sailAngle); Serial.print(",");
+    Serial.print(boatSpd); Serial.print(",");
+    Serial.print(waypointId); Serial.print("}");
     delay(200);
     //Serial.print(estado);
     //Serial.write(10);
