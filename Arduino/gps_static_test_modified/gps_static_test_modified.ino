@@ -73,7 +73,7 @@ static void smartdelay(unsigned long ms)
 
 static void print_float(float val, float invalid, int len, int prec)
 {
-  if (val != invalid)
+  if (val == invalid)
   {
     while (len-- > 1)
       Serial.print('*');
