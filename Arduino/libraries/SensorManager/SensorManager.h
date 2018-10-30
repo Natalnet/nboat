@@ -19,12 +19,14 @@
 #include "GPS_EM506.h"
 #include "WindSensor.h"
 #include "IMU_GY80.h"
+#include "wqboatActuatorDrivers.h"
 #include "IMU_RAZOR.h"
 
 #include "GPSData.h"
 #include "IMUData.h"
 #include "WindData.h"
-#include "WaterQualityNboat.h"
+
+
 
 class SensorManager
 {
@@ -36,39 +38,33 @@ class SensorManager
     bool checkSensors();
 
     void logState();
+    void sendState();
 
     GPSData getGPS();
     IMUData getIMU();
     float getCompass();
     WindData getWind();
     Pose getMagnetometer();
-    WaterQualityNboat getSensorsWaterQuality();
     void setThrusterPower(float ThrusterPower);
     void setRudderAngle(float rudderAngle);
-    void setdistanceTravelled(double distanceTravelled);
-    void setDataWaterSensorsPermission(bool);
-    bool getDataWaterSensorsPermission();
     void setWindSpeed(float windSpeed);
     void SensorManager::printState();
+    void SensorManager::setTack(bool isTack);
+    void SensorManager::setWaypointId(int waypointId);
   private:
+    
+    wqboatActuatorDrivers *actDrivers;
     
 //    Mag_HMC5883L magnetometer1;
 
 //    Compass_HMC6352 compass1;
 
-    /*
-    *  Get Data Water Quality Sensors
-    */
-    WaterQualityNboat * wqNboat = WaterQualityNboat::getInstance();
-    bool dataWaterSensorsPermission = false;
-    //--------------------------------------------------------------
-
     GPS_EM506 gps1;
 
     WindSensor wind;
 
-    IMU_RAZOR imu1;
-    //IMU_GY80 *imu1;
+    //IMU_RAZOR imu1;
+    IMU_GY80 *imu2;
 
     WindData _windData;
     GPSData _GPSData;
@@ -83,9 +79,9 @@ class SensorManager
 
     String _experimentName;
     float timeStamp = 0;
-    double _distanceTravelled;
-    char in_char = "";
-    String data1, data2 = " ";
+    bool _isTack;
+    int _waypointId;
+    float _startTime, _endTime;
     
 };
 

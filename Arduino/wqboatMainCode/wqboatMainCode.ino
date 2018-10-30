@@ -3,15 +3,6 @@
 #include "NavigationFunctions.h"
 #include <medianFilter.h>
 
-  BoatControl *movementControl;
-
-//go to SensorManager to config sensors on the robot
-  SensorManager *sensors;
-  
-  NavigationFunctions navigationFunc;
-  
-  WindData wind;
-
 //ANEMOMETER SETUP
   medianFilter Filter;
   float radius = 0.055; //m from center pin to middle of cup
@@ -25,12 +16,25 @@
   long windClickNo=0;
 
 
+//INSTATIATING LIBS
+  BoatControl *movementControl;
+  SensorManager *sensors;
+  WindData wind;
+  NavigationFunctions navigationFunc;
+  
+
 //WAYPOINTS SETUP
   vector<Location> waypoints, tackWaypoints;
   Location nextLocation, lastLocation, currentLocation, tempLocation;
   int waypoints_id, waypointsT_id, bugManager;
   float startTime, endTime, distanceToTarget = 99999999, lastDistanciaDestino, desiredDistance, timeInterval;
   double distanceTravelled;
+
+  float testTimer;
+  bool flag = false;
+  float heeling;
+  float nextWindDir;
+  float windSpd;
 
 
 //TASK SCHEDULER
@@ -39,8 +43,8 @@ typedef struct t  {
     unsigned long tTimeout;
 };
 
-t t_func1 = {0, 200}; //Run every 100ms
-//t t_func2 = {0, 2000}; //Run every 2 seconds.
+t t_func1 = {0, 200}; //Run every 200ms
+t t_func2 = {0, 200}; //Run every 1 seconds.
 
 bool tCheck (struct t *t ) {
   if (millis() > t->tStart + t->tTimeout){
@@ -59,8 +63,6 @@ bool stationKeeping = false;
 
 char controlStrategy = 'h';
 float headingControlDistance;
-float testTimer;
-
 
 void setup() {
   movementControl = new BoatControl(1.5,0);  
@@ -111,12 +113,20 @@ void loop() {
 
   while (1) {
     sensors->read();
-    readWindSpeed();
+    //readWindSpeed();
+
+    if (tCheck(&t_func2)){
+      windSpd = get_wind_speed();
+      sensors->setWindSpeed(windSpd);
+      tRun(&t_func2);
+    }
     
     if (tCheck(&t_func1)) {
-      sensors->logState();
+      //sensors->logState();
       
-      //sensors->printState();
+      sensors->printState();
+
+      //sensors->sendState();
       
       //printLocation();
       
@@ -127,15 +137,15 @@ void loop() {
     if (waypoints.size() != 0) {
       //changeControlStrategy();
       if (distanceToTarget < desiredDistance) {
-        if(!stationKeeping){
+        /*if(!stationKeeping){
           stationKeepTime = millis();
           stationKeeping = true;
         }
-        if((millis() - stationKeepTime) > wqMeasureTime){
+        if((millis() - stationKeepTime) > wqMeasureTime){*/
           waypoints_id += 1;
           waypoints_id = waypoints_id % waypoints.size(); 
-          stationKeeping = false;
-        }
+          //stationKeeping = false;
+        //}
       }
 
       currentLocation = sensors->getGPS().location;
@@ -147,8 +157,9 @@ void loop() {
       } else if (controlStrategy == 'v'){
         movementControl->rudderVelocityControl(sensors, nextLocation);
       }*/
-      
-      movementControl->rudderHeadingControl(sensors, nextLocation);
+      if(currentLocation.latitude != 0 && currentLocation.longitude != 0){
+        movementControl->rudderHeadingControl(sensors, nextLocation);
+      }
       movementControl->thrusterControl(sensors, nextLocation);
       
       // keep track of distance to target
@@ -158,6 +169,8 @@ void loop() {
 
       // in case the boat isnt getting closer to the desired target
       //bugCheck();
+
+      sensors->setWaypointId(waypoints_id);
       
       lastLocation = currentLocation;
     }
