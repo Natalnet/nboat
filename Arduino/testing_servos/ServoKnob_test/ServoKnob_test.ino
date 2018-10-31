@@ -16,11 +16,17 @@ int pos = 0;    // variable to store the servo position
 
 void setup() {
   myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+  myservo.write(30);
+  delay(3000);
+  Serial.begin(9600);
+  myservo.write(0);
 }
 
 void loop() {
-  float test = 15;
-  myservo.write(test);              // tell servo to go to position in variable 'pos'
-  delay(15);                       // waits 15ms for the servo to reach the position
+//  for(int i=50; i < 150; i = i+10){
+//    myservo.write(i);              // tell servo to go to position in variable 'pos'
+//    delay(1000);                       // waits 15ms for the servo to reach the position
+//    Serial.println(i);
+//  }
 }
 
