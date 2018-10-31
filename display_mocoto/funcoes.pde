@@ -8,6 +8,7 @@ void draw_verde(){
    text("Wind Spd: "+windVel+" m/s", width-20 ,110);
    text("Wind Dir.: "+windDir+"°", width-20 ,130);
    text("Boat Spd: "+speed+" m/s", width-20 ,150);
+   text("Waypoint ID: "+waypointId, width-20 ,200);
    
    noFill();
    strokeWeight(2);
@@ -132,9 +133,51 @@ void draw_mapa(){
   
   if(flag_mapa){
     //image(lagoa,400,320,240,160);
-    int alt = 290;
-    int larg = 220;
+    int alt = 316;
+    int larg = 239;
+    float point_x, point_y;
+    float lat_aux, lon_aux;
     image(lagoa,width-larg,height-alt,larg,alt);
+    
+    lat_aux = latitude % 1;
+    lat_aux = lat_aux*1000;
+    lat_aux = lat_aux % 1;
+    lat_aux = lat_aux*1000;
+    lat_aux = floor(abs(lat_aux));
+    
+    lon_aux = longitude % 1;
+    lon_aux = lon_aux*1000;
+    lon_aux = lon_aux % 1;
+    lon_aux = lon_aux*1000;
+    lon_aux = floor(abs(lon_aux));
+    
+    point_x = map(lat_aux, lon_min, lon_max, pixel_x_min, pixel_x_max);
+    point_y = map(lon_aux, lat_min, lat_max, pixel_y_min, pixel_y_max);
+    
+    strokeWeight(4); 
+    stroke(50,50,150);
+    point(width-point_x, height-point_y);
+
+
+    //point 0 -5.839559, -35.201395
+    //point 1 -5.839327, -35.201402
+    strokeWeight(7); 
+    stroke(255,0,0);
+    textFont(f);
+    fill(255,0,0);
+    textAlign(RIGHT);
+    
+    point_x = map(395, lon_min, lon_max, pixel_x_min, pixel_x_max);
+    point_y = map(559, lat_min, lat_max, pixel_y_min, pixel_y_max);
+    text("0", width-point_x + 15, height-point_y);
+    point(width-point_x, height-point_y);
+    
+    point_x = map(402, lon_min, lon_max, pixel_x_min, pixel_x_max);
+    point_y = map(327, lat_min, lat_max, pixel_y_min, pixel_y_max);
+    text("1", width-point_x + 15, height-point_y);
+    point(width-point_x, height-point_y);
+    
+    //noFill();
     
     stroke(200,200,0);
     strokeWeight(7);

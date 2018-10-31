@@ -40,8 +40,23 @@ boolean flag_mapa = true;
 boolean flag_waypoints = false;
 int maps = 0;
 float theta = 0;
+
+float pixel_x_min = 30;
+float pixel_x_max = 220;
+float pixel_y_min = 30;
+float pixel_y_max = 280;
+float lat_min = 573;
+float lat_max = 298;
+float lon_min = 284;
+float lon_max = 497;
+
+float lat = 417;
+float lon = 487;
+
+//-5.839417, -35.201487
+//-5.839334, -35.201410
  
-int waypointId;
+int waypointId = -1;
 int logState = 0;
 //float[][] waypoints = { {240, 180}, {0,0}, {0,0}, {0,0}, {0, 0}, {0,0}, {0, 0} };
 float[][] waypoints = { {240, 180}, {260,160}, {280,180}, {0,0}, {0, 0}, {0,0}, {0, 0} };
@@ -60,8 +75,8 @@ void setup (){
   f = createFont("Arial",18,true); 
  
   printArray(Serial.list());
-  myPort = new Serial(this, Serial.list()[32],9600);
-  myPort.clear();
+  //myPort = new Serial(this, Serial.list()[32],9600);
+  //myPort.clear();
 
 }
    
@@ -97,6 +112,6 @@ void keyPressed() {
  
 void mousePressed() {
   if(!flag_mapa) {
-    f_waypoints();
+    //f_waypoints();
   }
 }
