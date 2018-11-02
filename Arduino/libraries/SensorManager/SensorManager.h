@@ -64,11 +64,7 @@ class SensorManager
     WindSensor wind;
 
     //IMU_RAZOR imu1;
-<<<<<<< HEAD
     IMU_GY80 *imu1;
-=======
-    IMU_GY80 *imu2;
->>>>>>> b492afe35b15e4a98938dde89765ba0162371230
 
     WindData _windData;
     GPSData _GPSData;

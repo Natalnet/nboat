@@ -12,13 +12,7 @@
 
 SensorManager::SensorManager(){
   SD.begin(48);
-<<<<<<< HEAD
-  imu1 = new IMU_GY980();
-=======
-  //Serial.print("TESTE");
-  imu2 = new IMU_GY80();
-  pinMode(LED_BUILTIN, OUTPUT); 
->>>>>>> b492afe35b15e4a98938dde89765ba0162371230
+  imu1 = new IMU_GY80();
 }
 
 //TODO
@@ -26,12 +20,11 @@ bool SensorManager::checkSensors(){
 }
 
 void SensorManager::read(){
-  //gps1.read();
+  gps1.read();
   //compass1.read();
   wind.read();
   //magnetometer1.read();
-  //imu1.read();
-<<<<<<< HEAD
+  imu1->read();
 
 	  /*while(Serial1.available() > 0){
 	    in_char = Serial1.read();
@@ -45,15 +38,6 @@ void SensorManager::read(){
 
 void SensorManager::readImu(){
   imu1->read();
-=======
-  imu2->read();
-  //trueWind = gps1.get().direction - wind.get().direction;
-}
-
-void SensorManager::readImu(){
-//  imu1.read();
-  imu2->read();
->>>>>>> b492afe35b15e4a98938dde89765ba0162371230
 }
 
 GPSData SensorManager::getGPS(){
@@ -73,12 +57,7 @@ WindData SensorManager::getWind(){
 }
 
 IMUData SensorManager::getIMU(){
-<<<<<<< HEAD
   return imu1->get();
-=======
-//  return imu1.get();
-  return  imu2->get();
->>>>>>> b492afe35b15e4a98938dde89765ba0162371230
 }
 
 void SensorManager::setThrusterPower(float thrusterPower){
@@ -152,33 +131,14 @@ void SensorManager::logState(){
       dataFile.print(_thrusterPower, 2);                    dataFile.print(",");
       dataFile.print(gps1.get().course, 2);                 dataFile.print(",");
       dataFile.print(gps1.get().speed, 2);                  dataFile.print(",");
-<<<<<<< HEAD
-      dataFile.print(imu1->get().eulerAngles.yaw, 2);        dataFile.print(",");
-      dataFile.print(imu1->get().eulerAngles.pitch, 2);      dataFile.print(",");
-      dataFile.print(imu1->get().eulerAngles.roll, 2);       dataFile.print(",");
-      dataFile.print(imu1->get().heading, 2);                dataFile.print(",");
-      dataFile.print(data2);       dataFile.print("\n");
+      dataFile.print(imu1->get().eulerAngles.yaw, 2);       dataFile.print(",");
+      dataFile.print(imu1->get().eulerAngles.pitch, 2);     dataFile.print(",");
+      dataFile.print(imu1->get().eulerAngles.roll, 2);      dataFile.print(",");
+      dataFile.print(imu1->get().heading, 2);               dataFile.print(",");
+      dataFile.print(imu1->get().temperature, 2);           dataFile.print(",");      
+      dataFile.print(imu1->get().pressure, 2);              dataFile.print(",");
+      dataFile.print(imu1->get().altitude, 2);              dataFile.print("\n");
      
-=======
-      dataFile.print(imu2->get().eulerAngles.yaw, 2);       dataFile.print(",");
-      dataFile.print(imu2->get().eulerAngles.pitch, 2);     dataFile.print(",");
-      dataFile.print(imu2->get().eulerAngles.roll, 2);      dataFile.print(",");
-      dataFile.print(imu2->get().heading, 2);               dataFile.print(",");
-      dataFile.print(imu2->get().temperature, 2);           dataFile.print(",");      
-      dataFile.print(imu2->get().pressure, 2);              dataFile.print(",");
-      dataFile.print(imu2->get().altitude, 2);              dataFile.print(",");
-      dataFile.println(_isTack);
-
-/*
-      dataFile.print(imu1.get().eulerAngles.yaw, 2);
-      dataFile.print(" ");
-      dataFile.print(imu1.get().eulerAngles.pitch, 2);
-      dataFile.print(" ");
-      dataFile.print(imu1.get().eulerAngles.roll, 2);
-      dataFile.print(" ");
-      dataFile.println(imu1.get().heading, 2);
-  */    
->>>>>>> b492afe35b15e4a98938dde89765ba0162371230
       dataFile.close();
       //Serial.println(_endTime-_startTime);
       _startTime = millis();
@@ -188,8 +148,8 @@ void SensorManager::logState(){
 
 void SensorManager::printState()
 {
-  Serial.print(gps1.get().dateFull); 
-  Serial.print(" ");
+  	Serial.print(gps1.get().dateFull); 
+ 	Serial.print(" ");
 	Serial.print(gps1.get().location.latitude, 6);
 	Serial.print(" ");
 	Serial.print(gps1.get().location.longitude, 6);
@@ -206,7 +166,6 @@ void SensorManager::printState()
 	Serial.print(" ");
 	Serial.print(gps1.get().speed, 2); 
 	Serial.print(" ");
-<<<<<<< HEAD
 	Serial.print(imu1->get().eulerAngles.yaw, 2);
 	Serial.print(" ");
 	Serial.print(imu1->get().eulerAngles.pitch, 2);
@@ -214,15 +173,6 @@ void SensorManager::printState()
 	Serial.print(imu1->get().eulerAngles.roll, 2);
 	Serial.print(" ");
 	Serial.println(imu1->get().heading, 2); 
-=======
-	Serial.print(imu2->get().eulerAngles.yaw, 2);
-	Serial.print(" ");
-	Serial.print(imu2->get().eulerAngles.pitch, 2);
-	Serial.print(" ");
-	Serial.print(imu2->get().eulerAngles.roll, 2);
-	Serial.print(" ");
-	Serial.println(imu2->get().heading, 2); 
->>>>>>> b492afe35b15e4a98938dde89765ba0162371230
 }
 
 void SensorManager::sendState()
@@ -232,7 +182,7 @@ void SensorManager::sendState()
   Serial.print(",");
   Serial.print(gps1.get().location.longitude, 6);
   Serial.print(",");
-  Serial.print(imu2->get().eulerAngles.yaw, 2);
+  Serial.print(imu1->get().eulerAngles.yaw, 2);
   Serial.print(",");
   Serial.print(gps1.get().course, 2);
   Serial.print(",");

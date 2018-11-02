@@ -157,17 +157,15 @@ void loop() {
       } else if (controlStrategy == 'v'){
         movementControl->rudderVelocityControl(sensors, nextLocation);
       }*/
-<<<<<<< HEAD
       
       //movementControl->rudderHeadingControl(sensors, nextLocation);
       //movementControl->thrusterControl(sensors, nextLocation);
-      movementControl->thrusterControl(sensors);
-=======
+      //movementControl->thrusterControl(sensors);
+      
       if(currentLocation.latitude != 0 && currentLocation.longitude != 0){
         movementControl->rudderHeadingControl(sensors, nextLocation);
       }
-      movementControl->thrusterControl(sensors, nextLocation);
->>>>>>> b492afe35b15e4a98938dde89765ba0162371230
+      movementControl->thrusterControl(sensors);
       
       // keep track of distance to target
       lastDistanciaDestino = distanceToTarget;
