@@ -1,5 +1,5 @@
 #include "BoatControl.h"
-#include "Navigation.h"
+#include "NavigationFunctions.h"
 
 BoatControl movementControl;
 GPS_EM506 gps;

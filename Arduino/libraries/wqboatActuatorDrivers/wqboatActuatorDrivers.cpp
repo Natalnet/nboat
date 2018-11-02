@@ -24,7 +24,6 @@ wqboatActuatorDrivers::wqboatActuatorDrivers(){
   thruster.attach(_thrusterPin);
 }
 
-//TODO how rudderAngle is going to get here???
 void wqboatActuatorDrivers::setRudderAngle(float rudderAngle){
   rudderAngle = constrain(rudderAngle, -90, 90);
   rudderAngle = map(rudderAngle, -90, 90, _rudderLowerLimit, _rudderUpperLimit);
