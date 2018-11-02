@@ -65,7 +65,8 @@ char controlStrategy = 'h';
 float headingControlDistance;
 
 void setup() {
-  movementControl = new BoatControl(1.5,0);  
+  movementControl = new BoatControl(1.5,0);
+  delay(3000);
   
   desiredDistance = 5;
   headingControlDistance = 15;
@@ -78,10 +79,10 @@ void setup() {
 
   sensors = new SensorManager();
   Serial.begin(9600);
-  Serial1.begin(9600);
+  //Serial1.begin(9600);
   
   //pinMode(2, INPUT_PULLUP);
-  attachInterrupt(0, rpm_fan, FALLING);
+  //attachInterrupt(0, rpm_fan, FALLING);
   //attachInterrupt(0, wSpeedIRQ, FALLING);
   //interrupts();
   testTimer = millis();

@@ -18,8 +18,10 @@ void loop() {
   //sensor->read();
   wind.read();
   //wind->read();
-  Serial.println(map(wind.getDirection(), 0, 180, 0, 100));
+  //Serial.println(map(wind.getDirection(), 0, 180, 0, 100));
   //Serial.println(map(sensor->getWind().direction, 0, 180, 0, 100));
+  
+  Serial.println(wind.getDirection());
   //Serial.println(sensor->getWind().direction);
   //delay(100);  
   //Serial.print(wind.get().speed); Serial.println("  ");

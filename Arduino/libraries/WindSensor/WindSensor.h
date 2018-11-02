@@ -19,6 +19,7 @@ class WindSensor
     float getSpeed();
     float getDirection();
     WindData get();
+    int getDirectionRaw();
 
     void read();
     
@@ -26,7 +27,7 @@ class WindSensor
     float readSpeed(int buttonPin = 2);
     float readDirection(int birutaPin = A0);
     float starttime, endtime, windSpeed, windDirection;
-    int buttonState, buttonState_ant, windvaneRead;
+    int buttonState, buttonState_ant, windvaneRead, windvaneReadAnt;
     WindData _windData;
 };
 

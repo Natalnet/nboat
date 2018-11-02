@@ -1,7 +1,9 @@
 #include "IMU_GY80.h"
+#include "WindSensor.h"
 
 IMU_GY80 *imu;
 float time1, time2;
+WindSensor wind;
 
 void setup() {
   imu = new IMU_GY80();
@@ -9,6 +11,8 @@ void setup() {
 }
 
 void loop() {
+  wind.read();
+  Serial.println(map(wind.getDirection(), 0, 180, 0, 100));
   time1 = millis();
   imu->read();
   time2 = millis();

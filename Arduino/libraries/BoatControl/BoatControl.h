@@ -27,6 +27,7 @@ class BoatControl
     float I(float currentError);
     void setDistanceToTarget(float distance);
     float rudderAngleSaturation(float sensor);
+    void initThruster();
   private:
     float _heading, _sp, _currentError, rudderAngle_prior, rudderAngle, I_prior, _cycleTime, _kp, _ki, _starttime, _endtime, _distanceToTarget;
     Location _currentPosition;

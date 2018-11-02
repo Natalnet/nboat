@@ -23,6 +23,8 @@ class wqboatActuatorDrivers
 
     float getRudderAngle();
     float getThrusterPower();    
+
+    void initThruster();
   private:
     Servo rudder, thruster;
     int _rudderPin = 8, _thrusterPin = 9;

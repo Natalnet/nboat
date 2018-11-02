@@ -34,16 +34,15 @@ void wqboatActuatorDrivers::setRudderAngle(float rudderAngle){
 }
 
 void wqboatActuatorDrivers::setThrusterPower(float thrusterPower){
-  if(init_thruster == 1){
-       thruster.write(30);
-       delay(3000);
-       init_thruster = 0;
-  }
   thrusterPower = constrain(thrusterPower, 0, 100);
   thrusterPower = map(thrusterPower, 0, 100, _thrusterLowerLimit, _thrusterUpperLimit);
   thruster.write(thrusterPower);
 }
 
+void wqboatActuatorDrivers::initThruster(){
+  thruster.write(30);
+  //delay(3000);
+}
 
 float wqboatActuatorDrivers::getRudderAngle(){
   return map(rudder.read(), _rudderLowerLimit, _rudderUpperLimit, -90, 90);

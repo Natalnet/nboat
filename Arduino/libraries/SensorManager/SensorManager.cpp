@@ -13,6 +13,7 @@
 SensorManager::SensorManager(){
   SD.begin(48);
   imu1 = new IMU_GY80();
+  pinMode(LED_BUILTIN, OUTPUT); 
 }
 
 //TODO
@@ -109,8 +110,8 @@ void SensorManager::logState(){
       dataFile.print("Magnetometer Heading");   dataFile.print(",");
       dataFile.print("Temperature");      dataFile.print(",");
       dataFile.print("Pressure");         dataFile.print(",");
-      dataFile.print("Altitude");         dataFile.print(",");
-      dataFile.println("Tacking?");
+      dataFile.println("Altitude");         //dataFile.print(",");
+      //dataFile.println("Tacking?");
       digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
     }
     dataFile.close();

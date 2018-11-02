@@ -115,3 +115,7 @@ void BoatControl::thrusterControl(SensorManager *sensors){
   sensors->setRudderAngle(_actuators->getRudderAngle());
   _actuators->setThrusterPower(map(sensors->getWind().direction, 0, 180, 0, 100));
 }
+
+void BoatControl::initThruster(){
+  _actuators->initThruster();
+}
