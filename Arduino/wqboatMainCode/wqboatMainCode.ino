@@ -114,7 +114,7 @@ void loop() {
     readWindSpeed();
     
     if (tCheck(&t_func1)) {
-      sensors->logState();
+      //sensors->logState();
       
       //sensors->printState();
       
@@ -148,8 +148,9 @@ void loop() {
         movementControl->rudderVelocityControl(sensors, nextLocation);
       }*/
       
-      movementControl->rudderHeadingControl(sensors, nextLocation);
-      movementControl->thrusterControl(sensors, nextLocation);
+      //movementControl->rudderHeadingControl(sensors, nextLocation);
+      //movementControl->thrusterControl(sensors, nextLocation);
+      movementControl->thrusterControl(sensors);
       
       // keep track of distance to target
       lastDistanciaDestino = distanceToTarget;

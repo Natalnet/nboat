@@ -94,7 +94,7 @@ float BoatControl::rudderAngleSaturation(float sensor) {
   return sensor;
 }
 
-void BoatControl::thrusterControl(SensorManager *sensors, Location target){
+/*void BoatControl::thrusterControl(SensorManager *sensors, Location target){
   // get distance to target
   sensors->setRudderAngle(_actuators->getRudderAngle());
   _currentPosition = sensors->getGPS().location; // TODO in case of exception (or null response...)
@@ -108,4 +108,10 @@ void BoatControl::thrusterControl(SensorManager *sensors, Location target){
   } else if (_distanceToTarget < _closeDistance){
     _actuators->setThrusterPower(0);
   } 
+}*/
+
+void BoatControl::thrusterControl(SensorManager *sensors){
+  // get distance to target
+  sensors->setRudderAngle(_actuators->getRudderAngle());
+  _actuators->setThrusterPower(map(sensors->getWind().direction, 0, 180, 0, 100));
 }

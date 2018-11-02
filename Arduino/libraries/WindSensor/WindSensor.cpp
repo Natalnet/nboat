@@ -18,7 +18,7 @@ WindSensor::WindSensor(){
 
 //read sensor
 void WindSensor::read(){
-  _windData.speed = readSpeed();
+  //_windData.speed = readSpeed();
   _windData.direction = readDirection();
 }
 
