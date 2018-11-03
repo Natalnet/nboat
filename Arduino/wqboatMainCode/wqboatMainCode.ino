@@ -65,20 +65,24 @@ char controlStrategy = 'h';
 float headingControlDistance;
 
 void setup() {
-  movementControl = new BoatControl(1.5,0);
-  delay(3000);
+  movementControl = new BoatControl(2,0);
+  movementControl->initThruster();
+  delay(5000);
   
   desiredDistance = 5;
   headingControlDistance = 15;
   wqMeasureTime = -1;
   wqMeasureTime *= 1000;  //from ms to s
 
-  experiment1();
+  experiment_reitoria();
+  //experiment_tst();
+  //experiment1();
   //experiment2();
   
 
   sensors = new SensorManager();
   Serial.begin(9600);
+  //initImu();
   //Serial1.begin(9600);
   
   //pinMode(2, INPUT_PULLUP);
@@ -86,6 +90,26 @@ void setup() {
   //attachInterrupt(0, wSpeedIRQ, FALLING);
   //interrupts();
   testTimer = millis();
+}
+
+void initImu(){
+  float t = millis();
+  float t_1;
+  while((t_1 - t) > 2000){
+    Serial.println("reading IMu");
+    sensors->read();
+    t_1 = millis();
+  }
+}
+
+void experiment_reitoria(){
+  setWaypoint(-5.839559, -35.201395);
+  setWaypoint(-5.839327, -35.201395);
+}
+
+void experiment_tst(){
+  setWaypoint(-5.842024, -35.197436);
+  setWaypoint(-5.842048, -35.196799);
 }
 
 void experiment1(){
@@ -112,6 +136,8 @@ void loop() {
   // check if the desired point was achieved
   // if positive, go to next target point
 
+  
+
   while (1) {
     sensors->read();
     //readWindSpeed();
@@ -123,11 +149,11 @@ void loop() {
     }
     
     if (tCheck(&t_func1)) {
-      //sensors->logState();
+      sensors->logState();
       
-      sensors->printState();
+      //sensors->printState();
 
-      //sensors->sendState();
+      sensors->sendState();
       
       //printLocation();
       
@@ -262,7 +288,7 @@ void bugCheck(){
       timeInterval = endTime - startTime;
       
       // if 20 seconds passes and the boat isnt advancing to the target, go to the next one
-      if(timeInterval > 20000){
+      if(timeInterval > 10000){
         distanceToTarget = 0; //TODO generate error message
         startTime = millis();
       }

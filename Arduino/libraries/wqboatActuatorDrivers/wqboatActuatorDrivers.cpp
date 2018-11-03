@@ -27,9 +27,17 @@ wqboatActuatorDrivers::wqboatActuatorDrivers(){
 void wqboatActuatorDrivers::setRudderAngle(float rudderAngle){
   rudderAngle = constrain(rudderAngle, -90, 90);
   rudderAngle = map(rudderAngle, -90, 90, _rudderLowerLimit, _rudderUpperLimit);
-//  Serial.print("SERVO ANGLE: ");
-//  Serial.println(rudderAngle);
   rudder.write(rudderAngle);
+  delay(50);
+
+  /*if(cont % 5){
+    rudder.write(rudderAngle/5);
+    Serial.print("SERVO ANGLE: ");
+    Serial.println(rudderAngle);
+  } else {
+    rudderAngle += rudderAngle;
+    cont++;
+  }*/
   //delay(10000);
 }
 
@@ -40,6 +48,7 @@ void wqboatActuatorDrivers::setThrusterPower(float thrusterPower){
 }
 
 void wqboatActuatorDrivers::initThruster(){
+  //rudder.write((_rudderLowerLimit + _rudderUpperLimit)/2);
   thruster.write(30);
   //delay(3000);
 }

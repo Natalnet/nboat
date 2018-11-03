@@ -54,22 +54,23 @@ float WindSensor::readDirection(int windvanePin){
     windvaneRead = windvaneReadAnt;
   }
   
-  if(windvaneRead >= 770 && windvaneRead <= 810) {windDirection = 0;}
-  if(windvaneRead >= 690 && windvaneRead <= 730) {windDirection = 22.5;}
-  if(windvaneRead >= 870 && windvaneRead <= 920) {windDirection = 45;}
-  if(windvaneRead >= 815 && windvaneRead <= 850) {windDirection = 67.5;}
-  if(windvaneRead >= 930 && windvaneRead <= 960) {windDirection = 90;}
-  if(windvaneRead >= 590 && windvaneRead <= 615) {windDirection = 112.5;}
-  if(windvaneRead >= 620 && windvaneRead <= 640) {windDirection = 135;}
-  if(windvaneRead >= 240 && windvaneRead <= 260) {windDirection = 157.5;}
+  if(windvaneRead >= 750 && windvaneRead <= 800) {windDirection = 0;}
+  if(windvaneRead >= 690 && windvaneRead <= 730) {windDirection = -22.5;}
+  if(windvaneRead >= 860 && windvaneRead <= 920) {windDirection = -45;}
+  if(windvaneRead >= 815 && windvaneRead <= 850) {windDirection = -67.5;}
+  if(windvaneRead >= 910 && windvaneRead <= 940) {windDirection = -90;}
+  if(windvaneRead >= 590 && windvaneRead <= 615) {windDirection = -112.5;}
+  if(windvaneRead >= 610 && windvaneRead <= 640) {windDirection = -135;}
+  if(windvaneRead >= 240 && windvaneRead <= 260) {windDirection = -157.5;}
   if(windvaneRead >= 280 && windvaneRead <= 300) {windDirection = 180;}
-  if(windvaneRead >= 120 && windvaneRead <= 135) {windDirection = -157.5;}
-  if(windvaneRead >= 170 && windvaneRead <= 200) {windDirection = -135;}
-  if(windvaneRead >= 50 && windvaneRead <= 74) {windDirection = -112.5;}
-  if(windvaneRead >= 80 && windvaneRead <= 100) {windDirection = -90;}
-  if(windvaneRead >= 75 && windvaneRead <= 83) {windDirection = -67.5;}
-  if(windvaneRead >= 455 && windvaneRead <= 475) {windDirection = -45;}
-  if(windvaneRead >= 400 && windvaneRead <= 420) {windDirection = -22.5;}
+  if(windvaneRead >= 120 && windvaneRead <= 135) {windDirection = 157.5;}
+  if(windvaneRead >= 170 && windvaneRead <= 200) {windDirection = 135;}
+  if(windvaneRead >= 50 && windvaneRead <= 74) {windDirection = 112.5;}
+  if(windvaneRead >= 90 && windvaneRead <= 110) {windDirection = 90;}
+  if(windvaneRead >= 75 && windvaneRead <= 83) {windDirection = 67.5;}
+  if(windvaneRead >= 450 && windvaneRead <= 470) {windDirection = 45;}
+  if(windvaneRead >= 400 && windvaneRead <= 420) {windDirection = 22.5;}
+  _windDirectionSigned = windDirection;
   if(windDirection < 0) {windDirection = -windDirection;}
 
   windvaneReadAnt = windvaneRead;
@@ -88,6 +89,10 @@ float WindSensor::getSpeed(){
 
 float WindSensor::getDirection(){
   return _windData.direction;
+}
+
+float WindSensor::getDirectionSigned(){
+  return _windDirectionSigned;
 }
 
 int WindSensor::getDirectionRaw(){

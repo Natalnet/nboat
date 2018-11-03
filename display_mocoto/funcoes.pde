@@ -172,7 +172,7 @@ void draw_mapa(){
     text("0", width-point_x + 15, height-point_y);
     point(width-point_x, height-point_y);
     
-    point_x = map(402, lon_min, lon_max, pixel_x_min, pixel_x_max);
+    point_x = map(395, lon_min, lon_max, pixel_x_min, pixel_x_max);
     point_y = map(327, lat_min, lat_max, pixel_y_min, pixel_y_max);
     text("1", width-point_x + 15, height-point_y);
     point(width-point_x, height-point_y);

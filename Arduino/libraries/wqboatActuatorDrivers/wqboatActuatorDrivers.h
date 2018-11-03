@@ -30,14 +30,15 @@ class wqboatActuatorDrivers
     int _rudderPin = 8, _thrusterPin = 9;
 
      //TODO calibrate. lower limit = boat turns counterclockwise
-    float _rudderLowerLimit = 50, _rudderUpperLimit = 110; 
+    float _rudderLowerLimit = 60, _rudderUpperLimit = 150; 
 
     //TODO calibrate. lower limit = low power on thruster
-//    float _thrusterLowerLimit = 30, _thrusterUpperLimit = 140;
-     float _thrusterLowerLimit = 95, _thrusterUpperLimit = 100;
+    float _thrusterLowerLimit = 30, _thrusterUpperLimit = 140;
+     //float _thrusterLowerLimit = 95, _thrusterUpperLimit = 100;
 
      int init_thruster = 1;
-   
+
+     int cont = 0;   
 
 };
 

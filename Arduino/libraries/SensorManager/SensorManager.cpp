@@ -155,7 +155,8 @@ void SensorManager::printState()
 	Serial.print(" ");
 	Serial.print(gps1.get().location.longitude, 6);
 	Serial.print(" ");
-	Serial.print(wind.get().direction, 2);
+//	Serial.print(wind.get().direction, 2);
+	Serial.print(wind.getDirectionSigned(), 2);
 	Serial.print(" ");
 	Serial.print(_windData.speed, 2);
 	Serial.print(" ");
@@ -173,7 +174,9 @@ void SensorManager::printState()
 	Serial.print(" ");
 	Serial.print(imu1->get().eulerAngles.roll, 2);
 	Serial.print(" ");
-	Serial.println(imu1->get().heading, 2); 
+	Serial.print(imu1->get().heading, 2);
+	Serial.print(" ");
+	Serial.println(_waypointId); 
 }
 
 void SensorManager::sendState()
@@ -187,7 +190,7 @@ void SensorManager::sendState()
   Serial.print(",");
   Serial.print(gps1.get().course, 2);
   Serial.print(",");
-  Serial.print(wind.get().direction, 2);
+  Serial.print(wind.getDirectionSigned(), 2);
   Serial.print(",");
   Serial.print(_rudderAngle, 2);
   Serial.print(",");

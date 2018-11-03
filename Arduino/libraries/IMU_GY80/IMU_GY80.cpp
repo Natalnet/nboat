@@ -47,8 +47,8 @@ void IMU_GY80::read(){
     Euler_angles();
     
     yawWFrame = TO_DEG(yaw) + yaw_OFFSET;
-    pitchWFrame = TO_DEG(pitch) + pitch_OFFSET;
-    rollWFrame = TO_DEG(roll) + roll_OFFSET;
+    pitchWFrame = TO_DEG(pitch) + roll_OFFSET;
+    rollWFrame = TO_DEG(roll) + pitch_OFFSET;
 
     _imuData.eulerAngles.yaw = -adjustFrame(yawWFrame);
     _imuData.eulerAngles.pitch = adjustFrame(rollWFrame);

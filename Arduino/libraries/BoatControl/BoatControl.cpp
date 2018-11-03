@@ -114,6 +114,7 @@ void BoatControl::thrusterControl(SensorManager *sensors){
   // get distance to target
   sensors->setRudderAngle(_actuators->getRudderAngle());
   _actuators->setThrusterPower(map(sensors->getWind().direction, 0, 180, 0, 100));
+  //Serial.println(map(sensors->getWind().direction, 0, 180, 0, 100));
 }
 
 void BoatControl::initThruster(){

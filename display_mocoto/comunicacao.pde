@@ -49,6 +49,7 @@ void dataTransfer(){
       if (response.charAt(0) == '{'){
         response = response.replace("{", "");
         response = response.replace("}", "");
+        saveData(response);
         subStrings = response.split(",");
         //printArray(subStrings);
         try {
@@ -63,6 +64,7 @@ void dataTransfer(){
           speed = Float.parseFloat(subStrings[7]);
           waypointId = Integer.parseInt(subStrings[8]);
           logState = Integer.parseInt(subStrings[9]);
+          //println(windDir);
         }
         catch(NumberFormatException e) {
           //setAlert(e.toString(), "Exception");
@@ -77,4 +79,29 @@ void dataTransfer(){
       response="";
     }
   }
+}
+
+void saveData(String s){
+  try{
+        File file =new File("/home/davi/Desktop/experiment1.txt");
+//chemin = dataPath;
+// positions.txt== your file;
+ 
+        if(!file.exists()){
+          file.createNewFile();
+        }
+ 
+        FileWriter fw = new FileWriter(file,true);///true = append
+        BufferedWriter bw = new BufferedWriter(fw);
+        PrintWriter pw = new PrintWriter(bw);
+ 
+        pw.write(s+"\n");
+ 
+        pw.close();
+ 
+ 
+     }catch(IOException ioe){
+         System.out.println("Exception ");
+         ioe.printStackTrace();
+    }
 }

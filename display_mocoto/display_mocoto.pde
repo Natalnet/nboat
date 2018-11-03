@@ -1,6 +1,11 @@
 import processing.serial.*;
+import java.io.FileWriter;
+import java.io.*;
 Serial myPort;
 String response = "";
+
+FileWriter fw;
+BufferedWriter bw;
 
 PFont F; // fonte letras gps
 PFont f; // fonte demais textos
@@ -75,8 +80,8 @@ void setup (){
   f = createFont("Arial",18,true); 
  
   printArray(Serial.list());
-  //myPort = new Serial(this, Serial.list()[32],9600);
-  //myPort.clear();
+  myPort = new Serial(this, Serial.list()[32],9600);
+  myPort.clear();
 
 }
    
