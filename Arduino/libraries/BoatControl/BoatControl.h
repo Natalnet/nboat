@@ -21,8 +21,8 @@ class BoatControl
     BoatControl(float kp = 1, float ki = 0);
     void rudderHeadingControl(SensorManager *sensors, Location target);
     void rudderVelocityControl(SensorManager *sensors, Location target);
-    //void thrusterControl(SensorManager *sensors, Location target);
-    void thrusterControl(SensorManager *sensors);
+    void thrusterControl(SensorManager *sensors, Location target);
+    void thrusterControlWind(SensorManager *sensors);
     float P(float currentError);
     float I(float currentError);
     void setDistanceToTarget(float distance);

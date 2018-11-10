@@ -83,7 +83,7 @@ void dataTransfer(){
 
 void saveData(String s){
   try{
-        File file =new File("/home/davi/Desktop/experiment1.txt");
+    File file =new File("/home/davi/Desktop/experimentos/"+filename);
 //chemin = dataPath;
 // positions.txt== your file;
  

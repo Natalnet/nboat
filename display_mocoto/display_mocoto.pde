@@ -14,6 +14,9 @@ PShape vento;  //windDir
 PShape rose;
 
 PImage lagoa;
+int time_control = 0;
+
+String filename = String.valueOf(day())+"-"+String.valueOf(month())+"-"+String.valueOf(year())+" "+String.valueOf(hour())+":"+String.valueOf(minute())+":"+String.valueOf(second());
 
  // Dados de Sensores de Navegação
   

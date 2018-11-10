@@ -57,6 +57,10 @@ WindData SensorManager::getWind(){
   return wind.get();
 }
 
+int SensorManager::getWindRaw(){
+  return wind.getDirectionRaw();
+}
+
 IMUData SensorManager::getIMU(){
   return imu1->get();
 }
@@ -84,7 +88,8 @@ void SensorManager::setWaypointId(int waypointId){
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
 void SensorManager::logState(){
 
-  if (gps1.get().location.latitude != 0 && gps1.get().location.longitude != 0 && gpsDateCtrl == 0) {
+//gps1.get().location.latitude != 0 && gps1.get().location.longitude != 0 && 
+  if (gpsDateCtrl == 0) {
     _experimentName = String(gps1.get().date+".csv");
     gpsDateCtrl = 1;
     _startTime = millis();
@@ -112,7 +117,7 @@ void SensorManager::logState(){
       dataFile.print("Pressure");         dataFile.print(",");
       dataFile.println("Altitude");         //dataFile.print(",");
       //dataFile.println("Tacking?");
-      digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+      //digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
     }
     dataFile.close();
   }
@@ -139,12 +144,15 @@ void SensorManager::logState(){
       dataFile.print(imu1->get().temperature, 2);           dataFile.print(",");      
       dataFile.print(imu1->get().pressure, 2);              dataFile.print(",");
       dataFile.print(imu1->get().altitude, 2);              dataFile.print("\n");
+      delay(20);
      
       dataFile.close();
       //Serial.println(_endTime-_startTime);
       _startTime = millis();
     }
+    dataFile.close();
   }
+  dataFile.close();
 }
 
 void SensorManager::printState()

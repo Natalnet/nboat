@@ -22,10 +22,12 @@ void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) 
   sensors->setThrusterPower(_actuators->getThrusterPower());
 
   _currentPosition = sensors->getGPS().location; // TODO in case of exception (or null response...)
-//  Serial.println(_currentPosition.latitude);
-//  Serial.println(_currentPosition.longitude);
+  /*Serial.print(_currentPosition.latitude);
+  Serial.print(" ");
+  Serial.println(_currentPosition.longitude);*/
 
   _sp = _navFunc.findHeading(_currentPosition, target); //TODO put navigation functions in another library
+  //Serial.println(_sp);
 
   _sp = _navFunc.adjustFrame(_sp);
 
@@ -94,7 +96,7 @@ float BoatControl::rudderAngleSaturation(float sensor) {
   return sensor;
 }
 
-/*void BoatControl::thrusterControl(SensorManager *sensors, Location target){
+void BoatControl::thrusterControl(SensorManager *sensors, Location target){
   // get distance to target
   sensors->setRudderAngle(_actuators->getRudderAngle());
   _currentPosition = sensors->getGPS().location; // TODO in case of exception (or null response...)
@@ -104,13 +106,13 @@ float BoatControl::rudderAngleSaturation(float sensor) {
   if (_distanceToTarget > _mediumDistance){
     _actuators->setThrusterPower(100);
   } else if (_distanceToTarget < _mediumDistance && _distanceToTarget > _closeDistance){
-    _actuators->setThrusterPower(80);
+    _actuators->setThrusterPower(50);
   } else if (_distanceToTarget < _closeDistance){
     _actuators->setThrusterPower(0);
   } 
-}*/
+}
 
-void BoatControl::thrusterControl(SensorManager *sensors){
+void BoatControl::thrusterControlWind(SensorManager *sensors){
   // get distance to target
   sensors->setRudderAngle(_actuators->getRudderAngle());
   _actuators->setThrusterPower(map(sensors->getWind().direction, 0, 180, 0, 100));

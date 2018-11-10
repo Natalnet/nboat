@@ -14,7 +14,7 @@ void setup() {
 }
 
 void loop() {
-  //Serial.println(sensors->getWind().direction);
+  Serial.println(sensors->getWind().direction);
   sensors->read();
-  movementControl->thrusterControl(sensors);
+  movementControl->thrusterControlWind(sensors);
 }

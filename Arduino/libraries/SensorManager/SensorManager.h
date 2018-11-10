@@ -51,6 +51,7 @@ class SensorManager
     void SensorManager::printState();
     void SensorManager::setTack(bool isTack);
     void SensorManager::setWaypointId(int waypointId);
+    int SensorManager::getWindRaw();
   private:
     
     wqboatActuatorDrivers *actDrivers;

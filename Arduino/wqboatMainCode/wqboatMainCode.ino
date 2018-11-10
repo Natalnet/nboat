@@ -75,6 +75,7 @@ void setup() {
   wqMeasureTime *= 1000;  //from ms to s
 
   experiment_reitoria();
+  //angles_test();
   //experiment_tst();
   //experiment1();
   //experiment2();
@@ -103,6 +104,7 @@ void initImu(){
 }
 
 void experiment_reitoria(){
+  setWaypoint(-5.839573, -35.201287);
   setWaypoint(-5.839559, -35.201395);
   setWaypoint(-5.839327, -35.201395);
 }
@@ -111,6 +113,35 @@ void experiment_tst(){
   setWaypoint(-5.842024, -35.197436);
   setWaypoint(-5.842048, -35.196799);
 }
+
+void angles_test(){
+  float lon_inc = 0.0002;
+  float lat_inc = 0.0002;
+  float lon_ini = -35.197389;
+  float lat_ini = -5.842879;
+  //lat = y
+  //lon = x
+  
+  //0º
+  setWaypoint(lat_ini + lat_inc, lon_ini);
+  //45º
+  setWaypoint(lat_ini + lat_inc, lon_ini + lon_inc);
+  //90º
+  setWaypoint(lat_ini, lon_ini + lon_inc);
+  //135º
+  setWaypoint(lat_ini - lat_inc, lon_ini + lon_inc);
+  //180º
+  setWaypoint(lat_ini - lat_inc, lon_ini);
+  //-135º
+  setWaypoint(lat_ini - lat_inc, lon_ini - lon_inc);
+  //-90º
+  setWaypoint(lat_ini, lon_ini - lon_inc);
+  //-45º
+  setWaypoint(lat_ini + lat_inc, lon_ini - lon_inc);
+  
+}
+
+//-5.842868, -35.196047
 
 void experiment1(){
   //add waypoints example:
@@ -137,7 +168,6 @@ void loop() {
   // if positive, go to next target point
 
   
-
   while (1) {
     sensors->read();
     //readWindSpeed();
@@ -150,10 +180,11 @@ void loop() {
     
     if (tCheck(&t_func1)) {
       sensors->logState();
+      sensors->sendState();
       
       //sensors->printState();
 
-      sensors->sendState();
+      
       
       //printLocation();
       
@@ -178,6 +209,8 @@ void loop() {
       currentLocation = sensors->getGPS().location;
       nextLocation = waypoints.at(waypoints_id);
 
+      //printLocation();
+
       // change control stragey with distance to target
       /*if (controlStrategy == 'h'){
         movementControl->rudderHeadingControl(sensors, nextLocation);
@@ -192,7 +225,8 @@ void loop() {
       if(currentLocation.latitude != 0 && currentLocation.longitude != 0){
         movementControl->rudderHeadingControl(sensors, nextLocation);
       }
-      movementControl->thrusterControl(sensors);
+      //movementControl->thrusterControl(sensors, nextLocation);
+      movementControl->thrusterControlWind(sensors);
       
       // keep track of distance to target
       lastDistanciaDestino = distanceToTarget;
