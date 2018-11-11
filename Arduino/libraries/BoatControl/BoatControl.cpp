@@ -27,7 +27,7 @@ void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) 
   Serial.println(_currentPosition.longitude);*/
 
   _sp = _navFunc.findHeading(_currentPosition, target); //TODO put navigation functions in another library
-  //Serial.println(_sp);
+  //Serial.print(_sp);   Serial.print("--");
 
   _sp = _navFunc.adjustFrame(_sp);
 
@@ -35,9 +35,12 @@ void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) 
 
   _currentError = _sp - _heading;
   _currentError = _navFunc.adjustFrame(_currentError);
+  _currentError = -_currentError;
+  //Serial.print(_currentError);   Serial.print("--");
  
   rudderAngle = P(_currentError) + I(_currentError);
   rudderAngle = rudderAngleSaturation(rudderAngle);
+  //Serial.println(rudderAngle);
 
   _actuators->setRudderAngle(rudderAngle);
   sensors->setThrusterPower(_actuators->getThrusterPower());
@@ -57,6 +60,7 @@ void BoatControl::rudderVelocityControl(SensorManager *sensors, Location target)
 
   _currentError = _sp - _heading;
   _currentError = _navFunc.adjustFrame(_currentError);
+  //_currentError = -_currentError;
  
   rudderAngle = P(_currentError) + I(_currentError);
   rudderAngle = rudderAngleSaturation(rudderAngle);
@@ -122,3 +126,4 @@ void BoatControl::thrusterControlWind(SensorManager *sensors){
 void BoatControl::initThruster(){
   _actuators->initThruster();
 }
+

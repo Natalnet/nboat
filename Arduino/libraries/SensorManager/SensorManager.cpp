@@ -149,6 +149,9 @@ void SensorManager::logState(){
       dataFile.close();
       //Serial.println(_endTime-_startTime);
       _startTime = millis();
+    } else  {
+      gpsDateCtrl = 0;
+      dataFile.close();
     }
     dataFile.close();
   }

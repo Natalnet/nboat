@@ -65,7 +65,9 @@ char controlStrategy = 'h';
 float headingControlDistance;
 
 void setup() {
-  movementControl = new BoatControl(2,0);
+  movementControl = new BoatControl(3,0);
+  //movementControl = new BoatControl(2,0.2);
+  //movementControl = new BoatControl(2,1);
   movementControl->initThruster();
   delay(5000);
   
@@ -104,9 +106,12 @@ void initImu(){
 }
 
 void experiment_reitoria(){
-  setWaypoint(-5.839573, -35.201287);
+  setWaypoint(-5.839327, -35.201395);
   setWaypoint(-5.839559, -35.201395);
   setWaypoint(-5.839327, -35.201395);
+  setWaypoint(-5.839559, -35.201395);
+  setWaypoint(-5.839327, -35.201395);
+  setWaypoint(-5.839573, -35.201287);
 }
 
 void experiment_tst(){

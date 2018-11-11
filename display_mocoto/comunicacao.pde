@@ -83,7 +83,22 @@ void dataTransfer(){
 
 void saveData(String s){
   try{
-    File file =new File("/home/davi/Desktop/experimentos/"+filename);
+    File file =new File("/home/davi/Desktop/experimentos/"+filename+".csv");
+    if(init == 0){
+      init = 1;
+      if(!file.exists()){
+          file.createNewFile();
+        }
+ 
+        FileWriter fw = new FileWriter(file,true);///true = append
+        BufferedWriter bw = new BufferedWriter(fw);
+        PrintWriter pw = new PrintWriter(bw);
+ 
+        pw.write("Latitude,Longitude,Yaw,Course,WindDir,RudderAngle,SailAngle,Speed,Waypoint,LogState"+"\n");
+ 
+        pw.close();
+        startTime = millis();
+    }
 //chemin = dataPath;
 // positions.txt== your file;
  
@@ -94,8 +109,10 @@ void saveData(String s){
         FileWriter fw = new FileWriter(file,true);///true = append
         BufferedWriter bw = new BufferedWriter(fw);
         PrintWriter pw = new PrintWriter(bw);
+        
+        //float timeStamp = (millis()-startTime)/1000;
  
-        pw.write(s+"\n");
+        pw.write(s+","+millis()+"\n");
  
         pw.close();
  
