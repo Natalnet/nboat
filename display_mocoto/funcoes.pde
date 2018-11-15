@@ -32,7 +32,7 @@ void draw_amarelo(){
    
   text("Trajectory - T | Manual Control - C | Map - M", 5 , 20);
      
-  if(flag){
+  if(autoPilot == 0){
     fill(150,50,50);
     piloto = "off";
   }

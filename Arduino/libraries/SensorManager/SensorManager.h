@@ -52,6 +52,7 @@ class SensorManager
     void SensorManager::setTack(bool isTack);
     void SensorManager::setWaypointId(int waypointId);
     int SensorManager::getWindRaw();
+    void SensorManager::setAutoPilot(int autoPilot);
   private:
     
     wqboatActuatorDrivers *actDrivers;
@@ -83,6 +84,7 @@ class SensorManager
     bool _isTack;
     int _waypointId;
     float _startTime, _endTime;
+    int _autoPilot = 1;
     
 };
 

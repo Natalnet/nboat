@@ -1,5 +1,5 @@
 void dataTransfer(){
-  int QTD_DATA = 10;
+  int QTD_DATA = 11;
     
   if(myPort != null){
     while (myPort.available() > 0) {
@@ -64,6 +64,7 @@ void dataTransfer(){
           speed = Float.parseFloat(subStrings[7]);
           waypointId = Integer.parseInt(subStrings[8]);
           logState = Integer.parseInt(subStrings[9]);
+          autoPilot = Integer.parseInt(subStrings[10]);
           //println(windDir);
         }
         catch(NumberFormatException e) {

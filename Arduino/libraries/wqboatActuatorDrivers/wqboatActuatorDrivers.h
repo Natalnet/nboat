@@ -33,7 +33,7 @@ class wqboatActuatorDrivers
     float _rudderLowerLimit = 130, _rudderUpperLimit = 50; 
 
     //TODO calibrate. lower limit = low power on thruster
-    float _thrusterLowerLimit = 20, _thrusterUpperLimit = 70;
+    float _thrusterLowerLimit = 15, _thrusterUpperLimit = 120;
      //float _thrusterLowerLimit = 95, _thrusterUpperLimit = 100;
 
      int init_thruster = 1;

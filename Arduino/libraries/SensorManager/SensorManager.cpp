@@ -85,6 +85,10 @@ void SensorManager::setWaypointId(int waypointId){
   _waypointId = waypointId;
 }
 
+void SensorManager::setAutoPilot(int autoPilot){
+  _autoPilot = autoPilot;
+}
+
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
 void SensorManager::logState(){
 
@@ -124,7 +128,9 @@ void SensorManager::logState(){
       dataFile.print("Gyro_z");           dataFile.print(",");
       dataFile.print("Mag_x");            dataFile.print(",");
       dataFile.print("Mag_y");            dataFile.print(",");
-      dataFile.println("Mag_z");
+      dataFile.print("Mag_z");            dataFile.print(",");
+      dataFile.print("Going to waypoint");   dataFile.print(",");
+      dataFile.println("Autopilot on?");
       //dataFile.println("Tacking?");
       //digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
     }
@@ -161,7 +167,9 @@ void SensorManager::logState(){
       dataFile.print(imu1->get().gyro_z, 2);                dataFile.print(",");
       dataFile.print(imu1->get().mag_x, 2);                 dataFile.print(",");
       dataFile.print(imu1->get().mag_y, 2);                 dataFile.print(",");
-      dataFile.print(imu1->get().mag_x, 2);                 dataFile.print("\n");
+      dataFile.print(imu1->get().mag_x, 2);                 dataFile.print(",");
+      dataFile.print(_waypointId);                          dataFile.print(",");
+      dataFile.print(_autoPilot);                           dataFile.print("\n");
       delay(20);
      
       dataFile.close();
@@ -230,5 +238,7 @@ void SensorManager::sendState()
   Serial.print(_waypointId); 
   Serial.print(",");
   Serial.print(gpsDateCtrl); 
+  Serial.print(",");
+  Serial.print(_autoPilot); 
   Serial.print("}");
 }

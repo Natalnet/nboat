@@ -114,10 +114,10 @@ void initImu(){
 void experiment_reitoria(){
   setWaypoint(-5.839327, -35.201395);
   setWaypoint(-5.839559, -35.201395);
-  setWaypoint(-5.839327, -35.201395);
+  /*setWaypoint(-5.839327, -35.201395);
   setWaypoint(-5.839559, -35.201395);
   setWaypoint(-5.839327, -35.201395);
-  setWaypoint(-5.839573, -35.201287);
+  setWaypoint(-5.839573, -35.201287);*/
 }
 
 void experiment_tst(){
@@ -245,7 +245,9 @@ void loop() {
         }
         //movementControl->thrusterControl(sensors, nextLocation);
         movementControl->thrusterControlWind(sensors);
+        sensors->setAutoPilot(1);
       } else {
+        sensors->setAutoPilot(0);
         movementControl->thrusterRCControl(sensors, channel[1]);
         movementControl->rudderRCControl(sensors, channel[2]);
       }
