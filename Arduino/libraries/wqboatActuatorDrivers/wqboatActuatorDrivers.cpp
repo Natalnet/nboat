@@ -49,7 +49,7 @@ void wqboatActuatorDrivers::setThrusterPower(float thrusterPower){
 
 void wqboatActuatorDrivers::initThruster(){
   //rudder.write((_rudderLowerLimit + _rudderUpperLimit)/2);
-  thruster.write(30);
+  thruster.write(10);
   //delay(3000);
 }
 

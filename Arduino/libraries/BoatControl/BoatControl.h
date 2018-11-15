@@ -23,6 +23,8 @@ class BoatControl
     void rudderVelocityControl(SensorManager *sensors, Location target);
     void thrusterControl(SensorManager *sensors, Location target);
     void thrusterControlWind(SensorManager *sensors);
+    void rudderRCControl(SensorManager *sensors, double rudderPWM);
+    void thrusterRCControl(SensorManager *sensors, double thrusterPWM);
     float P(float currentError);
     float I(float currentError);
     void setDistanceToTarget(float distance);

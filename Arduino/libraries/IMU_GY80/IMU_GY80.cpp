@@ -57,6 +57,15 @@ void IMU_GY80::read(){
     _imuData.temperature = temperature;
     _imuData.pressure = pressure;
     _imuData.altitude = altitude;
+    _imuData.accel_x = Accel_Vector[0];
+    _imuData.accel_y = Accel_Vector[1];
+    _imuData.accel_z = Accel_Vector[2];
+    _imuData.gyro_x = Gyro_Vector[0];
+    _imuData.gyro_y = Gyro_Vector[1];
+    _imuData.gyro_z = Gyro_Vector[2];
+    _imuData.mag_x = magnetom[0];
+    _imuData.mag_y = magnetom[1];
+    _imuData.mag_z = magnetom[2];
 
 /*    _imuData.eulerAngles.yaw = TO_DEG(yaw);
     _imuData.eulerAngles.pitch = TO_DEG(pitch);

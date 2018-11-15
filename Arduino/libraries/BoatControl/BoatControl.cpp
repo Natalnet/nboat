@@ -123,6 +123,16 @@ void BoatControl::thrusterControlWind(SensorManager *sensors){
   //Serial.println(map(sensors->getWind().direction, 0, 180, 0, 100));
 }
 
+void BoatControl::rudderRCControl(SensorManager *sensors, double rudderPWM){
+  _actuators->setRudderAngle(-map(rudderPWM, 894, 2088, -90, 90));
+  sensors->setThrusterPower(_actuators->getThrusterPower());
+}
+
+void BoatControl::thrusterRCControl(SensorManager *sensors, double thrusterPWM){
+  _actuators->setThrusterPower(map(thrusterPWM, 1094, 1888, 0, 100));
+  sensors->setRudderAngle(_actuators->getRudderAngle());
+}
+
 void BoatControl::initThruster(){
   _actuators->initThruster();
 }

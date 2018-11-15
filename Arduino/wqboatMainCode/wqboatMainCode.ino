@@ -3,6 +3,8 @@
 #include "NavigationFunctions.h"
 #include <medianFilter.h>
 
+double channel[3];
+
 //ANEMOMETER SETUP
   medianFilter Filter;
   float radius = 0.055; //m from center pin to middle of cup
@@ -65,6 +67,10 @@ char controlStrategy = 'h';
 float headingControlDistance;
 
 void setup() {
+  pinMode(34, INPUT);
+  pinMode(35, INPUT);
+  pinMode(36, INPUT);
+  
   movementControl = new BoatControl(3,0);
   //movementControl = new BoatControl(2,0.2);
   //movementControl = new BoatControl(2,1);
@@ -175,6 +181,9 @@ void loop() {
   
   while (1) {
     sensors->read();
+    channel[0] = pulseIn(34, HIGH);
+    channel[1] = pulseIn(35, HIGH);
+    channel[2] = pulseIn(36, HIGH);
     //readWindSpeed();
 
     if (tCheck(&t_func2)){
@@ -184,6 +193,9 @@ void loop() {
     }
     
     if (tCheck(&t_func1)) {
+      /*Serial.print("Channel 0 "); Serial.println(channel[0]);
+      Serial.print("Channel 1 "); Serial.println(channel[1]);
+      Serial.print("Channel 2 "); Serial.println(channel[2]);*/
       sensors->logState();
       sensors->sendState();
       
@@ -226,12 +238,17 @@ void loop() {
       //movementControl->rudderHeadingControl(sensors, nextLocation);
       //movementControl->thrusterControl(sensors, nextLocation);
       //movementControl->thrusterControl(sensors);
-      
-      if(currentLocation.latitude != 0 && currentLocation.longitude != 0){
-        movementControl->rudderHeadingControl(sensors, nextLocation);
+
+      if(channel[0] < 1500){
+        if(currentLocation.latitude != 0 && currentLocation.longitude != 0){
+          movementControl->rudderHeadingControl(sensors, nextLocation);
+        }
+        //movementControl->thrusterControl(sensors, nextLocation);
+        movementControl->thrusterControlWind(sensors);
+      } else {
+        movementControl->thrusterRCControl(sensors, channel[1]);
+        movementControl->rudderRCControl(sensors, channel[2]);
       }
-      //movementControl->thrusterControl(sensors, nextLocation);
-      movementControl->thrusterControlWind(sensors);
       
       // keep track of distance to target
       lastDistanciaDestino = distanceToTarget;

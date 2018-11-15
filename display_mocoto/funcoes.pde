@@ -139,6 +139,9 @@ void draw_mapa(){
     float lat_aux, lon_aux;
     image(lagoa,width-larg,height-alt,larg,alt);
     
+    //latitude = -5.839370;
+    //longitude = -35.201460;
+    
     lat_aux = latitude % 1;
     lat_aux = lat_aux*1000;
     lat_aux = lat_aux % 1;
@@ -151,8 +154,8 @@ void draw_mapa(){
     lon_aux = lon_aux*1000;
     lon_aux = floor(abs(lon_aux));
     
-    point_x = map(lat_aux, lon_min, lon_max, pixel_x_min, pixel_x_max);
-    point_y = map(lon_aux, lat_min, lat_max, pixel_y_min, pixel_y_max);
+    point_x = map(lon_aux, lon_min, lon_max, pixel_x_min, pixel_x_max);
+    point_y = map(lat_aux, lat_min, lat_max, pixel_y_min, pixel_y_max);
     
     strokeWeight(4); 
     stroke(50,50,150);

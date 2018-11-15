@@ -115,7 +115,16 @@ void SensorManager::logState(){
       dataFile.print("Magnetometer Heading");   dataFile.print(",");
       dataFile.print("Temperature");      dataFile.print(",");
       dataFile.print("Pressure");         dataFile.print(",");
-      dataFile.println("Altitude");         //dataFile.print(",");
+      dataFile.print("Altitude");         dataFile.print(",");
+      dataFile.print("Accel_x");          dataFile.print(",");
+      dataFile.print("Accel_y");          dataFile.print(",");
+      dataFile.print("Accel_z");          dataFile.print(",");
+      dataFile.print("Gyro_x");           dataFile.print(",");
+      dataFile.print("Gyro_y");           dataFile.print(",");
+      dataFile.print("Gyro_z");           dataFile.print(",");
+      dataFile.print("Mag_x");            dataFile.print(",");
+      dataFile.print("Mag_y");            dataFile.print(",");
+      dataFile.println("Mag_z");
       //dataFile.println("Tacking?");
       //digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
     }
@@ -143,7 +152,16 @@ void SensorManager::logState(){
       dataFile.print(imu1->get().heading, 2);               dataFile.print(",");
       dataFile.print(imu1->get().temperature, 2);           dataFile.print(",");      
       dataFile.print(imu1->get().pressure, 2);              dataFile.print(",");
-      dataFile.print(imu1->get().altitude, 2);              dataFile.print("\n");
+      dataFile.print(imu1->get().altitude, 2);              dataFile.print(",");
+      dataFile.print(imu1->get().accel_x, 2);               dataFile.print(",");
+      dataFile.print(imu1->get().accel_y, 2);               dataFile.print(",");
+      dataFile.print(imu1->get().accel_z, 2);               dataFile.print(",");
+      dataFile.print(imu1->get().gyro_x, 2);                dataFile.print(",");
+      dataFile.print(imu1->get().gyro_y, 2);                dataFile.print(",");
+      dataFile.print(imu1->get().gyro_z, 2);                dataFile.print(",");
+      dataFile.print(imu1->get().mag_x, 2);                 dataFile.print(",");
+      dataFile.print(imu1->get().mag_y, 2);                 dataFile.print(",");
+      dataFile.print(imu1->get().mag_x, 2);                 dataFile.print("\n");
       delay(20);
      
       dataFile.close();
