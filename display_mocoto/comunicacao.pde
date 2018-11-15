@@ -95,7 +95,7 @@ void saveData(String s){
         BufferedWriter bw = new BufferedWriter(fw);
         PrintWriter pw = new PrintWriter(bw);
  
-        pw.write("Latitude,Longitude,Yaw,Course,WindDir,RudderAngle,SailAngle,Speed,Waypoint,LogState"+"\n");
+        pw.write("Latitude,Longitude,Yaw,Course,WindDir,RudderAngle,SailAngle,Speed,Waypoint,LogState,Autopilot,TimeStamp"+"\n");
  
         pw.close();
         startTime = millis();

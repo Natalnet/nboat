@@ -71,13 +71,13 @@ void setup() {
   pinMode(35, INPUT);
   pinMode(36, INPUT);
   
-  movementControl = new BoatControl(3,0);
+  movementControl = new BoatControl(2,0);
   //movementControl = new BoatControl(2,0.2);
   //movementControl = new BoatControl(2,1);
   movementControl->initThruster();
   delay(5000);
   
-  desiredDistance = 5;
+  desiredDistance = 10;
   headingControlDistance = 15;
   wqMeasureTime = -1;
   wqMeasureTime *= 1000;  //from ms to s
@@ -112,8 +112,8 @@ void initImu(){
 }
 
 void experiment_reitoria(){
-  setWaypoint(-5.839327, -35.201395);
   setWaypoint(-5.839559, -35.201395);
+  setWaypoint(-5.839327, -35.201395);
   /*setWaypoint(-5.839327, -35.201395);
   setWaypoint(-5.839559, -35.201395);
   setWaypoint(-5.839327, -35.201395);
