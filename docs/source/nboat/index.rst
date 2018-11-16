@@ -1,6 +1,7 @@
 
 .. _nboat:
 
+*******************
 Nboat (Version 2.0)
 *******************
 
@@ -14,18 +15,18 @@ Below, we explain with details some of this journey of build such a complex robo
 
 
 Contruction
---------
+===========
 
 contracting experienced sailors, some with real world experience and the other with a more technical background.
 
 Electrics
---------
+===========
 
 Electronics
---------
+===========
 
 Testing
---------
+===========
 
 .. image:: ./images/wam.png
     :align: center

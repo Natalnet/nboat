@@ -1,6 +1,7 @@
 
 .. _publications:
 
+************
 Publications
 ************
 
