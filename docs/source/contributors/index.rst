@@ -1,7 +1,8 @@
 
-========================
+
 Contributors
-========================
+************
+
  
 The list of contributors to this project.
 
@@ -9,7 +10,7 @@ The list of contributors to this project.
 
     * @Andouglas Costa
 
-	* `@Davi Henrique <https://.github.com/davihdsantos/>`
+	* @Davi Henrique
 
     * @João Moreno
 

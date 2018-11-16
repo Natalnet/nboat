@@ -1,9 +1,8 @@
 
 .. _nboat:
 
-=========================
 Nboat (Version 2.0)
-=========================
+*******************
 
 After testing some of the methods for sailboat navigation in a reduced model we (and some financial problems) we finally started to build the 2 meters platform we would eventually use in real world applications.
 

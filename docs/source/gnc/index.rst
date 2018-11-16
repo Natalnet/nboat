@@ -1,9 +1,9 @@
 
 .. _GNC:
 
-=========================
 Guidance, Navigation and Control
-=========================
+********************************
+
 
 
 .. image:: ./images/diluvio.png
