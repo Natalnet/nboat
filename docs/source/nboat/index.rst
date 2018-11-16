@@ -27,8 +27,3 @@ Electronics
 
 Testing
 ===========
-
-.. image:: ./images/wam.png
-    :align: center
-
-

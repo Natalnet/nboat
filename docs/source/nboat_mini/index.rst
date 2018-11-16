@@ -98,4 +98,3 @@ Some of it might seem obvious but...
 * If you're developing any navigation techniques for a robot TEST IT FIRST IN SIMULATION. It will save you a lot of time
 
 * If you're going to perform ANY outdoor experiment (especially in the water) CAREFULLY PREPARE you fucking robot and PLAN the fucking mission back to back. In this way you'll take the most out of the experiment
-
