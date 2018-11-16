@@ -1,7 +1,3 @@
-*************************
-Introduction and Summary
-*************************
-
 About the project
 =================
 
@@ -9,7 +5,7 @@ The Nboat Project started in 2013. Our main goal is to develop robots that moves
 
 Further, our plataforms will be used to help researchers in applications such as water quality evaluation and coastal survailancy. Our secondary goal is to participate in various autonomous robots competitions such as the Microtransat Challenge, IRSC and WRSC. The Nboat project is partially funded by CNPq and CAPES.
 
-.. image:: ./source/our_sailboats/images/nboat2.png
+.. image:: ./source/our_robots/images/nboat2.png
     :scale: 50 %
     :align: center
     :alt: Nboat platform.
@@ -25,17 +21,17 @@ Summary
 =================
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
     
-   source/our_robots/index
-   source/nboat_mini/index
-   source/nboat/index
-   source/gnc/index
-   source/water_sensors/index
-   source/obstacle_detection/index
-   source/simulation/index
-   source/publications/index
-   source/contributors/index
+   source/our_robots/index.rts
+   source/nboat_mini/index.rts
+   source/nboat/index.rts
+   source/gnc/index.rts
+   source/water_sensors/index.rts
+   source/obstacle_detection/index.rts
+   source/simulation/index.rts
+   source/publications/index.rts
+   source/contributors/index.rts
 
 
 Disclaimer

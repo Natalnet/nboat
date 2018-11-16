@@ -1,9 +1,9 @@
 
     .. _nboatmini:
 
-*******
+********
 Nboat I
-*******
+********
 
 In the beginnings of Nboat project our idea was to first develop a sailboat model in small scale and then test and validate the hardware, mainly compose of the microcontrollers and sensors, and software, composed of the navigation system and the movement control strategies.
 
