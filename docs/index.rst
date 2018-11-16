@@ -1,10 +1,12 @@
 Introduction and Summary
 *************************
 
+a
 
 Nboat Documentation
 ===================
 
+a
 
 About the project
 -----------------
@@ -24,21 +26,22 @@ NatalNet -- UFRN
 
 Located in the UFRN (Federal University of Rio Grande do Norte, Brazil), the NatalNet Associated laboratories are comprised of many reseach groups. They are mainly focused in reseach involving computer vision, educational robotics and mobile robotics in general. For more details on NatalNet Laboratories see http://www.natalnet.br/home/.
 
-Summary
---------
+.. 
+  Summary
+  --------
 
-.. toctree::
-   :maxdepth: 3
-    
-   source/our_robots/index
-   source/nboat_mini/index
-   source/nboat/index
-   source/gnc/index
-   source/water_sensors/index
-   source/obstacle_detection/index
-   source/simulation/index
-   source/publications/index
-   source/contributors/index
+  .. toctree::
+     :maxdepth: 3
+      
+     source/our_robots/index
+     source/nboat_mini/index
+     source/nboat/index
+     source/gnc/index
+     source/water_sensors/index
+     source/obstacle_detection/index
+     source/simulation/index
+     source/publications/index
+     source/contributors/index
 
 
 Disclaimer
