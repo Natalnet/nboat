@@ -1,7 +1,7 @@
 
-************
+============
 Contributors
-************
+============
 
  
 The list of contributors to this project.
