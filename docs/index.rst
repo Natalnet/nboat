@@ -23,15 +23,15 @@ Summary
 .. toctree::
    :maxdepth: 2
     
-   source/our_robots/index.rts
-   source/nboat_mini/index.rts
-   source/nboat/index.rts
-   source/gnc/index.rts
-   source/water_sensors/index.rts
-   source/obstacle_detection/index.rts
-   source/simulation/index.rts
-   source/publications/index.rts
-   source/contributors/index.rts
+   source/our_robots/index
+   source/nboat_mini/index
+   source/nboat/index
+   source/gnc/index
+   source/water_sensors/index
+   source/obstacle_detection/index
+   source/simulation/index
+   source/publications/index
+   source/contributors/index
 
 
 Disclaimer
