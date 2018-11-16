@@ -24,7 +24,7 @@ At the beggining we bought a comerctial RC controlled sailboat called RC Moonsoo
 We first tried to brute force opena an aperture in the front of the sailboat to better allow the intruction of our needed eletronics as shown in the image bellow. 
 
 .. image:: ./images/2.jpg
-    :scale: 75 %
+    :scale: 10 %
     :align: center
 
 After some experiments we realized that this wanst enough, because as soon as the water get inside the hull, our eletrocnits would be affected. So we decided to buil a safer compartiment in the same area to isolate our eletronics from watter.
@@ -34,7 +34,7 @@ After some experiments we realized that this wanst enough, because as soon as th
     :align: center
 
 .. image:: ./images/4.jpg
-    :scale: 75 %
+    :scale: 10 %
     :align: center
 
 .. image:: ./images/5.jpg
