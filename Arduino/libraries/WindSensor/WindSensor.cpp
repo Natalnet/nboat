@@ -98,3 +98,44 @@ float WindSensor::getDirectionSigned(){
 int WindSensor::getDirectionRaw(){
   return windvaneRead;
 }
+
+/*void wSpeedIRQ()
+{
+  if (!millis()-lastWindIRQ<10)                      //Debounce the wind interrupt switch for 10ms after contact
+  {
+    lastWindIRQ = millis();                          //Set up last wind interrupt for the next interrupt
+    windClickNo++;                                   //Each click per second is 1.492MPH
+  }
+}
+
+float get_wind_speed()
+{
+  float windSpeed = 0;
+  float dTime = millis()-lastWindChk;    
+  dTime /= 1000.0;                                  //Covert ms to sec    
+  windSpeed = (float)windClickNo / dTime;           //3 / 0.750s = 4    
+  windClickNo = 0;                                  //Reset and start watching for new wind
+  lastWindChk = millis();    
+  //windSpeed *= 1.492;                               //Calculates the actual wind speed in mph (2 * 1.492 = 2.984mph)    
+  return(windSpeed);
+}
+
+void readWindSpeed(){
+    if (millis() - lastmillis == 1000) { //Update every one second, this will be equal to reading frequency (Hz).
+    detachInterrupt(0);//Disable interrupt when calculating
+    
+//    revolutions=Filter.run(revolutions);
+    rpm = revolutions * 120; // Convert frequency to RPM, note: 60 works for one interruption per full rotation. For two interrupts per full rotation use half_revolutions * 30.
+    revolutions = 0; // Restart the RPM counter
+    lastmillis = millis(); // Update lastmillis
+    attachInterrupt(0, rpm_fan, FALLING); //enable interrupt
+    mps = 2*3.14*radius*rpm / 60;
+    mps = mps * 0.3; // calibration factor for anemometer accuracy, adjust as necessary
+  }
+  sensors->setWindSpeed(mps);
+}
+
+void rpm_fan() {
+  revolutions++;
+}
+*/

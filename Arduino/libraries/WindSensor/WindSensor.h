@@ -30,6 +30,19 @@ class WindSensor
     float starttime, endtime, windSpeed, windDirection, _windDirectionSigned;
     int buttonState, buttonState_ant, windvaneRead, windvaneReadAnt;
     WindData _windData;
+
+  /*
+  //ANEMOMETER SETUP
+  //medianFilter Filter;
+  float radius = 0.055; //m from center pin to middle of cup
+  float mps;
+  int revolutions = 0;
+  int rpm = 0;
+  unsigned long lastmillis = 0;
+  
+  long lastWindIRQ=0;
+  long lastWindChk=0;
+  long windClickNo=0;*/
 };
 
 #endif

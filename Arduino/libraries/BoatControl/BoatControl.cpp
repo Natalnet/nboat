@@ -21,7 +21,7 @@ BoatControl::BoatControl(float kp, float ki){
 void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) {
   sensors->setThrusterPower(_actuators->getThrusterPower());
 
-  _currentPosition = sensors->getGPS().location; // TODO in case of exception (or null response...)
+  _currentPosition = sensors->_GPSData.location; // TODO in case of exception (or null response...)
   /*Serial.print(_currentPosition.latitude);
   Serial.print(" ");
   Serial.println(_currentPosition.longitude);*/
@@ -31,11 +31,11 @@ void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) 
 
   _sp = _navFunc.adjustFrame(_sp);
 
-  _heading = sensors->getIMU().eulerAngles.yaw;
+  _heading = sensors->_IMUData.eulerAngles.yaw;
 
   _currentError = _sp - _heading;
   _currentError = _navFunc.adjustFrame(_currentError);
-  _currentError = -_currentError;
+//  _currentError = -_currentError;
   //Serial.print(_currentError);   Serial.print("--");
  
   rudderAngle = P(_currentError) + I(_currentError);
@@ -49,14 +49,14 @@ void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) 
 void BoatControl::rudderVelocityControl(SensorManager *sensors, Location target) {
   sensors->setThrusterPower(_actuators->getThrusterPower());
 
-  _currentPosition = sensors->getGPS().location; // TODO in case of exception (or null response...)
+  _currentPosition = sensors->_GPSData.location; // TODO in case of exception (or null response...)
 
   _sp = _navFunc.findHeading(_currentPosition, target);
 
   _sp = _navFunc.adjustFrame(_sp);
 
 //  _heading = sensors->getIMU().eulerAngles.yaw;
-  _heading = sensors->getGPS().course;
+  _heading = sensors->_GPSData.course;
 
   _currentError = _sp - _heading;
   _currentError = _navFunc.adjustFrame(_currentError);
@@ -81,12 +81,14 @@ float BoatControl::I(float currentError)
   _starttime = millis();
   if ((I_prior > 0 && currentError < 0) || (I_prior < 0 && currentError > 0))
   {
-    I_prior = I_prior + _ki * currentError * 5 * _cycleTime;
+    I_prior = I_prior + _ki * currentError * 10 * _cycleTime;
   }
   else
   {
     I_prior = I_prior + _ki * currentError * _cycleTime;
   }
+  //if (I_prior > 90) {I_prior = 90;}
+  //if (I_prior < -90) {I_prior = -90;}
   return I_prior;
 }
 
@@ -103,7 +105,7 @@ float BoatControl::rudderAngleSaturation(float sensor) {
 void BoatControl::thrusterControl(SensorManager *sensors, Location target){
   // get distance to target
   sensors->setRudderAngle(_actuators->getRudderAngle());
-  _currentPosition = sensors->getGPS().location; // TODO in case of exception (or null response...)
+  _currentPosition = sensors->_GPSData.location; // TODO in case of exception (or null response...)
 
   _distanceToTarget = _navFunc.findDistance(_currentPosition, target);
   
@@ -119,7 +121,7 @@ void BoatControl::thrusterControl(SensorManager *sensors, Location target){
 void BoatControl::thrusterControlWind(SensorManager *sensors){
   // get distance to target
   sensors->setRudderAngle(_actuators->getRudderAngle());
-  _actuators->setThrusterPower(map(sensors->getWind().direction, 0, 180, 0, 100));
+  _actuators->setThrusterPower(map(sensors->_windData.direction, 0, 180, 0, 100));
   //Serial.println(map(sensors->getWind().direction, 0, 180, 0, 100));
 }
 

@@ -96,10 +96,10 @@ IMUData IMU_GY80::get(){
 }
 
 void IMU_GY80::read_sensors() {
-  Read_Pressure();
-  Read_Gyro(); // Read gyroscope
-  Read_Accel(); // Read accelerometer
-  Read_Magn(); // Read magnetometer
+  //Read_Pressure();
+  //Read_Gyro(); // Read gyroscope
+  //Read_Accel(); // Read accelerometer
+  //Read_Magn(); // Read magnetometer
   //ApplySensorMapping();  
 }
 

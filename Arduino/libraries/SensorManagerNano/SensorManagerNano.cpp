@@ -1,6 +1,6 @@
 /*
 
-  SensorManager.cpp - Library for getting curent heading from Compass model HMC6352.
+  SensorManagerNano.cpp - Library for getting curent heading from Compass model HMC6352.
   Created by Davi H. dos Santos, March 25, 2018.
   BSD license, all text above must be included in any redistribution.
 
@@ -8,19 +8,18 @@
 
 
 #include "Arduino.h"
-#include "SensorManager.h"
+#include "SensorManagerNano.h"
 
-SensorManager::SensorManager(){
+SensorManagerNano::SensorManagerNano(){
   SD.begin(48);
   imu1 = new IMU_GY80();
-  pinMode(LED_BUILTIN, OUTPUT); 
 }
 
 //TODO
-bool SensorManager::checkSensors(){
+bool SensorManagerNano::checkSensors(){
 }
 
-void SensorManager::read(){
+void SensorManagerNano::read(){
   gps1.read();
   //compass1.read();
   wind.read();
@@ -28,121 +27,12 @@ void SensorManager::read(){
   imu1->read();
 }
 
-void SensorManager::readFromSerial(){
-  Serial.begin(57600);
-  while(Serial.available() <= 0){
-    Serial.println("f");
-  }
-  delay(50);
-  if(Serial.available() > 2){
-    call[0] = Serial.parseFloat();
-    call[1] = Serial.parseFloat();
-    call[2] = Serial.parseFloat();
-    call[3] = Serial.parseFloat();
-    call[4] = Serial.parseFloat();
-    call[5] = Serial.parseFloat();
-    call[6] = Serial.parseFloat();
-    call[7] = Serial.parseFloat();
-    call[8] = Serial.parseFloat();
-    call[9] = Serial.parseFloat();
-    call[10] = Serial.parseFloat();
-    call[11] = Serial.parseFloat();
-    call[12] = Serial.parseFloat();
-    call[13] = Serial.parseFloat();
-    call[14] = Serial.parseFloat();
-    call[15] = Serial.parseFloat();
-    call[16] = Serial.parseFloat();
-    call[17] = Serial.parseFloat();
-    _date = Serial.parseFloat();
-    Serial.end();
-  }
-  setGPSData(call[0], call[1], call[2], call[3], call[4], _date);
-  setIMUData(call[5], call[6], call[7], call[8], call[9], call[10], call[11], call[12], call[13], call[14], call[15], call[16]);
-  setWindData(call[17]);
-}
-
-void SensorManager::setGPSData(float lat, float lon, float course, float speed, float altitude, String date){
-  _GPSData.location.latitude = lat;
-  _GPSData.location.longitude = lon;
-  _GPSData.course = course;
-  _GPSData.speed = speed;
-  _GPSData.altitude = altitude;
-  _GPSData.date = date;
-}
-
-void SensorManager::setIMUData(float accel_x, float accel_y, float accel_z, float gyro_x, float gyro_y, float gyro_z, float mag_x, float mag_y, float mag_z, float temperature, float pressure, float altitude){
-  _IMUData.accel_x = accel_x;
-  _IMUData.accel_y = accel_y;
-  _IMUData.accel_z = accel_z;
-  _IMUData.gyro_x = gyro_x;
-  _IMUData.gyro_y = gyro_y;
-  _IMUData.gyro_z = gyro_z;
-  _IMUData.mag_x = mag_x;
-  _IMUData.mag_y = mag_y;
-  _IMUData.mag_z = mag_z;
-  _IMUData.temperature = temperature;
-  _IMUData.pressure = pressure;
-  _IMUData.altitude = altitude;
-}
-
-void SensorManager::setWindData(float windDir){
-  _windData.direction = windDir;
-}
-
-void SensorManager::readImu(){
+void SensorManagerNano::readImu(){
   imu1->read();
 }
 
-GPSData SensorManager::getGPS(){
-  return gps1.get();
-}
-
-Pose SensorManager::getMagnetometer(){
-//  return magnetometer1.get();
-}
-
-float SensorManager::getCompass(){
- // return compass1.getHeading();
-}
-
-WindData SensorManager::getWind(){
-  return wind.get();
-}
-
-int SensorManager::getWindRaw(){
-  return wind.getDirectionRaw();
-}
-
-IMUData SensorManager::getIMU(){
-  return imu1->get();
-}
-
-void SensorManager::setThrusterPower(float thrusterPower){
-  _thrusterPower = thrusterPower;
-}
-
-void SensorManager::setRudderAngle(float rudderAngle){
-  _rudderAngle = rudderAngle;
-}
-
-void SensorManager::setWindSpeed(float windSpeed){
-  _windData.speed = windSpeed;
-}
-
-void SensorManager::setTack(bool isTack){
-  _isTack = isTack;
-}
-
-void SensorManager::setWaypointId(int waypointId){
-  _waypointId = waypointId;
-}
-
-void SensorManager::setAutoPilot(int autoPilot){
-  _autoPilot = autoPilot;
-}
-
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
-void SensorManager::logState(){
+void SensorManagerNano::logState(){
 
 //gps1.get().location.latitude != 0 && gps1.get().location.longitude != 0 && 
   if (gpsDateCtrl == 0) {
@@ -236,9 +126,9 @@ void SensorManager::logState(){
   dataFile.close();
 }
 
-void SensorManager::printState()
+void SensorManagerNano::printState()
 {
-  	Serial.print(gps1.get().dateFull); 
+  Serial.print(gps1.get().dateFull); 
  	Serial.print(" ");
 	Serial.print(gps1.get().location.latitude, 6);
 	Serial.print(" ");
@@ -268,34 +158,7 @@ void SensorManager::printState()
 	Serial.println(_waypointId); 
 }
 
-void SensorManager::sendStateToBase()
-{
-  Serial.print("{");
-  Serial.print(gps1.get().location.latitude, 6);
-  Serial.print(",");
-  Serial.print(gps1.get().location.longitude, 6);
-  Serial.print(",");
-  Serial.print(imu1->get().eulerAngles.yaw, 2);
-  Serial.print(",");
-  Serial.print(gps1.get().course, 2);
-  Serial.print(",");
-  Serial.print(wind.getDirectionSigned(), 2);
-  Serial.print(",");
-  Serial.print(_rudderAngle, 2);
-  Serial.print(",");
-  Serial.print(_thrusterPower, 2);
-  Serial.print(",");
-  Serial.print(gps1.get().speed, 2); 
-  Serial.print(",");
-  Serial.print(_waypointId); 
-  Serial.print(",");
-  Serial.print(gpsDateCtrl); 
-  Serial.print(",");
-  Serial.print(_autoPilot); 
-  Serial.print("}");
-}
-
-void SensorManager::sendStateToMaster()
+void SensorManagerNano::sendStateToMaster()
 {
   Serial.println(gps1.get().location.latitude, 6);
   Serial.println(gps1.get().location.longitude, 6);
@@ -305,4 +168,3 @@ void SensorManager::sendStateToMaster()
   Serial.println(wind.getDirectionSigned(), 2);
   Serial.println(float(gpsDateCtrl), 2);
 }
-

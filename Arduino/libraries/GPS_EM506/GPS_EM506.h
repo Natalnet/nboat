@@ -13,6 +13,7 @@
 #include "TinyGPS.h"
 #include "Location.h"
 #include "GPSData.h"
+#include <SoftwareSerial.h>
 
 class GPS_EM506
 {
@@ -23,6 +24,7 @@ class GPS_EM506
     GPSData get();
 
   private:
+    SoftwareSerial *ss;
     int _year;
     byte _day, _month, _hour, _minute, _second, _hundredths;
     unsigned long _age;
@@ -33,7 +35,7 @@ class GPS_EM506
     int c;
     GPSData _gpsData;
     Location _p1;
-    float heading, _gpsCourse, _gpsSpeed;
+    float heading, _gpsCourse, _gpsSpeed, _gpsAltitude;
 };
 
 #endif

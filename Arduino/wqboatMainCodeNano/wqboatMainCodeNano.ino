@@ -2,7 +2,9 @@
 #include "SensorManager.h"
 #include "NavigationFunctions.h"
 
+//READ RC CHANNELS
 double channel[3];
+
 
 //INSTATIATING LIBS
   BoatControl *movementControl;
@@ -59,31 +61,23 @@ void setup() {
   movementControl = new BoatControl(5,0.5);
   //movementControl = new BoatControl(2,0.2);
   //movementControl = new BoatControl(2,1);
+
   movementControl->initThruster();
-  //delay(5000);
+  delay(5000);
   
   desiredDistance = 5;
   headingControlDistance = 15;
-  wqMeasureTime = -1;
-  wqMeasureTime *= 1000;  //from ms to s
 
   experiment_reitoria();
   //angles_test();
   //experiment_tst();
   //experiment1();
   //experiment2();
-  
 
+  
   sensors = new SensorManager();
   Serial.begin(9600);
-  //initImu();
-  //Serial1.begin(9600);
   
-  //pinMode(2, INPUT_PULLUP);
-  //attachInterrupt(0, rpm_fan, FALLING);
-  //attachInterrupt(0, wSpeedIRQ, FALLING);
-  //interrupts();
-  testTimer = millis();
 }
 
 void experiment_reitoria(){
@@ -155,11 +149,11 @@ void loop() {
 
   
   while (1) {
-    sensors->readFromSerial();
     channel[0] = pulseIn(34, HIGH);
     channel[1] = pulseIn(35, HIGH);
     channel[2] = pulseIn(36, HIGH);
-    //readWindSpeed();
+
+    sensors->readFromSerial();
     
     if (tCheck(&t_func1)) {      
       //sensors->sendStateToBase();
