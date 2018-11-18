@@ -1,23 +1,16 @@
-#include <SD.h>
-#include <SPI.h>
-
-//include all sensors lib available
-//#include "Mag_HMC5883L.h"
-//#include "Compass_HMC6352.h"
 #include "GPS_EM506.h"
 #include "WindSensor.h"
-#include "IMU_GY80Nano.h"
-//#include "IMU_RAZOR.h"
+#include "IMU_GY80.h"
 
 
 //INSTATIATING LIBS
 GPS_EM506 gps;
-IMU_GY80Nano *imu;
+IMU_GY80 *imu;
 WindSensor wind;
 
 
 void setup() {
-  imu = new IMU_GY80Nano();
+  imu = new IMU_GY80();
   Serial.begin(57600);
 }
 
