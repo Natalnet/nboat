@@ -75,7 +75,7 @@ void setup() {
   //movementControl = new BoatControl(2,0.2);
   //movementControl = new BoatControl(2,1);
   movementControl->initThruster();
-  delay(5000);
+  //delay(5000);
   
   desiredDistance = 10;
   headingControlDistance = 15;
@@ -196,8 +196,8 @@ void loop() {
       /*Serial.print("Channel 0 "); Serial.println(channel[0]);
       Serial.print("Channel 1 "); Serial.println(channel[1]);
       Serial.print("Channel 2 "); Serial.println(channel[2]);*/
-      sensors->logState();
-      sensors->sendState();
+      //sensors->logState();
+      //sensors->sendState();
       
       //sensors->printState();
 

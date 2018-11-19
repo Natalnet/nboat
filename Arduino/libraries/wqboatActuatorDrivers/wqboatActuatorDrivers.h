@@ -27,7 +27,7 @@ class wqboatActuatorDrivers
     void initThruster();
   private:
     Servo rudder, thruster;
-    int _rudderPin = 8, _thrusterPin = 9;
+    int _rudderPin = 12, _thrusterPin = 9;
 
      //TODO calibrate. lower limit = boat turns counterclockwise
     float _rudderLowerLimit = 130, _rudderUpperLimit = 50; 
