@@ -12,53 +12,46 @@
 
 SensorManager::SensorManager(){
   SD.begin(48);
-  imu1 = new IMU_GY80();
   pinMode(LED_BUILTIN, OUTPUT); 
 }
 
-//TODO
-bool SensorManager::checkSensors(){
-}
-
-void SensorManager::read(){
-  gps1.read();
-  //compass1.read();
-  wind.read();
-  //magnetometer1.read();
-  imu1->read();
-}
-
 void SensorManager::readFromSerial(){
-  Serial.begin(57600);
-  while(Serial.available() <= 0){
-    Serial.println("f");
+  Serial1.begin(115200);
+  while(Serial1.available() <= 0){
+    Serial1.println("f");
   }
-  delay(50);
-  if(Serial.available() > 2){
-    call[0] = Serial.parseFloat();
-    call[1] = Serial.parseFloat();
-    call[2] = Serial.parseFloat();
-    call[3] = Serial.parseFloat();
-    call[4] = Serial.parseFloat();
-    call[5] = Serial.parseFloat();
-    call[6] = Serial.parseFloat();
-    call[7] = Serial.parseFloat();
-    call[8] = Serial.parseFloat();
-    call[9] = Serial.parseFloat();
-    call[10] = Serial.parseFloat();
-    call[11] = Serial.parseFloat();
-    call[12] = Serial.parseFloat();
-    call[13] = Serial.parseFloat();
-    call[14] = Serial.parseFloat();
-    call[15] = Serial.parseFloat();
-    call[16] = Serial.parseFloat();
-    call[17] = Serial.parseFloat();
-    _date = Serial.parseFloat();
-    Serial.end();
+  delay(200);
+  if(Serial1.available() > 5){
+    call[0] = Serial1.parseFloat();   //lat
+    call[1] = Serial1.parseFloat();   //lon
+    call[2] = Serial1.parseFloat();   //course
+    call[3] = Serial1.parseFloat();   //speed
+    call[4] = Serial1.parseFloat();   //altitude
+
+    call[5] = Serial1.parseFloat();   //roll
+    call[6] = Serial1.parseFloat();   //pitch
+    call[7] = Serial1.parseFloat();   //yaw
+    call[8] = Serial1.parseFloat();   //accel_x
+    call[9] = Serial1.parseFloat();   //accel_y
+    call[10] = Serial1.parseFloat();  //accel_z
+    call[11] = Serial1.parseFloat();  //gyro x
+    call[12] = Serial1.parseFloat();  //gyro y
+    call[13] = Serial1.parseFloat();  //gyro z
+    call[14] = Serial1.parseFloat();  //mag x
+    call[15] = Serial1.parseFloat();  //mag y
+    call[16] = Serial1.parseFloat();  //mag z
+    call[17] = Serial1.parseFloat();  //temperature
+    call[18] = Serial1.parseFloat();  //pressure
+    call[19] = Serial1.parseFloat();  //altitude
+
+    call[20] = Serial1.parseFloat();  //wind dir
+
+    _date = Serial1.parseFloat();     //date
   }
+  Serial1.end();
   setGPSData(call[0], call[1], call[2], call[3], call[4], _date);
-  setIMUData(call[5], call[6], call[7], call[8], call[9], call[10], call[11], call[12], call[13], call[14], call[15], call[16]);
-  setWindData(call[17]);
+  setIMUData(call[5], call[6], call[7], call[8], call[9], call[10], call[11], call[12], call[13], call[14], call[15], call[16], call[17], call[18], call[19]);
+  setWindData(call[20]);
 }
 
 void SensorManager::setGPSData(float lat, float lon, float course, float speed, float altitude, String date){
@@ -70,7 +63,10 @@ void SensorManager::setGPSData(float lat, float lon, float course, float speed, 
   _GPSData.date = date;
 }
 
-void SensorManager::setIMUData(float accel_x, float accel_y, float accel_z, float gyro_x, float gyro_y, float gyro_z, float mag_x, float mag_y, float mag_z, float temperature, float pressure, float altitude){
+void SensorManager::setIMUData(float roll, float pitch, float yaw, float accel_x, float accel_y, float accel_z, float gyro_x, float gyro_y, float gyro_z, float mag_x, float mag_y, float mag_z, float temperature, float pressure, float altitude){
+  _IMUData.eulerAngles.roll = roll;
+  _IMUData.eulerAngles.pitch = pitch;
+  _IMUData.eulerAngles.yaw = yaw;
   _IMUData.accel_x = accel_x;
   _IMUData.accel_y = accel_y;
   _IMUData.accel_z = accel_z;
@@ -89,12 +85,8 @@ void SensorManager::setWindData(float windDir){
   _windData.direction = windDir;
 }
 
-void SensorManager::readImu(){
-  imu1->read();
-}
-
 GPSData SensorManager::getGPS(){
-  return gps1.get();
+  return _GPSData;
 }
 
 Pose SensorManager::getMagnetometer(){
@@ -106,15 +98,11 @@ float SensorManager::getCompass(){
 }
 
 WindData SensorManager::getWind(){
-  return wind.get();
-}
-
-int SensorManager::getWindRaw(){
-  return wind.getDirectionRaw();
+  return _windData;
 }
 
 IMUData SensorManager::getIMU(){
-  return imu1->get();
+  return _IMUData;
 }
 
 void SensorManager::setThrusterPower(float thrusterPower){
@@ -144,9 +132,9 @@ void SensorManager::setAutoPilot(int autoPilot){
 //posição (lat, lon), velocidade do vento (direção, speed), posição dos atuadores (leme, vela), velocidade (speed) e orientação do gps (course), orientação da bussola (heading), informações do IMU (R, P, Y).
 void SensorManager::logState(){
 
-//gps1.get().location.latitude != 0 && gps1.get().location.longitude != 0 && 
+//_GPSData.location.latitude != 0 && _GPSData.location.longitude != 0 && 
   if (gpsDateCtrl == 0) {
-    _experimentName = String(gps1.get().date+".csv");
+    _experimentName = String(_GPSData.date+".csv");
     gpsDateCtrl = 1;
     _startTime = millis();
 
@@ -194,32 +182,32 @@ void SensorManager::logState(){
     if (dataFile) {
       _endTime = millis();
       timeStamp += (_endTime-_startTime)/1000;
-      dataFile.print(gps1.get().dateFull);                  dataFile.print(",");
+      dataFile.print(_GPSData.dateFull);                  dataFile.print(",");
       dataFile.print(timeStamp, 2);                         dataFile.print(",");
-      dataFile.print(gps1.get().location.latitude, 6);      dataFile.print(",");
-      dataFile.print(gps1.get().location.longitude, 6);     dataFile.print(",");
-      dataFile.print(wind.get().direction, 2);              dataFile.print(",");
+      dataFile.print(_GPSData.location.latitude, 6);      dataFile.print(",");
+      dataFile.print(_GPSData.location.longitude, 6);     dataFile.print(",");
+      dataFile.print(_windData.direction, 2);              dataFile.print(",");
       dataFile.print(_windData.speed, 2);                   dataFile.print(",");
       dataFile.print(_rudderAngle, 2);                      dataFile.print(",");
       dataFile.print(_thrusterPower, 2);                    dataFile.print(",");
-      dataFile.print(gps1.get().course, 2);                 dataFile.print(",");
-      dataFile.print(gps1.get().speed, 2);                  dataFile.print(",");
-      dataFile.print(imu1->get().eulerAngles.yaw, 2);       dataFile.print(",");
-      dataFile.print(imu1->get().eulerAngles.pitch, 2);     dataFile.print(",");
-      dataFile.print(imu1->get().eulerAngles.roll, 2);      dataFile.print(",");
-      dataFile.print(imu1->get().heading, 2);               dataFile.print(",");
-      dataFile.print(imu1->get().temperature, 2);           dataFile.print(",");      
-      dataFile.print(imu1->get().pressure, 2);              dataFile.print(",");
-      dataFile.print(imu1->get().altitude, 2);              dataFile.print(",");
-      dataFile.print(imu1->get().accel_x, 2);               dataFile.print(",");
-      dataFile.print(imu1->get().accel_y, 2);               dataFile.print(",");
-      dataFile.print(imu1->get().accel_z, 2);               dataFile.print(",");
-      dataFile.print(imu1->get().gyro_x, 2);                dataFile.print(",");
-      dataFile.print(imu1->get().gyro_y, 2);                dataFile.print(",");
-      dataFile.print(imu1->get().gyro_z, 2);                dataFile.print(",");
-      dataFile.print(imu1->get().mag_x, 2);                 dataFile.print(",");
-      dataFile.print(imu1->get().mag_y, 2);                 dataFile.print(",");
-      dataFile.print(imu1->get().mag_x, 2);                 dataFile.print(",");
+      dataFile.print(_GPSData.course, 2);                 dataFile.print(",");
+      dataFile.print(_GPSData.speed, 2);                  dataFile.print(",");
+      dataFile.print(_IMUData.eulerAngles.yaw, 2);       dataFile.print(",");
+      dataFile.print(_IMUData.eulerAngles.pitch, 2);     dataFile.print(",");
+      dataFile.print(_IMUData.eulerAngles.roll, 2);      dataFile.print(",");
+      dataFile.print(_IMUData.heading, 2);               dataFile.print(",");
+      dataFile.print(_IMUData.temperature, 2);           dataFile.print(",");      
+      dataFile.print(_IMUData.pressure, 2);              dataFile.print(",");
+      dataFile.print(_IMUData.altitude, 2);              dataFile.print(",");
+      dataFile.print(_IMUData.accel_x, 2);               dataFile.print(",");
+      dataFile.print(_IMUData.accel_y, 2);               dataFile.print(",");
+      dataFile.print(_IMUData.accel_z, 2);               dataFile.print(",");
+      dataFile.print(_IMUData.gyro_x, 2);                dataFile.print(",");
+      dataFile.print(_IMUData.gyro_y, 2);                dataFile.print(",");
+      dataFile.print(_IMUData.gyro_z, 2);                dataFile.print(",");
+      dataFile.print(_IMUData.mag_x, 2);                 dataFile.print(",");
+      dataFile.print(_IMUData.mag_y, 2);                 dataFile.print(",");
+      dataFile.print(_IMUData.mag_x, 2);                 dataFile.print(",");
       dataFile.print(_waypointId);                          dataFile.print(",");
       dataFile.print(_autoPilot);                           dataFile.print("\n");
       delay(20);
@@ -238,14 +226,14 @@ void SensorManager::logState(){
 
 void SensorManager::printState()
 {
-  	Serial.print(gps1.get().dateFull); 
+  Serial.print(_GPSData.dateFull); 
  	Serial.print(" ");
-	Serial.print(gps1.get().location.latitude, 6);
+	Serial.print(_GPSData.location.latitude, 6);
 	Serial.print(" ");
-	Serial.print(gps1.get().location.longitude, 6);
+	Serial.print(_GPSData.location.longitude, 6);
 	Serial.print(" ");
 //	Serial.print(wind.get().direction, 2);
-	Serial.print(wind.getDirectionSigned(), 2);
+	Serial.print(_windData.direction, 2);
 	Serial.print(" ");
 	Serial.print(_windData.speed, 2);
 	Serial.print(" ");
@@ -253,17 +241,17 @@ void SensorManager::printState()
 	Serial.print(" ");
 	Serial.print(_thrusterPower, 2);
 	Serial.print(" ");
-	Serial.print(gps1.get().course, 2);
+	Serial.print(_GPSData.course, 2);
 	Serial.print(" ");
-	Serial.print(gps1.get().speed, 2); 
+	Serial.print(_GPSData.speed, 2); 
 	Serial.print(" ");
-	Serial.print(imu1->get().eulerAngles.yaw, 2);
+	Serial.print(_IMUData.eulerAngles.yaw, 2);
 	Serial.print(" ");
-	Serial.print(imu1->get().eulerAngles.pitch, 2);
+	Serial.print(_IMUData.eulerAngles.pitch, 2);
 	Serial.print(" ");
-	Serial.print(imu1->get().eulerAngles.roll, 2);
+	Serial.print(_IMUData.eulerAngles.roll, 2);
 	Serial.print(" ");
-	Serial.print(imu1->get().heading, 2);
+	Serial.print(_IMUData.heading, 2);
 	Serial.print(" ");
 	Serial.println(_waypointId); 
 }
@@ -271,21 +259,21 @@ void SensorManager::printState()
 void SensorManager::sendStateToBase()
 {
   Serial.print("{");
-  Serial.print(gps1.get().location.latitude, 6);
+  Serial.print(_GPSData.location.latitude, 6);
   Serial.print(",");
-  Serial.print(gps1.get().location.longitude, 6);
+  Serial.print(_GPSData.location.longitude, 6);
   Serial.print(",");
-  Serial.print(imu1->get().eulerAngles.yaw, 2);
+  Serial.print(_IMUData.eulerAngles.yaw, 2);
   Serial.print(",");
-  Serial.print(gps1.get().course, 2);
+  Serial.print(_GPSData.course, 2);
   Serial.print(",");
-  Serial.print(wind.getDirectionSigned(), 2);
+  Serial.print(_windData.direction, 2);
   Serial.print(",");
   Serial.print(_rudderAngle, 2);
   Serial.print(",");
   Serial.print(_thrusterPower, 2);
   Serial.print(",");
-  Serial.print(gps1.get().speed, 2); 
+  Serial.print(_GPSData.speed, 2); 
   Serial.print(",");
   Serial.print(_waypointId); 
   Serial.print(",");
@@ -294,15 +282,3 @@ void SensorManager::sendStateToBase()
   Serial.print(_autoPilot); 
   Serial.print("}");
 }
-
-void SensorManager::sendStateToMaster()
-{
-  Serial.println(gps1.get().location.latitude, 6);
-  Serial.println(gps1.get().location.longitude, 6);
-  Serial.println(imu1->get().eulerAngles.yaw, 2);
-  Serial.println(gps1.get().course, 2);
-  Serial.println(gps1.get().speed, 2);
-  Serial.println(wind.getDirectionSigned(), 2);
-  Serial.println(float(gpsDateCtrl), 2);
-}
-

@@ -13,12 +13,6 @@
 #include <SD.h>
 #include <SPI.h>
 
-//include all sensors lib available
-//#include "Mag_HMC5883L.h"
-//#include "Compass_HMC6352.h"
-#include "GPS_EM506.h"
-#include "WindSensor.h"
-#include "IMU_GY80.h"
 #include "wqboatActuatorDrivers.h"
 #include "Pose.h"
 //#include "IMU_RAZOR.h"
@@ -31,17 +25,11 @@
 class SensorManager
 {
   public:
-    SensorManager();
-
-    void read();
-    void readImu();
-    bool checkSensors();
+    SensorManager();    
 
     void logState();
     void sendStateToBase();
 
-    GPSData getGPS();
-    IMUData getIMU();
     float getCompass();
     WindData getWind();
     Pose getMagnetometer();
@@ -51,32 +39,18 @@ class SensorManager
     void SensorManager::printState();
     void SensorManager::setTack(bool isTack);
     void SensorManager::setWaypointId(int waypointId);
-    int SensorManager::getWindRaw();
     void SensorManager::setAutoPilot(int autoPilot);
-    void SensorManager::setGPSData(float lat, float lon, float course, float speed);
-    void SensorManager::setIMUData(float yaw);
+    void SensorManager::setGPSData(float lat, float lon, float course, float speed, float altitude, String date);
+    void SensorManager::setIMUData(float roll, float pitch, float yaw, float accel_x, float accel_y, float accel_z, float gyro_x, float gyro_y, float gyro_z, float mag_x, float mag_y, float mag_z, float temperature, float pressure, float altitude);
     void SensorManager::setWindData(float windDir);
-    void SensorManager::sendStateToMaster();
     void SensorManager::readFromSerial();
+    GPSData SensorManager::getGPS();
+    IMUData SensorManager::getIMU();
 
-    WindData _windData;
-    GPSData _GPSData;
-    IMUData _IMUData;
   private:
     
     wqboatActuatorDrivers *actDrivers;
     float call[18];
-    
-//    Mag_HMC5883L magnetometer1;
-
-//    Compass_HMC6352 compass1;
-
-    GPS_EM506 gps1;
-
-    WindSensor wind;
-
-    //IMU_RAZOR imu1;
-    IMU_GY80 *imu1;
 
     float _batCharge; //TODO
     float _rudderAngle, _thrusterPower;
@@ -92,6 +66,10 @@ class SensorManager
     float _startTime, _endTime;
     int _autoPilot = 1;
     String _date;
+
+    WindData _windData;
+    GPSData _GPSData;
+    IMUData _IMUData;
     
 };
 

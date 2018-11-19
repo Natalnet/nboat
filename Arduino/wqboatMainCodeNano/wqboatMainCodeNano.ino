@@ -63,7 +63,7 @@ void setup() {
   //movementControl = new BoatControl(2,1);
 
   movementControl->initThruster();
-  delay(5000);
+  //delay(5000);
   
   desiredDistance = 5;
   headingControlDistance = 15;
@@ -77,7 +77,7 @@ void setup() {
   
   sensors = new SensorManager();
   Serial.begin(9600);
-  
+  Serial1.begin(115200);
 }
 
 void experiment_reitoria(){
@@ -149,11 +149,12 @@ void loop() {
 
   
   while (1) {
-    channel[0] = pulseIn(34, HIGH);
-    channel[1] = pulseIn(35, HIGH);
-    channel[2] = pulseIn(36, HIGH);
-
+//    channel[0] = pulseIn(34, HIGH);
+//    channel[1] = pulseIn(35, HIGH);
+//    channel[2] = pulseIn(36, HIGH);
+    Serial.println("tst");
     sensors->readFromSerial();
+    sensors->printState();
     
     if (tCheck(&t_func1)) {      
       //sensors->sendStateToBase();
@@ -169,15 +170,8 @@ void loop() {
     if (waypoints.size() != 0) {
       //changeControlStrategy();
       if (distanceToTarget < desiredDistance) {
-        /*if(!stationKeeping){
-          stationKeepTime = millis();
-          stationKeeping = true;
-        }
-        if((millis() - stationKeepTime) > wqMeasureTime){*/
           waypoints_id += 1;
           waypoints_id = waypoints_id % waypoints.size(); 
-          //stationKeeping = false;
-        //}
       }
 
       currentLocation = sensors->getGPS().location;
