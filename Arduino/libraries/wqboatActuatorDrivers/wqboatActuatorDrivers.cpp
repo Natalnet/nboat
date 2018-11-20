@@ -28,7 +28,7 @@ void wqboatActuatorDrivers::setRudderAngle(float rudderAngle){
   rudderAngle = constrain(rudderAngle, -90, 90);
   rudderAngle = map(rudderAngle, -90, 90, _rudderLowerLimit, _rudderUpperLimit);
   rudder.write(rudderAngle);
-  delay(50);
+  //delay(50);
 
   /*if(cont % 5){
     rudder.write(rudderAngle/5);

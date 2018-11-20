@@ -195,7 +195,7 @@ class IMU_GY80
     Adafruit_BMP085 press;
     IMUData _imuData;
 
-    float yaw_OFFSET = 90.4, pitch_OFFSET = 0.2, roll_OFFSET = -2.0;
+    float yaw_OFFSET = 118.4, pitch_OFFSET = -3.2, roll_OFFSET = 1.0;
     float yawWFrame, pitchWFrame, rollWFrame;
   
 };
