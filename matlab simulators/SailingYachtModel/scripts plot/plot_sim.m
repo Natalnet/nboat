@@ -1,0 +1,21 @@
+close all;
+% figure;
+subplot(4,2,[3 4])
+set(gca, 'FontSize', 8, 'LineWidth', 1);
+plot(X.signals.values(:,1), X.signals.values(:,2), 'LineWidth', 1.5);
+hold on;
+[l,c] = size(par.pontos_bordejar);
+pbstst = zeros(l,c+1);
+pbstst(:,2:c+1) = par.pontos_bordejar(:,1:c);
+plot(pbstst(1,:),pbstst(2,:) ,'r', 'LineWidth', 1.5);
+plot(0,0, 'black.', 'MarkerSize', 30, 'LineWidth', 1.5);
+plot(500,0, 'blackx', 'MarkerSize', 8, 'LineWidth', 1.5);
+% axis tight;
+% figure;
+% [l,c] = size(X.time);
+% lasttime = X.time(l,1);
+% [l,c] = size(par.spvec);
+% plot(0:lasttime/(c-1):lasttime,par.spvec);
+% hold on;
+% plot([0 lasttime], [1 1],'r');
+% hold off;

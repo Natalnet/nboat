@@ -1,0 +1,149 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007fffbe9917ca, pid=7312, tid=6708
+#
+# JRE version: 6.0_17-b04
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (14.3-b01 mixed mode windows-amd64 )
+# Problematic frame:
+# C  0x00007fffbe9917ca
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00000000b6055000):  JavaThread "Thread-184" [_thread_in_native, id=6708, stack(0x00000000abff0000,0x00000000afff0000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x0000000008001784
+
+Registers:
+EAX=0x000000000802f010, EBX=0x0000000007ffc798, ECX=0x000000000802f010, EDX=0x0000000000000008
+ESP=0x00000000affed920, EBP=0x0000000000000010, ESI=0x0000000000000000, EDI=0x0000000008001788
+EIP=0x00007fffbe9917ca, EFLAGS=0x0000000000010202
+
+Top of Stack: (sp=0x00000000affed920)
+0x00000000affed920:   0000000000000000 0000000000000000
+0x00000000affed930:   0000000000000000 0000000000000000
+0x00000000affed940:   0000000007ffc880 00007fffba9b8541
+0x00000000affed950:   0000000007ffc798 0000000007ffc770
+0x00000000affed960:   0000000007ffc770 0000000000000010
+0x00000000affed970:   0000000007ffc880 00007fffba9bd339
+0x00000000affed980:   0000000007ffc860 0000000000000010
+0x00000000affed990:   0000000007ffc860 00007fffc0e80564
+0x00000000affed9a0:   0000000007ffc6d0 00007fffba9b85ea
+0x00000000affed9b0:   0000000000001000 0000000008001000
+0x00000000affed9c0:   0000000007ffc860 0000000007ffc860
+0x00000000affed9d0:   0000000000000000 00007fffba9ceb2a
+0x00000000affed9e0:   00000000f60fc110 00000000affedb10
+0x00000000affed9f0:   0000000007ffc860 00000000f60fc110
+0x00000000affeda00:   0000000000001389 0000000000000003
+0x00000000affeda10:   00006e5226086e18 00000000fffffffc 
+
+Instructions: (pc=0x00007fffbe9917ca)
+0x00007fffbe9917ba:   52 ed 0a 00 48 8b c8 48 85 c0 0f 84 18 05 00 00
+0x00007fffbe9917ca:   44 8b 47 fc 41 83 c0 19 41 83 f8 19 72 b7 48 8d 
+
+
+Stack: [0x00000000abff0000,0x00000000afff0000],  sp=0x00000000affed920,  free space=65526k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  0x00007fffbe9917ca
+
+[error occurred during error reporting (printing native stack), id 0xc0000005]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  com.mathworks.util.NativeJava.showNativeFileDialogMulti(JZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZLjava/lang/String;I)Ljava/lang/Object;+0
+j  com.mathworks.mwswing.MJFileChooserPerPlatform$RunnableNativeDispatch.runNative()V+37
+j  com.mathworks.mwswing.MJFileChooserPerPlatform$RunnableNativeDispatch.runWindows()V+22
+j  com.mathworks.mwswing.MJFileChooserPerPlatform$RunnableNativeDispatch.run()V+7
+j  java.lang.Thread.run()V+11
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00000000b605b800 JavaThread "Thread-185" [_thread_in_native, id=1840, stack(0x000000011afe0000,0x000000011efe0000)]
+  0x00000000b605a800 JavaThread "Foxtrot Single Worker Thread #1" daemon [_thread_blocked, id=3892, stack(0x0000000102fe0000,0x0000000106fe0000)]
+=>0x00000000b6055000 JavaThread "Thread-184" [_thread_in_native, id=6708, stack(0x00000000abff0000,0x00000000afff0000)]
+  0x00000000b6056800 JavaThread "Code Analyzer updating thread" [_thread_blocked, id=1632, stack(0x000000000cf80000,0x0000000010f80000)]
+  0x00000000b6057000 JavaThread "Code Analyzer updating thread" [_thread_blocked, id=8828, stack(0x000000010efe0000,0x0000000112fe0000)]
+  0x00000000b6053800 JavaThread "Active Reference Queue Daemon" daemon [_thread_blocked, id=5584, stack(0x000000010afe0000,0x000000010efe0000)]
+  0x00000000b6052800 JavaThread "Timer-2" daemon [_thread_blocked, id=11076, stack(0x0000000106fe0000,0x000000010afe0000)]
+  0x00000000b6055800 JavaThread "Prefs Updater" daemon [_thread_blocked, id=5312, stack(0x00000000fafe0000,0x00000000fefe0000)]
+  0x00000000b6058000 JavaThread "Swing-Shell" daemon [_thread_blocked, id=7936, stack(0x000000011efe0000,0x0000000122fe0000)]
+  0x000000004e1d8800 JavaThread "Timer-1" daemon [_thread_blocked, id=6136, stack(0x00000000fefe0000,0x0000000102fe0000)]
+  0x000000004e1d6000 JavaThread "com.jniwrapper.NativeResourceCollector" daemon [_thread_blocked, id=7600, stack(0x00000000f6fe0000,0x00000000fafe0000)]
+  0x000000004e1d1800 JavaThread "ClipboardMonitor Timer" daemon [_thread_blocked, id=8224, stack(0x00000000d2fe0000,0x00000000d6fe0000)]
+  0x0000000076b0c000 JavaThread "Explorer NavigationContext request queue" daemon [_thread_blocked, id=4940, stack(0x00000000cafe0000,0x00000000cefe0000)]
+  0x0000000076b0d000 JavaThread "AddressBar directory emptiness poller" daemon [_thread_blocked, id=10352, stack(0x00000000c2fe0000,0x00000000c6fe0000)]
+  0x0000000076b07800 JavaThread "Explorer Refresh Service 1002051732" daemon [_thread_blocked, id=10408, stack(0x00000000befe0000,0x00000000c2fe0000)]
+  0x0000000076b0a800 JavaThread "Thread-4" daemon [_thread_blocked, id=752, stack(0x00000000b8070000,0x00000000bc070000)]
+  0x0000000076b08800 JavaThread "TimerQueue" daemon [_thread_blocked, id=6552, stack(0x00000000afff0000,0x00000000b3ff0000)]
+  0x0000000076b07000 JavaThread "Thread-3" daemon [_thread_blocked, id=4348, stack(0x000000009bff0000,0x000000009fff0000)]
+  0x0000000076b06000 JavaThread "AWT-EventQueue-0" [_thread_blocked, id=3512, stack(0x0000000097ff0000,0x000000009bff0000)]
+  0x0000000076b09000 JavaThread "AWT-Shutdown" [_thread_blocked, id=4492, stack(0x0000000087ff0000,0x000000008bff0000)]
+  0x0000000076b05800 JavaThread "FelixPackageAdmin" daemon [_thread_blocked, id=9384, stack(0x00000000a7ff0000,0x00000000abff0000)]
+  0x0000000076cbb000 JavaThread "FelixStartLevel" daemon [_thread_blocked, id=5660, stack(0x00000000a3ff0000,0x00000000a7ff0000)]
+  0x0000000076d9e000 JavaThread "FelixDispatchQueue" daemon [_thread_blocked, id=7624, stack(0x000000009fff0000,0x00000000a3ff0000)]
+  0x0000000076abe000 JavaThread "com.google.common.base.internal.Finalizer" daemon [_thread_blocked, id=3972, stack(0x0000000093ff0000,0x0000000097ff0000)]
+  0x0000000076a59800 JavaThread "AWT-Windows" daemon [_thread_in_native, id=5364, stack(0x000000008bff0000,0x000000008fff0000)]
+  0x0000000076999800 JavaThread "Java2D Disposer" daemon [_thread_blocked, id=9520, stack(0x0000000083ff0000,0x0000000087ff0000)]
+  0x00000000765de800 JavaThread "Timer-0" [_thread_blocked, id=4668, stack(0x000000007fff0000,0x0000000083ff0000)]
+  0x00000000630ad800 JavaThread "EventMgr Dispatcher" daemon [_thread_in_native, id=8212, stack(0x000000007bc70000,0x000000007fc70000)]
+  0x000000004e1b2800 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=10396, stack(0x0000000067570000,0x000000006b570000)]
+  0x000000004e1b0800 JavaThread "CompilerThread1" daemon [_thread_blocked, id=10912, stack(0x0000000063570000,0x0000000067570000)]
+  0x000000004e1a4800 JavaThread "CompilerThread0" daemon [_thread_blocked, id=9736, stack(0x000000005e2f0000,0x00000000622f0000)]
+  0x0000000026aee800 JavaThread "Attach Listener" daemon [_thread_blocked, id=3864, stack(0x000000005a2f0000,0x000000005e2f0000)]
+  0x0000000026ae0000 JavaThread "Finalizer" daemon [_thread_blocked, id=2116, stack(0x00000000562f0000,0x000000005a2f0000)]
+  0x0000000026ad9000 JavaThread "Reference Handler" daemon [_thread_blocked, id=6524, stack(0x00000000522f0000,0x00000000562f0000)]
+  0x0000000026a00800 JavaThread "main" [_thread_in_native, id=2432, stack(0x0000000000040000,0x0000000004040000)]
+
+Other Threads:
+  0x000000004e171800 VMThread [stack: 0x000000004e2f0000,0x00000000522f0000] [id=5880]
+  0x000000004e1ec000 WatcherThread [stack: 0x000000006e480000,0x0000000072480000] [id=8456]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ PSYoungGen      total 18240K, used 14979K [0x000000003aeb0000, 0x000000003c870000, 0x000000003dfb0000)
+  eden space 16384K, 80% used [0x000000003aeb0000,0x000000003bb87d10,0x000000003beb0000)
+  from space 1856K, 98% used [0x000000003bef0000,0x000000003c0b9268,0x000000003c0c0000)
+  to   space 4992K, 0% used [0x000000003c390000,0x000000003c390000,0x000000003c870000)
+ PSOldGen        total 86144K, used 57443K [0x0000000031bb0000, 0x0000000036fd0000, 0x000000003aeb0000)
+  object space 86144K, 66% used [0x0000000031bb0000,0x00000000353c8d98,0x0000000036fd0000)
+ PSPermGen       total 113472K, used 74034K [0x0000000029bb0000, 0x0000000030a80000, 0x0000000031bb0000)
+  object space 113472K, 65% used [0x0000000029bb0000,0x000000002e3fc9b0,0x0000000030a80000)
+
+Dynamic libraries:
+
+VM Arguments:
+jvm_args: -XX:PermSize=32m -Xms64m -XX:NewRatio=3 -XX:MaxPermSize=128m -Xmx196m -XX:MaxDirectMemorySize=2147400000 -Dsun.java2d.noddraw=true -Dsun.awt.nopixfmt=true -Xshare:off -Xrs -Dsun.awt.disableMixing=true -Djava.library.path=C:\Program Files\MATLAB\R2013a\bin\win64;C:\Program Files\MATLAB\R2013a\sys\jxbrowser\win64\lib vfprintf abort 
+java_command: <unknown>
+Launcher Type: generic
+
+Environment Variables:
+PATH=C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Microsoft Windows Performance Toolkit\;C:\Program Files\MATLAB\R2013a\runtime\win64;C:\Program Files\MATLAB\R2013a\bin;c:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files\Microsoft SQL Server\100\DTS\Binn\;c:\Program Files (x86)\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files (x86)\PFPS\system;C:\Program Files (x86)\Skype\Phone\;C:\Program Files\MiKTeX 2.9\miktex\bin\x64\;C:\WINDOWS\system32\config\systemprofile\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;;C:\Users\Davi\AppData\Local\Code\bin
+USERNAME=Davi
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 58 Stepping 9, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows NT 6.2 Build 9200 
+
+CPU:total 4 (8 cores per cpu, 2 threads per core) family 6 model 58 stepping 9, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, ht
+
+Memory: 4k page, physical 4085912k(1165060k free), swap 7347732k(2813136k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (14.3-b01) for windows-amd64 JRE (1.6.0_17-b04), built on Oct 11 2009 00:46:08 by "java_re" with MS VC++ 8.0
+
+time: Wed Feb 22 12:38:16 2017
+elapsed time: 3092 seconds
+
