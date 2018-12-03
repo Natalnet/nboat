@@ -8,17 +8,17 @@ set(gca, 'FontSize', 14, 'LineWidth', 1);
 % xlabel('x[m]');
 % xlabel('y[m]');
 angstring = strcat('[0;0;0;',num2str(deg2rad(90)), ';3;0;0;0]');
-set_param('SailingYachtModel/IC', 'Value' , angstring);
-set_param('SailingYachtModel/4DOF nonlinear sailing yacht model/vento', 'Value', num2str(deg2rad(135)));
+set_param('sailboatModel/IC', 'Value' , angstring);
+set_param('sailboatModel/4DOF nonlinear sailing yacht model/vento', 'Value', num2str(deg2rad(135)));
 if i == 1
-    set_param('SailingYachtModel/simple P heading controller/Kp', 'Value' , num2str(1));
-    set_param('SailingYachtModel/simple P heading controller/Ki', 'Value' , num2str(0));
-    sim('SailingYachtModel');
+    set_param('sailboatModel/PI heading controller/Kp', 'Value' , num2str(1));
+    set_param('sailboatModel/PI heading controller/Ki', 'Value' , num2str(0));
+    sim('sailboatModel');
 end
 if i == 2
-    set_param('SailingYachtModel/simple P heading controller/Kp', 'Value' , num2str(2));
-    set_param('SailingYachtModel/simple P heading controller/Ki', 'Value' , num2str(5));
-    sim('SailingYachtModel');
+    set_param('sailboatModel/PI heading controller/Kp', 'Value' , num2str(2));
+    set_param('sailboatModel/PI heading controller/Ki', 'Value' , num2str(5));
+    sim('sailboatModel');
     ylabel('y[m]');
 %     drawArrow = @(x,y,varargin) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0, varargin{:});
 %     drawArrow([490 480],[-20 -20],'linewidth',1,'color','black'); hold on;
@@ -26,14 +26,14 @@ if i == 2
 %     drawArrow([490 480],[-30 -30],'linewidth',1,'color','black');   
 end
 if i == 3
-    set_param('SailingYachtModel/simple P heading controller/Kp', 'Value' , num2str(10.5));
-    set_param('SailingYachtModel/simple P heading controller/Ki', 'Value' , num2str(20));
-    sim('SailingYachtModel');
+    set_param('sailboatModel/PI heading controller/Kp', 'Value' , num2str(10.5));
+    set_param('sailboatModel/PI heading controller/Ki', 'Value' , num2str(20));
+    sim('sailboatModel');
 end
 % if i == 4
-%     set_param('SailingYachtModel/controleTraj/distBord', 'Value' , num2str(100));
-%     set_param('SailingYachtModel/controleTraj/angBord', 'Value' , num2str(50));
-%     sim('SailingYachtModel');
+%     set_param('sailboatModel/controleTraj/distBord', 'Value' , num2str(100));
+%     set_param('sailboatModel/controleTraj/angBord', 'Value' , num2str(50));
+%     sim('sailboatModel');
 % end 
 hold on;
 plot(X.signals.values(:,1), X.signals.values(:,2),'r', 'LineWidth', 1.5);

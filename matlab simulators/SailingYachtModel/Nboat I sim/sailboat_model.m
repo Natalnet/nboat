@@ -1,4 +1,4 @@
-% interpreted Matlab function "f.m" for the Simulink file "SailingYachtModel.slx"
+% interpreted Matlab function "f.m" for the Simulink file "sailboatModel.slx"
 % This function describes the dynamics of a 4DOF sailing yacht model
 % and gives the derivative of the state X and the sail angle delta_s.
 % The input vector V_in contains the system state and the control input vector. 
@@ -12,7 +12,7 @@
 
 
 
-function X_dot_ext=f(V_in)
+function X_dot_ext=sailboat_model(V_in)
  
 % use the system parameters
 global par
@@ -26,7 +26,7 @@ u = V_in(8);
 v = V_in(9);
 p = V_in(10);
 r = V_in(11);
-vento = V_in(12);
+wind_angle = V_in(12);
 nu = [ u ; v ; p ; r ];
 
 % retrieve the input signals from the vector "V_in"
@@ -60,7 +60,7 @@ C = C_RB + C_A;
 
 % calculate the tau vector, ie forces and moments generated from:
 % the sail
-v_t = [ par.vt*cos(vento); par.vt*sin(vento); 0 ];
+v_t = [ par.vt*cos(wind_angle); par.vt*sin(wind_angle); 0 ];
 v_tw = log(abs(par.z_s)*cos(phi)/par.h0)/log(par.h1/par.h0)*v_t;
 
 R1 = [ cos(-psi) -sin(-psi) 0

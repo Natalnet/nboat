@@ -1,4 +1,4 @@
-function desired_control=f_traj2(V_in2)
+function desired_control=path_planner(V_in2)
 global par
 
 x = V_in2(1);
@@ -35,13 +35,13 @@ par.contVel = par.contVel + 1;
                     par.waypointBId = 1;
                 end
             else
-                set_param('SailingYachtModel', 'SimulationCommand' ,'stop');
+                set_param('sailboatModel', 'SimulationCommand' ,'stop');
                 par.waypointId = par.waypointId + 1;
                 if (mod(par.waypointId,waypoints_size+1) == 0)
                     par.waypointId = 1;
                     teste_bord = 1;
                 end
-%                 set_param('SailingYachtModel', 'SimulationCommand' ,'stop');
+%                 set_param('sailboatModel', 'SimulationCommand' ,'stop');
                 par.nextLocation = par.waypoints(:,par.waypointId);                
             end
         else
@@ -67,11 +67,11 @@ par.contVel = par.contVel + 1;
         end
         
         if par.contador_bug > 300
-            set_param('SailingYachtModel', 'SimulationCommand' ,'stop');
+            set_param('sailboatModel', 'SimulationCommand' ,'stop');
             par.flag = 1;
         end
                 
-        vento = str2num(get_param('SailingYachtModel/4DOF nonlinear sailing yacht model/vento', 'Value'));
+        vento = str2num(get_param('sailboatModel/sailboat model block/4DOF nonlinear sailing yacht model/vento', 'Value'));
         
         heeling = pi + vento;
         
@@ -121,8 +121,8 @@ par.contVel = par.contVel + 1;
         
         par.spvec(par.spveccont) = (pi - (desired_heading - par.psi))/pi;
         if par.spvec(par.spveccont) <= 1.02 && par.spvec(par.spveccont) >= 0.98 && ~par.flagAcomod
-            par.tempoDeAcomod2 = get_param('SailingYachtModel','SimulationTime');
-            teste = get_param('SailingYachtModel','SimulationTime');
+            par.tempoDeAcomod2 = get_param('sailboatModel','SimulationTime');
+            teste = get_param('sailboatModel','SimulationTime');
             par.flagAcomod = true;
         else if ~(par.spvec(par.spveccont) <= 1.02 && par.spvec(par.spveccont) >= 0.98)
                 par.flagAcomod = false;
@@ -131,7 +131,7 @@ par.contVel = par.contVel + 1;
         
         if par.spvec(par.spveccont) > par.overshoot
             par.overshoot = par.spvec(par.spveccont);
-            par.tempopico = get_param('SailingYachtModel','SimulationTime');
+            par.tempopico = get_param('sailboatModel','SimulationTime');
         end
         
         if par.flagtemposub && par.spvec(par.spveccont) > 1
@@ -139,7 +139,7 @@ par.contVel = par.contVel + 1;
         end
         
         if par.flagtemposub && par.spvec(par.spveccont) <= 1
-            par.temposub = get_param('SailingYachtModel','SimulationTime');
+            par.temposub = get_param('sailboatModel','SimulationTime');
         end
         
         par.spveccont = par.spveccont + 1;
@@ -286,7 +286,7 @@ par.contVel = par.contVel + 1;
 %                 bom = ruim; 
 %             end
             [l,c] = size(par.pontos_bordejar);
-            teste_show = get_param('SailingYachtModel/controleTraj/angBord', 'Value');
+            teste_show = get_param('sailboatModel/path planner/tack angle', 'Value');
             %if(str2num(teste_show) >= 40)
             if(1)
                 last = c;
@@ -315,7 +315,7 @@ par.contVel = par.contVel + 1;
         desired_control(2) = sail_angle;
         
 %         if mod(par.contador_teste, 100) == 0
-%             %set_param('SailingYachtModel', 'SimulationCommand' ,'pause');
+%             %set_param('sailboatModel', 'SimulationCommand' ,'pause');
 %             close all;
 %             hold on;
 %             plot(V_in2(2), V_in2(1),'r', 'LineWidth', 1.5);
@@ -336,7 +336,7 @@ par.contVel = par.contVel + 1;
 %             xlabel('x[m]');
 %             ylabel('y[m]');
 %             %hold off;
-%             %set_param('SailingYachtModel', 'SimulationCommand' ,'continue');
+%             %set_param('sailboatModel', 'SimulationCommand' ,'continue');
 %             par.contador_teste = 1;
 %         else
 %             par.contador_teste = par.contador_teste + 1;

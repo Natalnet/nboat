@@ -1,32 +1,32 @@
 close all;
 % figure;
 tempos = [0 0 0];
-set_param('SailingYachtModel/simple P heading controller/Kp', 'Value' , num2str(5));
-set_param('SailingYachtModel/simple P heading controller/Ki', 'Value' , num2str(2));
+set_param('sailboatModel/PI heading controller/Kp', 'Value' , num2str(5));
+set_param('sailboatModel/PI heading controller/Ki', 'Value' , num2str(2));
 for i=1:2
 subplot(1,2,i);
 %subplot(2,2,[(i*2)-1 i*2]);
 set(gca, 'FontSize', 14, 'LineWidth', 1);
 angstring = strcat('[0;0;0;',num2str(deg2rad(0)), ';3;0;0;0]');
-set_param('SailingYachtModel/IC', 'Value' , angstring);
-set_param('SailingYachtModel/4DOF nonlinear sailing yacht model/vento', 'Value', num2str(deg2rad(-180)));
+set_param('sailboatModel/IC', 'Value' , angstring);
+set_param('sailboatModel/4DOF nonlinear sailing yacht model/vento', 'Value', num2str(deg2rad(-180)));
 % xlabel('x[m]');
 % xlabel('y[m]');
 
 if i == 1
     tic;
-    set_param('SailingYachtModel/controleTraj/distBord', 'Value' , num2str(30));
-    set_param('SailingYachtModel/controleTraj/angBord', 'Value' , num2str(30));
-    sim('SailingYachtModel');
+    set_param('sailboatModel/controleTraj/distBord', 'Value' , num2str(30));
+    set_param('sailboatModel/controleTraj/angBord', 'Value' , num2str(30));
+    sim('sailboatModel');
     tempo(i) = toc;
     ylabel('y[m]');
     xlabel('x[m]');
 end
 if i == 2
     tic;
-    set_param('SailingYachtModel/controleTraj/distBord', 'Value' , num2str(30));
-    set_param('SailingYachtModel/controleTraj/angBord', 'Value' , num2str(50));
-    sim('SailingYachtModel');
+    set_param('sailboatModel/controleTraj/distBord', 'Value' , num2str(30));
+    set_param('sailboatModel/controleTraj/angBord', 'Value' , num2str(50));
+    sim('sailboatModel');
     ylabel('y[m]');
     xlabel('x[m]');
     tempo(i) = toc;
@@ -37,15 +37,15 @@ if i == 2
 end
 if i == 3
     tic;
-    set_param('SailingYachtModel/controleTraj/distBord', 'Value' , num2str(50));
-    set_param('SailingYachtModel/controleTraj/angBord', 'Value' , num2str(70));
-    sim('SailingYachtModel');
+    set_param('sailboatModel/controleTraj/distBord', 'Value' , num2str(50));
+    set_param('sailboatModel/controleTraj/angBord', 'Value' , num2str(70));
+    sim('sailboatModel');
     tempo(i) = toc;
 end
 if i == 4
-    set_param('SailingYachtModel/controleTraj/distBord', 'Value' , num2str(100));
-    set_param('SailingYachtModel/controleTraj/angBord', 'Value' , num2str(50));
-    sim('SailingYachtModel');
+    set_param('sailboatModel/controleTraj/distBord', 'Value' , num2str(100));
+    set_param('sailboatModel/controleTraj/angBord', 'Value' , num2str(50));
+    sim('sailboatModel');
 end 
 hold on;
 plot(X.signals.values(:,2), X.signals.values(:,1), 'b', 'LineWidth', 1.5);
