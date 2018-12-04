@@ -71,7 +71,7 @@ par.contVel = par.contVel + 1;
             par.flag = 1;
         end
                 
-        vento = str2num(get_param('sailboatModel/sailboat model block/4DOF nonlinear sailing yacht model/vento', 'Value'));
+        vento = str2num(get_param('sailboatModel/sailboat model block/4DOF nonlinear sailing yacht model/wind', 'Value'));
         
         heeling = pi + vento;
         
@@ -308,8 +308,8 @@ par.contVel = par.contVel + 1;
                 par.i = par.i + 1;
              end
             %fim do bordejar
-             %[l,c] = size(par.pontos_bordejar);
-             %par.pontos_bordejar(:,c+1) = destino;
+            %[l,c] = size(par.pontos_bordejar);
+            %par.pontos_bordejar(:,c+1) = destino;
         end
         desired_control(1) = desired_heading;
         desired_control(2) = sail_angle;

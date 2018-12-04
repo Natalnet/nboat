@@ -1,4 +1,4 @@
-function delta_r = rd_ctrl(V_in)
+function delta_r = rudder_control(V_in)
     global par
     erro_atual = V_in(1);
     Kp = V_in(2);
