@@ -1,16 +1,28 @@
-function desired_control=path_planner(V_in2)
+function desired_heading=path_planner(V_in)
 global par
 
-x = V_in2(1);
-y = V_in2(2);
-phi = V_in2(3);
-par.psi = V_in2(4);
-u = V_in2(5);
-v = V_in2(6);
-p = V_in2(7);
-r = V_in2(8);
-par.taxa_dist = V_in2(9);
-par.angulo_bordejo = V_in2(10);
+x = V_in(1);
+y = V_in(2);
+phi = V_in(3); %roll
+par.psi = V_in(4); %yaw
+u = V_in(5);
+v = V_in(6);
+p = V_in(7);
+r = V_in(8);
+par.taxa_dist = V_in(9);
+par.angulo_bordejo = V_in(10);
+wind_angle = V_in(11);
+vt = V_in(12);
+water_angle =  V_in(13);
+water_spd =  V_in(14);
+[l,c] = size(V_in);
+index = 1;
+for i = 15:2:l-1
+    par.waypoints(1,index) = V_in(i);
+    par.waypoints(2,index) = V_in(i+1);
+    index = index + 1;
+end
+
 pontoProj = [0;0];
 destino = [0;0];
 
@@ -70,10 +82,8 @@ par.contVel = par.contVel + 1;
             set_param('sailboatModel', 'SimulationCommand' ,'stop');
             par.flag = 1;
         end
-                
-        vento = str2num(get_param('sailboatModel/sailboat model block/4DOF nonlinear sailing yacht model/wind', 'Value'));
         
-        heeling = pi + vento;
+        heeling = pi + wind_angle;
         
         if heeling > pi
             heeling = heeling - 2*pi;
@@ -311,8 +321,6 @@ par.contVel = par.contVel + 1;
             %[l,c] = size(par.pontos_bordejar);
             %par.pontos_bordejar(:,c+1) = destino;
         end
-        desired_control(1) = desired_heading;
-        desired_control(2) = sail_angle;
         
 %         if mod(par.contador_teste, 100) == 0
 %             %set_param('sailboatModel', 'SimulationCommand' ,'pause');

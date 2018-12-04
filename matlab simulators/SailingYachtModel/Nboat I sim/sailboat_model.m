@@ -27,6 +27,9 @@ v = V_in(9);
 p = V_in(10);
 r = V_in(11);
 wind_angle = V_in(12);
+vt = V_in(13);
+water_angle =  V_in(14);
+water_spd =  V_in(15);
 nu = [ u ; v ; p ; r ];
 
 % retrieve the input signals from the vector "V_in"
@@ -60,7 +63,7 @@ C = C_RB + C_A;
 
 % calculate the tau vector, ie forces and moments generated from:
 % the sail
-v_t = [ par.vt*cos(wind_angle); par.vt*sin(wind_angle); 0 ];
+v_t = [ vt*cos(wind_angle); vt*sin(wind_angle); 0 ];
 v_tw = log(abs(par.z_s)*cos(phi)/par.h0)/log(par.h1/par.h0)*v_t;
 
 R1 = [ cos(-psi) -sin(-psi) 0
