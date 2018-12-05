@@ -12,7 +12,7 @@ function delta_r = rudder_pid_heading(V_in)
         end
     end
     
-    delta_r = P(heading_error,Kp);% + I(heading_error,Ki,T);
+    delta_r = P(heading_error,Kp) + I(heading_error,Ki,T);
 end
 
 function out=P(current_error, gain)

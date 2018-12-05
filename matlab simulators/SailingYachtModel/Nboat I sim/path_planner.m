@@ -123,7 +123,7 @@ par.contVel = par.contVel + 1;
         
         deltaY = par.nextLocation(2,1) - lastLocation(2,1);
         deltaX = par.nextLocation(1,1) - lastLocation(1,1);
-        desired_heading = atan2(deltaY,deltaX);
+        desired_heading = (-1)*(atan2(deltaY,deltaX)-(pi/2));
         
         teste1 = abs(rad2deg(biruta));
         teste2 = rad2deg(abs(desired_heading - par.psi));
