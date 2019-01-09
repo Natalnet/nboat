@@ -7,31 +7,27 @@
  http://www.arduino.cc/en/Tutorial/Sweep
 */
 
-#include <Servo.h>
+#include "BoatControl.h"
+#include "SensorManager.h"
 
-Servo myservo;  // create servo object to control a servo
-// twelve servo objects can be created on most boards
-
-int pos = 0;    // variable to store the servo position
+BoatControl *movementControl;
+double channel[3];
+SensorManager *sensors;
 
 void setup() {
-  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
-  myservo.write(30);
-  delay(3000);
-  Serial.begin(9600);
-  myservo.write(0);
+  movementControl = new BoatControl(5,0.5);
+  pinMode(34, INPUT);
+  pinMode(35, INPUT);
+  pinMode(36, INPUT);
 }
 
 void loop() {
-
-  //float test = 15;
-  //myservo.write(test);              // tell servo to go to position in variable 'pos'
-  //delay(15);                       // waits 15ms for the servo to reach the position
-
-//  for(int i=50; i < 150; i = i+10){
-//    myservo.write(i);              // tell servo to go to position in variable 'pos'
-//    delay(1000);                       // waits 15ms for the servo to reach the position
-//    Serial.println(i);
-//  }
+  channel[0] = pulseIn(34, HIGH);
+  channel[1] = pulseIn(35, HIGH);
+  channel[2] = pulseIn(36, HIGH);
+  sensors->read();
+  
+  movementControl->thrusterRCControl(sensors, channel[1]);
+  movementControl->rudderRCControl(sensors, channel[2]);
 }
 

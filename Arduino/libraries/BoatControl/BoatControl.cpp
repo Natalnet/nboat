@@ -81,11 +81,17 @@ float BoatControl::I(float currentError)
   _starttime = millis();
   if ((I_prior > 0 && currentError < 0) || (I_prior < 0 && currentError > 0))
   {
-    I_prior = I_prior + _ki * currentError * 5 * _cycleTime;
+    I_prior = I_prior + _ki * currentError * 1 * _cycleTime;
   }
   else
   {
     I_prior = I_prior + _ki * currentError * _cycleTime;
+  }
+  if (I_prior > 30){
+    I_prior = 30;
+  }
+  if (I_prior < -30){
+    I_prior = -30;
   }
   return I_prior;
 }
@@ -124,7 +130,7 @@ void BoatControl::thrusterControlWind(SensorManager *sensors){
 }
 
 void BoatControl::rudderRCControl(SensorManager *sensors, double rudderPWM){
-  _actuators->setRudderAngle(-map(rudderPWM, 894, 2088, -90, 90));
+  _actuators->setRudderAngle(map(rudderPWM, 894, 2088, -90, 90));
   sensors->setThrusterPower(_actuators->getThrusterPower());
 }
 

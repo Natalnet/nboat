@@ -31,7 +31,7 @@ double channel[3];
   int waypoints_id, waypointsT_id, bugManager;
   float startTime, endTime, distanceToTarget = 99999999, lastDistanciaDestino, desiredDistance, timeInterval;
   double distanceTravelled;
-
+  
   float testTimer;
   bool flag = false;
   float heeling;
@@ -71,7 +71,7 @@ void setup() {
   pinMode(35, INPUT);
   pinMode(36, INPUT);
   
-  movementControl = new BoatControl(5,0.5);
+  movementControl = new BoatControl(5,0.1);
   //movementControl = new BoatControl(2,0.2);
   //movementControl = new BoatControl(2,1);
   movementControl->initThruster();
