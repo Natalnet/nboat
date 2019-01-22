@@ -19,13 +19,13 @@ function out=P(current_error, gain)
 end
 
 function out=I(current_error, gain)
-    global par
-    par.T = get_param('sailboatModel','SimulationTime') - par.T;
-    if (par.integrator > 0 && current_error < 0) || (par.integrator < 0 && current_error > 0)
-        par.integrator = par.integrator + gain * current_error * 100 * par.T;
+    global gnc_par
+    gnc_par.T = get_param('sailboatModel','SimulationTime') - gnc_par.T;
+    if (gnc_par.integrator > 0 && current_error < 0) || (gnc_par.integrator < 0 && current_error > 0)
+        gnc_par.integrator = gnc_par.integrator + gain * current_error * 100 * gnc_par.T;
     else
-        par.integrator = par.integrator + gain * current_error * par.T;
+        gnc_par.integrator = gnc_par.integrator + gain * current_error * gnc_par.T;
     end
-    par.T = get_param('sailboatModel','SimulationTime');
-    out = par.integrator;
+    gnc_par.T = get_param('sailboatModel','SimulationTime');
+    out = gnc_par.integrator;
 end
