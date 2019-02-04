@@ -94,8 +94,10 @@ end
 alpha_as = alpha_aw - delta_s;
 
 [Cls,Cds] = sailcoef(alpha_as);
-Ls = 0.5*mdl_par.rho_a*mdl_par.As*(V_awu^2+V_awv^2)*Cls;        %essa velocidade não deveria ser sqrt(x^2+y^2)?
-Ds = 0.5*mdl_par.rho_a*mdl_par.As*(V_awu^2+V_awv^2)*Cds;
+%Ls = 0.5*mdl_par.rho_a*mdl_par.As*(V_awu^2+V_awv^2)*Cls;        %essa velocidade não deveria ser sqrt(x^2+y^2)?
+%Ds = 0.5*mdl_par.rho_a*mdl_par.As*(V_awu^2+V_awv^2)*Cds;
+Ls = 0.5*mdl_par.rho_a*mdl_par.As*(V_aw)*Cls;        %essa velocidade não deveria ser sqrt(x^2+y^2)?
+Ds = 0.5*mdl_par.rho_a*mdl_par.As*(V_aw)*Cds;
 
 tau_sail = [Ls*sin(alpha_aw)-Ds*cos(alpha_aw); Ls*cos(alpha_aw)+Ds*sin(alpha_aw);-(Ls*cos(alpha_aw)+Ds*sin(alpha_aw))*mdl_par.zs; -(Ls*sin(alpha_aw)-Ds*cos(alpha_aw))*mdl_par.Xce*sin(delta_s)+(Ls*cos(alpha_aw)+Ds*sin(alpha_aw))*(mdl_par.Xm-mdl_par.Xce*cos(delta_s))];
 Mzs = tau_sail(4);
@@ -107,17 +109,20 @@ mdl_par.delta_s = delta_s;
 % the rudder
 v_aru = -u+r*mdl_par.yr;
 v_arv = -v-r*mdl_par.xr + p*mdl_par.zr;
+V_ar = sqrt(v_aru^2+v_arv^2);
 alpha_ar = atan2(v_arv,-v_aru);
 alpha_a = alpha_ar-delta_r;
 [Clr,Cdr] = ruddercoef(alpha_a);
 Cdr = Cdr+Clr^2*mdl_par.Ar/(pi*2*mdl_par.zeta_r*mdl_par.d_r^2);
 
-Lr = 0.5*mdl_par.rho_w*mdl_par.Ar*(v_aru^2+v_arv^2)*Clr;
-Dr = 0.5*mdl_par.rho_w*mdl_par.Ar*(v_aru^2+v_arv^2)*Cdr;
+%Lr = 0.5*mdl_par.rho_w*mdl_par.Ar*(v_aru^2+v_arv^2)*Clr;
+%Dr = 0.5*mdl_par.rho_w*mdl_par.Ar*(v_aru^2+v_arv^2)*Cdr;
+Lr = 0.5*mdl_par.rho_w*mdl_par.Ar*(V_ar)*Clr;
+Dr = 0.5*mdl_par.rho_w*mdl_par.Ar*(V_ar)*Cdr;
 
 tau_rudder = [Lr*sin(alpha_ar)-Dr*cos(alpha_ar); Lr*cos(alpha_ar)+Dr*sin(alpha_ar); -(Lr*cos(alpha_ar)+Dr*sin(alpha_ar))*mdl_par.zr; (Lr*cos(alpha_ar)+Dr*sin(alpha_ar))*mdl_par.xr];
 Mzr = tau_rudder(4);
-mdl_par.V_ar = v_aru^2+v_arv^2;
+mdl_par.V_ar = V_ar;
 mdl_par.alpha_ar = alpha_ar;
 mdl_par.alpha_a = alpha_a;
 mdl_par.delta_r = delta_r;
@@ -129,13 +134,16 @@ tau = tau_sail + tau_rudder;
 % from the keel
 v_aku = -u + r*mdl_par.yk;
 v_akv = -v - r*mdl_par.xk+p*mdl_par.zk;
+V_ak = sqrt(v_aku^2+v_akv^2);
 alpha_ak = atan2(v_akv,-v_aku);
 alpha_e = alpha_ak;
 [Clk,Cdk] = keelcoef(alpha_e);
 Cdk = Cdk + Clk^2*mdl_par.Ak/(pi*2*mdl_par.zeta_k*mdl_par.d_k^2);
 
-Lk = 0.5*mdl_par.rho_w*mdl_par.Ak*(v_aku^2+v_akv^2)*Clk;
-Dk = 0.5*mdl_par.rho_w*mdl_par.Ak*(v_aku^2+v_akv^2)*Cdk;
+%Lk = 0.5*mdl_par.rho_w*mdl_par.Ak*(v_aku^2+v_akv^2)*Clk;
+%Dk = 0.5*mdl_par.rho_w*mdl_par.Ak*(v_aku^2+v_akv^2)*Cdk;
+Lk = 0.5*mdl_par.rho_w*mdl_par.Ak*(V_ak)*Clk;
+Dk = 0.5*mdl_par.rho_w*mdl_par.Ak*(V_ak)*Cdk;
 
 D_keel = [ -Lk*sin(alpha_ak)+Dk*cos(alpha_ak); -Lk*cos(alpha_ak)-Dk*sin(alpha_ak); -(-Lk*cos(alpha_ak)-Dk*sin(alpha_ak))*mdl_par.zk; -(Lk*cos(alpha_ak)+Dk*sin(alpha_ak))*mdl_par.xk];
 

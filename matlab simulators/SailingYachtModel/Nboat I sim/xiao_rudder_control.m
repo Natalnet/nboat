@@ -38,13 +38,13 @@ function delta_r = xiao_rudder_control(V_in)
     alpha_ar = mdl_par.alpha_ar;
     
     %Gains
-    K1 = 1;
+    K1 = .01;
     Kyaw = -2*(Izz - Nr);
     %Kyaw = 0;
     Kls = 2;
     Kd0 = 0.1;
     Kds = 1.5;
-    Klr = 50;    
+    Klr = 3.5;    
     
     A = -(1+K1*cos(phi))*r - (K1+cos(phi))*(psi-psi_d);
     B = (Izz - Nr) - (-Xu + Yv)*u*v + (Kyaw*r*abs(r)*(cos(phi)^3)) - (0.5*rho_a*As*(V_aw^2));
