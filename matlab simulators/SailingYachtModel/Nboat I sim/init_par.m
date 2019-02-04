@@ -60,6 +60,10 @@ mdl_par.ys = 0;
 mdl_par.zs = -11.58;                       % (m), (x,y,z) is the CoE                
 mdl_par.Xce = 0.6;                         % (m), distance along the mast to the CoE
 mdl_par.Xm = 0.3;                          % (m), x-coordinate of the mast          
+mdl_par.V_aw = 0;
+mdl_par.alpha_aw = 0;
+mdl_par.alpha_s = 0;
+mdl_par.delta_s = 0;
 
 mdl_par.Ar = 1.17;                         % (m^2), rudder area                     
 mdl_par.d_r = 1.9;                         % rudder draft                           
@@ -69,6 +73,10 @@ mdl_par.z_r = -0.78;                       % (m), (x,y,z) is the CoE
 mdl_par.xr = -8.2;
 mdl_par.yr = 0;
 mdl_par.zr = -0.78;                        % (m), (x,y,z) is the CoE                
+mdl_par.V_ar = 0;
+mdl_par.alpha_ar = 0;
+mdl_par.alpha_a = 0;
+mdl_par.delta_r = 0;
                                                                                 
 mdl_par.Ak = 8.7;                          % (m^2), keel area                       
 mdl_par.d_k = 2.49;                        % keel draft                             

@@ -79,7 +79,6 @@ V_in = [ u ; v ; 0 ];
 V_awb = v_tb - V_in - cross([p;0;r],[mdl_par.xs;mdl_par.ys;mdl_par.zs]);
 V_awu = V_awb(1);
 V_awv = V_awb(2);
-V_aw = sqrt(V_awu^2 + V_awv^2);
 alpha_aw = atan2(V_awv,-V_awu);
 
 % (sail luffing or not)
@@ -94,15 +93,12 @@ end
 alpha_as = alpha_aw - delta_s;
 
 [Cls,Cds] = sailcoef(alpha_as);
-Ls = 0.5*mdl_par.rho_a*mdl_par.As*(V_awu^2+V_awv^2)*Cls;        %essa velocidade não deveria ser sqrt(x^2+y^2)?
+Ls = 0.5*mdl_par.rho_a*mdl_par.As*(V_awu^2+V_awv^2)*Cls;
 Ds = 0.5*mdl_par.rho_a*mdl_par.As*(V_awu^2+V_awv^2)*Cds;
 
 tau_sail = [Ls*sin(alpha_aw)-Ds*cos(alpha_aw); Ls*cos(alpha_aw)+Ds*sin(alpha_aw);-(Ls*cos(alpha_aw)+Ds*sin(alpha_aw))*mdl_par.zs; -(Ls*sin(alpha_aw)-Ds*cos(alpha_aw))*mdl_par.Xce*sin(delta_s)+(Ls*cos(alpha_aw)+Ds*sin(alpha_aw))*(mdl_par.Xm-mdl_par.Xce*cos(delta_s))];
 Mzs = tau_sail(4);
-mdl_par.V_aw = V_aw;
-mdl_par.alpha_aw = alpha_aw;
-mdl_par.alpha_s = alpha_as;
-mdl_par.delta_s = delta_s;
+
 
 % the rudder
 v_aru = -u+r*mdl_par.yr;
@@ -117,10 +113,8 @@ Dr = 0.5*mdl_par.rho_w*mdl_par.Ar*(v_aru^2+v_arv^2)*Cdr;
 
 tau_rudder = [Lr*sin(alpha_ar)-Dr*cos(alpha_ar); Lr*cos(alpha_ar)+Dr*sin(alpha_ar); -(Lr*cos(alpha_ar)+Dr*sin(alpha_ar))*mdl_par.zr; (Lr*cos(alpha_ar)+Dr*sin(alpha_ar))*mdl_par.xr];
 Mzr = tau_rudder(4);
-mdl_par.V_ar = v_aru^2+v_arv^2;
 mdl_par.alpha_ar = alpha_ar;
 mdl_par.alpha_a = alpha_a;
-mdl_par.delta_r = delta_r;
 
 % the tau vector is finally given by:
 tau = tau_sail + tau_rudder;
