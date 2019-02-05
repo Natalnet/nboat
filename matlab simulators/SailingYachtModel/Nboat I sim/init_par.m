@@ -31,6 +31,12 @@ gnc_par.lastlastLocation = eye(2,1);
 gnc_par.taxa_dist = 0.3;
 gnc_par.angulo_bordejo = 40;
 gnc_par.T = 0;
+gnc_par.e = [];
+gnc_par.conte = 1;
+
+%LOS parameters
+gnc_par.R = 10;
+gnc_par.K_ct = 0.1;
 
 % MODEL PARAMETERS
 global mdl_par                                                       

@@ -36,10 +36,11 @@ gnc_par.contVel = gnc_par.contVel + 1;
 
 [l, waypoints_size] = size(gnc_par.waypoints);
     if(waypoints_size ~= 0)
-        if (gnc_par.distanciaAlvo < 3)
+        if (gnc_par.distanciaAlvo < 5)
             if (gnc_par.isBordejando)
                 [l, pontos_bordejar_size] = size(gnc_par.pontos_bordejar);
                 if (gnc_par.waypointBId < pontos_bordejar_size)
+                    gnc_par.lastWaypoint = gnc_par.pontos_bordejar(:,gnc_par.waypointBId);
                     gnc_par.waypointBId = gnc_par.waypointBId + 1;
                     gnc_par.nextLocation = gnc_par.pontos_bordejar(:,gnc_par.waypointBId);
                 else
@@ -48,6 +49,7 @@ gnc_par.contVel = gnc_par.contVel + 1;
                 end
             else
                 set_param('sailboatModel', 'SimulationCommand' ,'stop');
+                gnc_par.lastWaypoint = gnc_par.waypoints(:,gnc_par.waypointId);
                 gnc_par.waypointId = gnc_par.waypointId + 1;
                 if (mod(gnc_par.waypointId,waypoints_size+1) == 0)
                     gnc_par.waypointId = 1;
@@ -180,6 +182,8 @@ gnc_par.contVel = gnc_par.contVel + 1;
             psi_bord = gnc_par.psi;
             end
         end
+        
+        waypoint_pair = [way;destino'];
         
         if(abs(rad2deg(biruta_bord)) < 40 && ~gnc_par.isBordejando && rad2deg(abs(desired_heading_bord - psi_bord)) < 20)
         %if(abs(rad2deg(heeling - desired_heading)) < 30  && ~gnc_par.isBordejando)
