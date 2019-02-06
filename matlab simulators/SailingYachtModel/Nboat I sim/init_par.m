@@ -35,8 +35,7 @@ gnc_par.e = [];
 gnc_par.conte = 1;
 
 %LOS parameters
-gnc_par.R = 10;
-gnc_par.K_ct = 0.1;
+gnc_par.R = 20;
 
 % MODEL PARAMETERS
 global mdl_par                                                       

@@ -56,30 +56,30 @@ function psi_d = LOS_path_follow(V_in)
     if d_x == 0
         x_los = x1;
         if d_y > 0
-            y_los = y + sqrt(r^2 - (x_los - x)^2); 
+            y_los = real(y + sqrt(r^2 - (x_los - x)^2)); 
         end
         if d_y < 0
-            y_los = y - sqrt(r^2 - (x_los - x)^2);
+            y_los = real(y - sqrt(r^2 - (x_los - x)^2));
         end
     end
     
     %enclosure-based steering
-    chi_d = atan2(y_los - y, x_los - x);
-    psi_d = chi_d - beta;
+%     chi_d = atan2(y_los - y, x_los - x);
+%     psi_d = chi_d - beta;
     
     
     %lookahead-based steering
-%     alpha_k = atan2(d_y,d_x);    
-%     chi_p = alpha_k;
-%     
-%     e = -(x - x1)*sin(alpha_k) + (y - y1)*cos(alpha_k);
-%     delta = sqrt(r^2 - e^2);
-%     K_ct = 1/delta;
-%     chi_r = atan(-K_ct*e);
-%     gnc_par.e(gnc_par.conte, 1) = e;
-%     gnc_par.conte = gnc_par.conte + 1;
-%     
-%     chi_d = chi_p + chi_r;
-%     
-%     psi_d = chi_d - beta;
+    alpha_k = atan2(d_y,d_x);    
+    chi_p = alpha_k;
+    
+    e = -(x - x1)*sin(alpha_k) + (y - y1)*cos(alpha_k);
+    delta = sqrt(r^2 - e^2);
+    K_ct = 1/delta;
+    chi_r = atan(-K_ct*e);
+    gnc_par.e(gnc_par.conte, 1) = e;
+    gnc_par.conte = gnc_par.conte + 1;
+    
+    chi_d = chi_p + chi_r;
+    
+    psi_d = chi_d - beta;
 end

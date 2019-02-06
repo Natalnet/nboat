@@ -1,6 +1,7 @@
 function desired_heading=path_planner(V_in)
 global gnc_par
 
+%sailboat state
 x = V_in(1);
 y = V_in(2);
 phi = V_in(3); %roll
@@ -9,14 +10,17 @@ u = V_in(5);
 v = V_in(6);
 p = V_in(7);
 r = V_in(8);
+
 gnc_par.taxa_dist = V_in(9);
 gnc_par.angulo_bordejo = V_in(10);
 wind_angle = V_in(11);
 vt = V_in(12);
 water_angle =  V_in(13);
 water_spd =  V_in(14);
+
 [l,c] = size(V_in);
 index = 1;
+
 for i = 15:2:l-1
     gnc_par.waypoints(1,index) = V_in(i);
     gnc_par.waypoints(2,index) = V_in(i+1);
@@ -71,6 +75,7 @@ gnc_par.contVel = gnc_par.contVel + 1;
             distanciaInicial = norm(lastLocation-gnc_par.nextLocation);
             gnc_par.controle = 1;
         end
+        
         gnc_par.lastDistanciaAlvo = gnc_par.distanciaAlvo;
         gnc_par.distanciaAlvo = norm(lastLocation-gnc_par.nextLocation);
         
