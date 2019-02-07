@@ -10,6 +10,10 @@ function psi_d = LOS_path_follow(V_in)
     p = V_in(7);
     r = V_in(8);
     
+    if psi > 2*pi
+        psi = psi - 2*pi;
+    end
+    
     %waypoints k and k+1
     x1 = V_in(9);
     y1 = V_in(10);
@@ -58,14 +62,14 @@ function psi_d = LOS_path_follow(V_in)
         if d_y > 0
             y_los = real(y + sqrt(r^2 - (x_los - x)^2)); 
         end
-        if d_y < 0
+        if d_y <= 0
             y_los = real(y - sqrt(r^2 - (x_los - x)^2));
         end
     end
     
     %enclosure-based steering
-%     chi_d = atan2(y_los - y, x_los - x);
-%     psi_d = chi_d - beta;
+%      chi_d = atan2(y_los - y, x_los - x);
+%      psi_d = chi_d - beta;
     
     
     %lookahead-based steering

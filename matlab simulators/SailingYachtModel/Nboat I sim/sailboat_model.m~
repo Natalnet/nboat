@@ -32,10 +32,6 @@ water_angle =  V_in(14);
 water_spd =  V_in(15);
 nu = [ u ; v ; p ; r ];
 
-if psi > 2*pi
-    psi = psi-(2*pi);
-end
-
 % retrieve the input signals from the vector "V_in"
 delta_r = V_in(1);
 delta_sbar = V_in(2);
@@ -167,6 +163,10 @@ eta_dot = J*nu;
 phi_dot = eta_dot(3);
 psi_dot = eta_dot(4);
 
+if eta_dot(4) > 2*pi
+    eta_dot(4) = eta_dot(4) - 2*pi
+end
+
 D_heelandyaw = [0;0;mdl_par.c*phi_dot*abs(phi_dot);mdl_par.d*psi_dot*abs(psi_dot)*cos(phi)]; 
 
 % compute total damping vector D
@@ -185,6 +185,7 @@ nu_dot = -M\(C*nu) - M\D - M\G + M\tau;
 X_dot_ext = [ eta_dot   ;
               nu_dot   ;
               delta_s];
+end
 
 
 %------------------------------------------------------------------------------------------------------------------------------
