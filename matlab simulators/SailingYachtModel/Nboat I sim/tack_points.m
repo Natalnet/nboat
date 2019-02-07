@@ -19,12 +19,12 @@ function waypoints_t=tack_points(p0, p1, d_t, theta_t, alpha_tw)
     
     b_A = y0 - (a_A * x0);
     
-    alpha_AB = atan2(y1-y0,x1-x0);
+    alpha_p = atan2(y1-y0,x1-x0);
     
     %finding line B
     tan_theta_t = tand(theta_t);
 
-    if(alpha_aw - alpha_AB > 0)
+    if(alpha_aw - alpha_p > 0)
         a_B = (-a_A + tan_theta_t) / (-tan_theta_t * a_A - 1);     
     else
         a_B = (-a_A - tan_theta_t) / (tan_theta_t * a_A - 1);      
@@ -91,7 +91,7 @@ function waypoints_t=tack_points(p0, p1, d_t, theta_t, alpha_tw)
             waypoints_t(i,:) = p_tmp;
             i = i + 1;
         else
-            aux = abs(alpha_tw - abs(alpha_AB));
+            aux = abs(alpha_tw - abs(alpha_p));
             aux = rad2deg(aux);
             delta_xaux = aux * delta_x/31;
             delta_yaux = aux * delta_y/31;

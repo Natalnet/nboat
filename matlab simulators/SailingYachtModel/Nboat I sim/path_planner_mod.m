@@ -2,7 +2,8 @@
 %p1 -> nextWaypoint
 %p -> current position
 
-function desired_heading=path_planner_mod(V_in)
+function waypoint_pair=path_planner_mod(V_in)
+init_par
 global gnc_par
 global mdl_par
 
@@ -24,7 +25,13 @@ V_tw = V_in(12);
 alpha_tc =  V_in(13);
 V_tc =  V_in(14);
 
-alpha_aw = mdl_par.alpha_aw;
+[l,c] = size(V_in);
+j = 1;
+for i= 15:2:l
+    gnc_par.waypoints(1,j) = V_in(i);
+    gnc_par.waypoints(2,j) = V_in(i+1);
+    j = j + 1;
+end
 
 p = [x;y];
 
@@ -52,126 +59,31 @@ if(waypoints_size ~= 0)
         end
     else
         if (gnc_par.isBordejando)
+            gnc_par.p0 = gnc_par.pontos_bordejar(:,mod(gnc_par.waypointBId,gnc_par.waypointBId-1));
+            gnc_par.waypointBId + 1;
             gnc_par.p1 = gnc_par.pontos_bordejar(:,gnc_par.waypointBId);
         else
             gnc_par.p1 = gnc_par.waypoints(:,gnc_par.waypointId);
         end
     end
     
-    verify_movement();
+    gnc_par.lastd_p1 = gnc_par.d_p1;
+    gnc_par.d_p1 = norm(gnc_par.p1-gnc_par.p0);
+    x0 = gnc_par.p0(1);  y0 = gnc_par.p0(2);
+    x1 = gnc_par.p1(1);  y1 = gnc_par.p1(2);
+    alpha_p = atan2(y1-y0,x1-x0);
+    
+    verify_movement(p);
     
     %condição para o calcular os pontos de bordejo
-    if(rad2deg(abs(psi_d - alpha_tw + pi)) < 20)
+    if(rad2deg(abs(alpha_p - alpha_tw + pi)) < 20)
         gnc_par.pontos_bordejar = tack_points([x,y], gnc_par.waypoints(waypointId), d_t, theta_t, alpha_tw);
     end
+    waypoint_pair = [gnc_par.p0;gnc_par.p1];
+end
 end
 
-end
-
-function waypoints_t=tack_points(p0, p1, d_t, alpha_t)
-    global gnc_par
-
-    gnc_par.isBordejando = true;
-    
-    x0 = p0(1,1);
-    y0 = p0(2,1);
-    x1 = p1(1,1);
-    y1 = p1(2,1);           
-
-    %finding line A
-    a_A = (y1 - y0) / (x1 - x0);
-    b_A = y0 - (a_A * x0);
-    
-    alpha_AB = atan2(y1-y0,x1-x0);
-    
-    %finding line B
-    tan_alpha_t = tan(alpha_t);
-
-    if(alpha_aw - alpha_AB > 0)
-        a_B = (-a_A + tan_alpha_t) / (-tan_alpha_t * a_A - 1);     
-    else
-        a_B = (-a_A - tan_alpha_t) / (tan_alpha_t * a_A - 1);      
-    end
-    b_B = y0 - (a_B * x0);
-    
-    %first tacking point
-    x_t = x0 + d_t;
-    y_t = a_B*x_t + b_B;
-    
-    waypoints_t(:,1) = [x_t;y_t];
-    i = 2;
-    
-    p_p = projecao2d(x_t, y_t, a_A, b_A);
-    d_p0 = norm(p_p-p0);
-
-    b_L1 = -a_A * x_t + y_t;
-
-    if(b_L1 > b_A)
-        b_L2 = b_A - (b_L1 - b_A);
-    else
-        b_L2 = b_A + (b_A - b_L1);
-    end
-
-    %number of tacking points
-    n_t = floor(norm(p0-p1)/d_p0);
-
-    delta_x = p_p(1) - x0;
-    delta_y = p_p(2) - y0;
-
-    p0_L1 = projecao2d(p_p(1,1), p_p(2,1), a_A, b_L1);
-    p0_L2 = projecao2d(p_p(1,1), p_p(2,1), a_A, b_L2);
-
-    for z = 1:n_t-1
-        delta_x_tmp = z * delta_x;
-        delta_y_tmp = z * delta_y;
-
-        if mod(z,2) == 0
-            p_tmp(1) = p0_L1(1,1) + delta_x_tmp;
-            p_tmp(2) = p0_L1(2,1) + delta_y_tmp;
-            waypoints_t(:,i) = p_tmp;
-            i = i + 1;
-        else
-            aux = abs(alpha_tw - abs(alpha_AB));
-            aux = rad2deg(aux);
-            delta_xaux = aux * delta_x/31;
-            delta_yaux = aux * delta_y/31;
-            p_tmp(1) = p0_L2(1,1) + delta_x_tmp - delta_xaux;
-            p_tmp(2) = p0_L2(2,1) + delta_y_tmp - delta_yaux;
-            waypoints_t(:,i) = p_tmp;
-            i = i + 1;
-        end
-    end
-end
-
-function ponto=projecao2d_mod(lat, lon, a, b, a_p, b_p)
-if a == 0
-    a = 0.000000001;
-end
-if b == 0
-    b = 0.000000001;
-end
-    a_aux = -1/a;
-    b_aux = -a_aux * lat + lon;
-    
-    ponto(1,1) = (b_aux - b_p) / (a_p - a_aux);
-    ponto(2,1) =  a_p * ponto(1,1) + b_p;
-end
-
-function ponto= projecao2d(lat, lon, a, b)
-if a == 0
-    a = 0.000000001;
-end
-if b == 0
-    b = 0.000000001;
-end
-    a_aux = -1/a;
-    b_aux = -a_aux * lat + lon;
-    
-    ponto(1,1) = (b_aux - b) / (a - a_aux);
-    ponto(2,1) =  a * ponto(1,1) + b;
-end
-
-function tst=record_control
+function record_control()
 global gnc_par
 
     gnc_par.spvec(gnc_par.spveccont) = (pi - (desired_heading - gnc_par.psi))/pi;
@@ -197,11 +109,10 @@ global gnc_par
     end
 
     gnc_par.spveccont = gnc_par.spveccont + 1;
-    tst = 0;
 end
 
-function tst=verify_movement
-global gnc_par
+function verify_movement(p)
+    global gnc_par
     gnc_par.last_d_p1 = gnc_par.d_p1;
     gnc_par.d_p1 = norm(p-gnc_par.p1);
 

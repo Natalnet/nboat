@@ -11,14 +11,14 @@ gnc_par.spveccont = 1;
 
 gnc_par.dist_lateral = 0;
 gnc_par.contador_teste = 1;
-gnc_par.lastDistanciaAlvo = 0;
+gnc_par.lastd_p1 = 0;
 gnc_par.flag = 0;
 gnc_par.contador_bug = 0;
 gnc_par.psi = 0;
 gnc_par.velocidade = 0;
 gnc_par.contVel = 1;
 gnc_par.integrator = 0;
-gnc_par.distanciaAlvo = 999999999;
+gnc_par.d_p1 = 999999999;
 gnc_par.waypoints = [];
 gnc_par.waypointId = 1;
 gnc_par.nextLocation = [0;0];
@@ -33,6 +33,8 @@ gnc_par.angulo_bordejo = 40;
 gnc_par.T = 0;
 gnc_par.e = [];
 gnc_par.conte = 1;
+gnc_par.p0 = [];
+gnc_par.p1 = [];
 
 %LOS parameters
 gnc_par.R = 20;
