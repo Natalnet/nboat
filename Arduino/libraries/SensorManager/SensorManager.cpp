@@ -65,6 +65,10 @@ IMUData SensorManager::getIMU(){
   return imu1->get();
 }
 
+void SensorManager::setSailAngle(float sailAngle){
+  _sailAngle = sailAngle;
+}
+
 void SensorManager::setThrusterPower(float thrusterPower){
   _thrusterPower = thrusterPower;
 }

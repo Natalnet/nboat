@@ -4,17 +4,17 @@ DualVNH5019MotorShield md(2, 7, 6, A0, 2, 7, 12, A1);
 
 //recebe um ângulo de vela (deg)
 //lê potenciometro da vela
-    //medir pot da vela
-//mapeia o valor do potenciometro para ângulo da vela (posição atual)
-//compara a vela desejada à atual e encontra um erro
-//aplica um ganho nesse erro
+    //medir pot da vela (ver ler_angulo_atual())
+//mapeia o valor do potenciometro para ângulo da vela (posição atual) -OK
+//compara a vela desejada à atual e encontra um erro -OK
+//aplica um ganho nesse erro -OK
 //manda esse sinal para o driver
     //testar driver guincho
 
 
 //GUINCHO
-//velocidade positiva -> indo para 
-//velocidade negativa -> indo para 
+//velocidade positiva (+400) -> vela (?) (abre ou fecha?)
+//velocidade negativa (-400) -> vela (?) (abre ou fecha?) 
 
 float Kp = 3;
 float Ki = 0;
@@ -35,8 +35,10 @@ void setup() {
   Wire.onReceive(receiveEvent); // register event
 }
 
+
 void loop() {
 }
+
 
 // function that executes whenever data is received from master
 // this function is registered as an event, see setup()
@@ -48,28 +50,31 @@ void receiveEvent() {
   vela_controle(x);
 }
 
+
 void vela_controle(int theta_r_desejado){  
   //verifica posição atual
   int theta_r_atual = ler_angulo_atual();
-  
+
+  //encontra erro
   int erro = theta_r_desejado - theta_r_atual;
   erro = -erro;
   
   //comando do motor
   int velocidade_motor = P(erro) + I(erro);
 
-  if (erro > range) {
+  /*if (erro > range) {
   velocidade_motor = 400;
   } else if (erro < range){
   velocidade_motor = -400;
   } else {
   velocidade_motor = 0;
-  }
+  }*/
 
   velocidade_motor = constrain(velocidade_motor, -400, 400);
   md.setM1Speed(velocidade_motor); //-400 <-> +400
   //Serial.println(velocidade_motor);
 }
+
 
 int ler_angulo_atual(){
   int potenciometro = analogRead(pinoPot);
@@ -77,6 +82,7 @@ int ler_angulo_atual(){
   //medir pot guincho
   return map(potenciometro, 495, 125, 0, 90);
 }
+
 
 float P(float currentError)
 {

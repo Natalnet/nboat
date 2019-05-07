@@ -32,8 +32,10 @@ void setup() {
   Wire.onReceive(receiveEvent); // register event
 }
 
+
 void loop() {
 }
+
 
 void leme_controle(int theta_r_desejado){  
   //verifica posição atual
@@ -59,6 +61,7 @@ void leme_controle(int theta_r_desejado){
   //Serial.println(velocidade_motor);
 }
 
+
 int ler_angulo_atual(){
   int potenciometro = analogRead(pinoPot);
 
@@ -68,7 +71,7 @@ int ler_angulo_atual(){
   return map(potenciometro, 495, 125, -90, 90);
 }
 
-// function that executes whenever data is received from master
+// function that runs whenever data is received from master
 // this function is registered as an event, see setup()
 void receiveEvent() {  
   int x;
@@ -79,6 +82,7 @@ void receiveEvent() {
   //Serial.println(x);
   leme_controle(x);
 }
+
 
 float P(float currentError)
 {

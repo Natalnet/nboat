@@ -46,6 +46,7 @@ class SensorManager
     WindData getWind();
     Pose getMagnetometer();
     void setThrusterPower(float ThrusterPower);
+    void setSailAngle(float sailAngle);
     void setRudderAngle(float rudderAngle);
     void setWindSpeed(float windSpeed);
     void SensorManager::printState();
@@ -73,7 +74,7 @@ class SensorManager
     IMUData _IMUData;
 
     float _batCharge; //TODO
-    float _rudderAngle, _thrusterPower;
+    float _rudderAngle, _thrusterPower, _sailAngle;
 
     File dataFile;
 
