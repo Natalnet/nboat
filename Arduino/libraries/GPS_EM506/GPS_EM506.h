@@ -33,7 +33,7 @@ class GPS_EM506
     int c;
     GPSData _gpsData;
     Location _p1;
-    float heading, _gpsCourse, _gpsSpeed;
+    float heading, _gpsCourse, _gpsSpeed, _gpsAltitude;
 };
 
 #endif

@@ -27,6 +27,7 @@ void GPS_EM506::read(){
         gps.f_get_position(&_p1.latitude, &_p1.longitude);
         _gpsCourse = gps.f_course();
         _gpsSpeed = gps.f_speed_kmph();
+        _gpsAltitude = gps.f_altitude();
         gps.crack_datetime(&_year, &_month, &_day, &_hour, &_minute, &_second, &_hundredths, &_age);
         if (_age != TinyGPS::GPS_INVALID_AGE){
           sprintf(_gpsDate, "%02d:%02d:%02d", _hour-3, _minute, _second);
@@ -45,6 +46,7 @@ void GPS_EM506::read(){
   _gpsData.speed = _gpsSpeed;
   _gpsData.date = String(_gpsDate);
   _gpsData.dateFull = String(_gpsDateFull);
+  _gpsData.altitude = _gpsAltitude;
 
 }
 

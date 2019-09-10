@@ -8,8 +8,8 @@
 
 //SensorManager sensors;
 //IMU_GY80 imu;
-//GPS_EM506 gps;
-SensorManager sensors;
+GPS_EM506 gps;
+//SensorManager sensors;
 //GPSData gpsData;
 //Location loc;
 
@@ -23,17 +23,17 @@ void loop() {
   //Serial.println();
   //Serial.println(sensors.getGPS().location.latitude);
   float time1 = millis();
-  sensors.read();
+  gps.read();
   Serial.println(millis()-time1);
-  Serial.print(sensors.gps.get().location.latitude,  6);
+  Serial.print(gps.get().location.latitude,  6);
   Serial.print("---------------- ");
-  Serial.print(sensors.gps.get().location.longitude, 6);
+  Serial.print(gps.get().location.longitude, 6);
   Serial.print("---------------- ");
-  Serial.print(sensors.gps.get().course, 2);
+  Serial.print(gps.get().course, 2);
   Serial.print("---------------- ");
-  Serial.print(sensors.gps.get().speed, 2);
+  Serial.print(gps.get().speed, 2);
   Serial.print("---------------- ");
-  Serial.print(sensors.gps.get().date);
+  Serial.print(gps.get().date);
   Serial.print("---------------- ");
   //Serial.print(comp.readHeading());
 }

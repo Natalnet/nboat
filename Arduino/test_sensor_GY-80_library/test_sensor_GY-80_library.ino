@@ -1,9 +1,6 @@
 #include "IMU_GY80.h"
-#include "WindSensor.h"
 
 IMU_GY80 *imu;
-float time1, time2;
-WindSensor wind;
 
 void setup() {
   imu = new IMU_GY80();
@@ -11,14 +8,20 @@ void setup() {
 }
 
 void loop() {
-  wind.read();
-  Serial.println(map(wind.getDirection(), 0, 180, 0, 100));
-  time1 = millis();
   imu->read();
-  time2 = millis();
-  //Serial.println(time2-time1);
   Serial.print(imu->get().eulerAngles.yaw); Serial.print(" ");
   Serial.print(imu->get().eulerAngles.roll); Serial.print(" "); 
-  Serial.print(imu->get().eulerAngles.pitch); Serial.print(" ");
+  Serial.print(imu->get().eulerAngles.pitch); Serial.print(" "); 
+//  Serial.print(imu->get().accel_x); Serial.print(" ");
+//  Serial.print(imu->get().accel_y); Serial.print(" ");
+//  Serial.print(imu->get().accel_z); Serial.print(" ");
+//  Serial.print(imu->get().gyro_x); Serial.print(" ");
+//  Serial.print(imu->get().gyro_y); Serial.print(" ");
+//  Serial.print(imu->get().gyro_z); Serial.print(" ");
+//  Serial.print(imu->get().mag_x); Serial.print(" ");
+//  Serial.print(imu->get().mag_y); Serial.print(" ");
+//  Serial.print(imu->get().mag_z); Serial.print(" ");
+
+  Serial.print(imu->get().temperature); Serial.print(" ");
   Serial.println(imu->get().heading);
 }

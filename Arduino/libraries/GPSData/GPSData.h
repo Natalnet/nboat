@@ -15,8 +15,9 @@ struct GPSData {
 	Location location;
 	float course;
 	float speed;
-        String date;
-        String dateFull;
+	float altitude;
+    String date;
+    String dateFull;
 };
 
 #endif
