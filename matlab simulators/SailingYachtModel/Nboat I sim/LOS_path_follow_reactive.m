@@ -1,6 +1,8 @@
-function [psi_d, e] = LOS_path_follow(V_in)
+%só calculca o cross-track error
+function psi_d = LOS_path_follow_reactive(V_in)
     global gnc_par
     
+    %boat state
     x = V_in(1);
     y = V_in(2);
     phi = V_in(3);
@@ -15,6 +17,13 @@ function [psi_d, e] = LOS_path_follow(V_in)
     y1 = V_in(10);
     x2 = V_in(11);
     y2 = V_in(12);
+    
+    %wind and current
+    gamma_tw = V_in(13);    
+    
+    psi_t = V_in(17);
+    
+    e_limit = 10;
     
     r = gnc_par.R;
     %K_ct = gnc_par.K_ct;
@@ -76,10 +85,43 @@ function [psi_d, e] = LOS_path_follow(V_in)
     delta = sqrt(r^2 - e^2);
     K_ct = 1/delta;
     chi_r = atan(-K_ct*e);
-    gnc_par.e(gnc_par.conte, 1) = e;
-    gnc_par.conte = gnc_par.conte + 1;
+    %gnc_par.e(gnc_par.conte, 1) = e;
+    %gnc_par.conte = gnc_par.conte + 1;
     
     chi_d = chi_p + chi_r;
     
-    psi_d = chi_d - beta;
+    %angle from boat to line
+    psi_d_line = chi_d - beta;
+    
+    %angle from p0 to p1
+    psi_d = alpha_k;
+    
+    if gnc_par.tack == 1
+        %verifica se o erro chegou no limite e muda o Ângulo
+        if abs(e) > e_limit
+            if psi_d_line > 0
+                gnc_par.psi_t = constrain(psi_d + psi_t);
+            elseif psi_d_line < 0
+                gnc_par.psi_t = constrain(psi_d - psi_t);
+            end
+        end
+        psi_d = gnc_par.psi_t;
+    elseif gnc_par.tack == 0
+        gamma_tw = gamma_tw - pi;
+        gamma_tw = constrain(gamma_tw);
+        %angulo de ataque do vento com o veleiro
+        alpha = psi - gamma_tw;
+        alpha = constrain(alpha);
+        %verifica precisa de tack
+        if(alpha < deg2rad(40) && alpha >= 0)
+            psi_d = psi_d + psi_t;
+            gnc_par.psi_t = psi_d;
+            gnc_par.tack = 1;
+        elseif(alpha > deg2rad(-40) && alpha <= 0)
+            psi_d = psi_d - psi_t;
+            gnc_par.psi_t = psi_d;
+            gnc_par.tack = 1;
+        end
+    end
+    
 end

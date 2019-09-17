@@ -3,7 +3,6 @@
 %p -> current position
 
 function waypoint_pair=path_planner_mod(V_in)
-init_par
 global gnc_par
 global mdl_par
 
@@ -33,12 +32,16 @@ for i= 15:2:l
     j = j + 1;
 end
 
-p = [x;y];
+P = [x;y];
+if(gnc_par.init == 0)
+    gnc_par.p0 = P;
+    gnc_par.init = 1;
+end
 
 [l, waypoints_size] = size(gnc_par.waypoints);
 
 if(waypoints_size ~= 0)
-    if (gnc_par.d_p1 < 5)
+    if (gnc_par.d_p1 < 95)
         if (gnc_par.isBordejando)
             [l, pontos_bordejar_size] = size(gnc_par.pontos_bordejar);
             if (gnc_par.waypointBId < pontos_bordejar_size)
@@ -68,12 +71,13 @@ if(waypoints_size ~= 0)
     end
     
     gnc_par.lastd_p1 = gnc_par.d_p1;
-    gnc_par.d_p1 = norm(gnc_par.p1-gnc_par.p0);
+    gnc_par.d_p1 = norm(gnc_par.p1-P)
+    gnc_par.d_p1_vec(gnc_par.conte, 1) = gnc_par.d_p1;
     x0 = gnc_par.p0(1);  y0 = gnc_par.p0(2);
     x1 = gnc_par.p1(1);  y1 = gnc_par.p1(2);
     alpha_p = atan2(y1-y0,x1-x0);
     
-    verify_movement(p);
+    verify_movement(P);
     
     %condição para o calcular os pontos de bordejo
     if(rad2deg(abs(alpha_p - alpha_tw + pi)) < 20)
@@ -111,10 +115,10 @@ global gnc_par
     gnc_par.spveccont = gnc_par.spveccont + 1;
 end
 
-function verify_movement(p)
+function verify_movement(P)
     global gnc_par
     gnc_par.last_d_p1 = gnc_par.d_p1;
-    gnc_par.d_p1 = norm(p-gnc_par.p1);
+    gnc_par.d_p1 = norm(P-gnc_par.p1);
 
     if gnc_par.d_p1 >= gnc_par.lastd_p1
         gnc_par.contador_bug = gnc_par.contador_bug + 1;

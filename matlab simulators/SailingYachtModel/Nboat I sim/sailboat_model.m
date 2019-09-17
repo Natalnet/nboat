@@ -115,10 +115,10 @@ alpha_a = alpha_ar-delta_r;
 [Clr,Cdr] = ruddercoef(alpha_a);
 Cdr = Cdr+Clr^2*mdl_par.Ar/(pi*2*mdl_par.zeta_r*mdl_par.d_r^2);
 
-%Lr = 0.5*mdl_par.rho_w*mdl_par.Ar*(v_aru^2+v_arv^2)*Clr;
-%Dr = 0.5*mdl_par.rho_w*mdl_par.Ar*(v_aru^2+v_arv^2)*Cdr;
-Lr = 0.5*mdl_par.rho_w*mdl_par.Ar*(V_ar)*Clr;
-Dr = 0.5*mdl_par.rho_w*mdl_par.Ar*(V_ar)*Cdr;
+Lr = 0.5*mdl_par.rho_w*mdl_par.Ar*(v_aru^2+v_arv^2)*Clr;
+Dr = 0.5*mdl_par.rho_w*mdl_par.Ar*(v_aru^2+v_arv^2)*Cdr;
+%Lr = 0.5*mdl_par.rho_w*mdl_par.Ar*(V_ar)*Clr;
+%Dr = 0.5*mdl_par.rho_w*mdl_par.Ar*(V_ar)*Cdr;
 
 tau_rudder = [Lr*sin(alpha_ar)-Dr*cos(alpha_ar); Lr*cos(alpha_ar)+Dr*sin(alpha_ar); -(Lr*cos(alpha_ar)+Dr*sin(alpha_ar))*mdl_par.zr; (Lr*cos(alpha_ar)+Dr*sin(alpha_ar))*mdl_par.xr];
 Mzr = tau_rudder(4);

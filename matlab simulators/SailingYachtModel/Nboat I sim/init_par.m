@@ -32,9 +32,15 @@ gnc_par.taxa_dist = 0.3;
 gnc_par.angulo_bordejo = 40;
 gnc_par.T = 0;
 gnc_par.e = [];
+gnc_par.d_p1_vec = [];
 gnc_par.conte = 1;
 gnc_par.p0 = [];
 gnc_par.p1 = [];
+gnc_par.init = 0;
+gnc_par.tack = 0;
+gnc_par.gamma_aw = 0;
+gnc_par.gamma_tw = 0;
+gnc_par.psi_t = 0;
 
 %LOS parameters
 gnc_par.R = 20;
