@@ -93,6 +93,10 @@ function psi_d = LOS_path_follow_reactive(V_in)
     %angle from boat to line
     psi_d_line = chi_d - beta;
     
+    course = psi + beta;
+    gnc_par.Vd(gnc_par.Vd_count, 1) = U*cos(alpha_k - course);
+    gnc_par.Vd_count = gnc_par.Vd_count + 1;
+    
     %angle from p0 to p1
     psi_d = alpha_k;
     

@@ -42,6 +42,15 @@ gnc_par.gamma_aw = 0;
 gnc_par.gamma_tw = 0;
 gnc_par.psi_t = 0;
 
+gnc_par.err_acc = 0;
+gnc_par.init_err = 0;
+gnc_par.last_psi_d = 0;
+gnc_par.err = [];
+gnc_par.cont_err = 1;
+
+gnc_par.Vd = [];
+gnc_par.Vd_count = 1;
+
 %LOS parameters
 gnc_par.R = 20;
 
