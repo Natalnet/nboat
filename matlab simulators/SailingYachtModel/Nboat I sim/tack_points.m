@@ -5,10 +5,10 @@ function waypoints_t=tack_points(p0, p1, d_t, theta_t, alpha_tw)
     gnc_par.isBordejando = true;
     alpha_aw = mdl_par.alpha_aw;
     
-    x0 = p0(1,1);
-    y0 = p0(2,1);
-    x1 = p1(1,1);
-    y1 = p1(2,1);           
+    x0 = p0(1);
+    y0 = p0(2);
+    x1 = p1(1);
+    y1 = p1(2);           
 
     %finding line A
     if (x1 - x0) == 0
@@ -103,11 +103,11 @@ function waypoints_t=tack_points(p0, p1, d_t, theta_t, alpha_tw)
             i = i + 1;
         end
     end
-    close all
-    plot(waypoints_t(:,1),waypoints_t(:,2));
-    j = [min(p1(1),p0(1)):1:max(p1(1),p0(1))];
-    hold on
-    plot(j,a_A*j+b_A);
+%     close all
+%     plot(waypoints_t(:,1),waypoints_t(:,2));
+%     j = [min(p1(1),p0(1)):1:max(p1(1),p0(1))];
+%     hold on
+%     plot(j,a_A*j+b_A);
 end
 
 function ponto= projecao2d(lat, lon, a, b)

@@ -21,6 +21,7 @@ gnc_par.integrator = 0;
 gnc_par.d_p1 = 999999999;
 gnc_par.waypoints = [];
 gnc_par.waypointId = 1;
+gnc_par.waypointId1 = 1;
 gnc_par.nextLocation = [0;0];
 gnc_par.waypointBId = 1;
 gnc_par.isBordejando = false;

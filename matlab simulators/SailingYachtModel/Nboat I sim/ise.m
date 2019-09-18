@@ -24,7 +24,8 @@ end
 
 err_ = gnc_par.err_acc;
 
-Vd = gnc_par.Vd(gnc_par.Vd_count-1, 1);
+% Vd = gnc_par.Vd(gnc_par.Vd_count-1, 1);
+Vd = 0;
 V_out(1) = err_;
 V_out(2) = Vd;
 end

@@ -37,8 +37,6 @@ for i= 15:2:l
     j = j + 1;
 end
 
-% gnc_par.waypoints = gnc_par.waypoints';
-
 P = [x;y];
 % if(gnc_par.init == 0)
 %     gnc_par.p0 = P;
@@ -52,11 +50,11 @@ if ~gnc_par.isBordejando
 else
     [l, pb_size] = size(gnc_par.pontos_bordejar);
     %distancia entre o ponto atual e o proximo waypoint
-    dist = norm(P - gnc_par.pontos_bordejar(gnc_par.waypointBId,:)');
+    dist = norm(P - gnc_par.pontos_bordejar(:,gnc_par.waypointBId));
     %se tiver alcançado o ponto
     if dist < 5
         %se ainda tem pontos, passa para o proximo
-        if (gnc_par.waypointBId < l)
+        if (gnc_par.waypointBId < pb_size)
             gnc_par.waypointBId = gnc_par.waypointBId + 1;
         %senão, para o bordejar
         else
@@ -64,9 +62,8 @@ else
             gnc_par.waypointBId = 1;
         end
     end
-    waypoint_pair(1,:) = gnc_par.pontos_bordejar(gnc_par.waypointBId-1,:);
-    waypoint_pair(2,:) = gnc_par.pontos_bordejar(gnc_par.waypointBId,:);
-    waypoint_pair = waypoint_pair';
+    waypoint_pair(1,:) = gnc_par.pontos_bordejar(:,gnc_par.waypointBId);
+    waypoint_pair(2,:) = gnc_par.pontos_bordejar(:,gnc_par.waypointBId+1);
     waypoint_pair = waypoint_pair(:);
 end
 
@@ -77,29 +74,16 @@ alpha = psi - gamma_tw;
 alpha = constrain(alpha);
 
 %Verifica se há a necessidade de tack
-if(abs(alpha) < 30 && ~gnc_par.isBordejando)
-    gnc_par.pontos_bordejar = tack_points(gnc_par.waypoints(:,1), gnc_par.waypoints(:,2), d_t, theta_t, alpha_tw);
+if(abs(alpha) < 20 && ~gnc_par.isBordejando)
+    gnc_par.pontos_bordejar = tack_points(gnc_par.waypoints(1,:), gnc_par.waypoints(2,:), d_t, theta_t, alpha_tw);
+    aux = gnc_par.pontos_bordejar;
     [l, c] = size(gnc_par.pontos_bordejar);
-    aux(1,1) = waypoint_pair(1);
-    aux(1,2) = waypoint_pair(2);
-    aux = [aux;gnc_par.pontos_bordejar];
-    aux(l+2,1) = waypoint_pair(3);
-    aux(l+2,2) = waypoint_pair(4);
-    gnc_par.pontos_bordejar = aux;
+    gnc_par.pontos_bordejar(1,1) = waypoints(1);
+    gnc_par.pontos_bordejar(1,2) = waypoints(2);
+    gnc_par.pontos_bordejar(2:l,:) = aux;
+    gnc_par.pontos_bordejar(2:l,:) = aux;
+    
 end
-
-% %calc velocity
-% U = sqrt(u^2 + v^2);
-% 
-% if U == 0
-%     beta = 0;
-% else
-%    beta = asin(v/U); 
-% end
-% 
-% course = psi + beta;
-% gnc_par.Vd(gnc_par.Vd_count, 1) = U*cos(alpha_k - course);
-% gnc_par.Vd_count = gnc_par.Vd_count + 1;
 
 
 % if(waypoints_size ~= 0)
