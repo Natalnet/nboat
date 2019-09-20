@@ -1,8 +1,8 @@
 function V_out=ise(V_in)
 global gnc_par
 
-psi = V_in(4);
-psi_d = V_in(9);
+psi = V_in(1);
+psi_d = V_in(2);
 
 err = psi - psi_d;
 
@@ -24,8 +24,5 @@ end
 
 err_ = gnc_par.err_acc;
 
-% Vd = gnc_par.Vd(gnc_par.Vd_count-1, 1);
-Vd = 0;
-V_out(1) = err_;
-V_out(2) = Vd;
+V_out = err_;
 end

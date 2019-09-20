@@ -13,8 +13,8 @@ DualVNH5019MotorShield md(2, 7, 6, A0, 2, 7, 12, A1);
 
 
 //GUINCHO
-//velocidade positiva (+400) -> vela (?) (abre ou fecha?)
-//velocidade negativa (-400) -> vela (?) (abre ou fecha?) 
+//velocidade positiva (+400) -> vela (?) (abre ou fecha?) FECHA
+//velocidade negativa (-400) -> vela (?) (abre ou fecha?) ABRE
 
 float Kp = 3;
 float Ki = 0;
@@ -26,6 +26,10 @@ int pinoPot = A3;
 byte angulo_recebido;
 
 int range = 5;
+
+//valor do pot quando a vela está no max e no min
+int pot_min = 495; // vela 0 graus (fechada)
+int pot_max = 125; // vela 90 graus (aberta perpendicular)
 
 void setup() {
   md.init();
@@ -47,16 +51,16 @@ void receiveEvent() {
   if (Wire.available()) { // loop through all but the last
     x = Wire.read();      // receive byte as an integer
   }
-  vela_controle(x);
+  vela_controle(constrain(x, 0, 90));
 }
 
 
-void vela_controle(int theta_r_desejado){  
+void vela_controle(int theta_s_desejado){  
   //verifica posição atual
-  int theta_r_atual = ler_angulo_atual();
+  int theta_s_atual = ler_angulo_atual();
 
   //encontra erro
-  int erro = theta_r_desejado - theta_r_atual;
+  int erro = theta_s_desejado - theta_s_atual;
   erro = -erro;
   
   //comando do motor
@@ -80,7 +84,7 @@ int ler_angulo_atual(){
   int potenciometro = analogRead(pinoPot);
   
   //medir pot guincho
-  return map(potenciometro, 495, 125, 0, 90);
+  return map(potenciometro, pot_min, pot_max, 0, 90);
 }
 
 
@@ -96,7 +100,7 @@ float I(float currentError)
   _starttime = millis();
   if ((I_prior > 0 && currentError < 0) || (I_prior < 0 && currentError > 0))
   {
-    I_prior = I_prior + Ki * currentError * 1 * _cycleTime;
+    I_prior = I_prior + Ki * currentError * _cycleTime;
   }
   else
   {

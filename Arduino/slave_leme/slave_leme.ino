@@ -24,6 +24,10 @@ byte angulo_recebido;
 
 int range = 40;
 
+//valor do pot quando a vela está no max e no min
+int pot_min = 495; // leme -90 graus (faz o veleiro virar no sentido horário)
+int pot_max = 125; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
+
 void setup() {
   md.init();
   Serial.begin(9600);
@@ -68,7 +72,7 @@ int ler_angulo_atual(){
   //Serial.println(map(potenciometro, 495, 125, -90, 90));
   
   //medir pot atuador linear
-  return map(potenciometro, 495, 125, -90, 90);
+  return map(potenciometro, pot_min, pot_max, -90, 90);
 }
 
 // function that runs whenever data is received from master
@@ -80,7 +84,7 @@ void receiveEvent() {
   }
   x = map(x, 0, 179, -90, 90);
   //Serial.println(x);
-  leme_controle(x);
+  leme_controle(constrain(x, -90, 90));
 }
 
 
@@ -96,7 +100,7 @@ float I(float currentError)
   _starttime = millis();
   if ((I_prior > 0 && currentError < 0) || (I_prior < 0 && currentError > 0))
   {
-    I_prior = I_prior + Ki * currentError * 1 * _cycleTime;
+    I_prior = I_prior + Ki * currentError * _cycleTime;
   }
   else
   {

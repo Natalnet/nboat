@@ -94,8 +94,8 @@ function psi_d = LOS_path_follow_reactive(V_in)
     psi_d_line = chi_d - beta;
     
     course = psi + beta;
-    gnc_par.Vd(gnc_par.Vd_count, 1) = U*cos(alpha_k - course);
-    gnc_par.Vd_count = gnc_par.Vd_count + 1;
+%     gnc_par.Vd(gnc_par.Vd_count, 1) = U*cos(alpha_k - course);
+%     gnc_par.Vd_count = gnc_par.Vd_count + 1;
     
     %angle from p0 to p1
     psi_d = alpha_k;
@@ -117,11 +117,11 @@ function psi_d = LOS_path_follow_reactive(V_in)
         alpha = psi - gamma_tw;
         alpha = constrain(alpha);
         %verifica precisa de tack
-        if(alpha < deg2rad(40) && alpha >= 0)
+        if(alpha < deg2rad(40) && alpha >= 0 && abs(rad2deg(psi-alpha_k)) < 5)
             psi_d = psi_d + psi_t;
             gnc_par.psi_t = psi_d;
             gnc_par.tack = 1;
-        elseif(alpha > deg2rad(-40) && alpha <= 0)
+        elseif(alpha > deg2rad(-40) && alpha <= 0 && abs(rad2deg(psi-alpha_k)) < 5)
             psi_d = psi_d - psi_t;
             gnc_par.psi_t = psi_d;
             gnc_par.tack = 1;

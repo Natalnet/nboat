@@ -8,5 +8,10 @@ void setup() {
 }
 
 void loop() {
-  md.setM1Speed(200); //-400 <-> +400
+  md.setM1Speed(400);
+  delay(4000);
+  md.setM1Speed(0);
+  delay(500);
+  md.setM1Speed(-400);
+  delay(4000);
 }

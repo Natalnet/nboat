@@ -10,5 +10,12 @@ void loop() {
     md.setM1Speed(i);
     delay(500);
   }*/
+  md.setM1Speed(-400); //-400 <-> +400
+  delay(4000);
   md.setM1Speed(0); //-400 <-> +400
+  delay(500);
+  md.setM1Speed(400); //-400 <-> +400
+  delay(4000);
+  md.setM1Speed(0); //-400 <-> +400
+  delay(500);
 }

@@ -88,18 +88,27 @@ if(abs(alpha) < 30 && ~gnc_par.isBordejando)
     gnc_par.pontos_bordejar = aux;
 end
 
-% %calc velocity
-% U = sqrt(u^2 + v^2);
-% 
-% if U == 0
-%     beta = 0;
-% else
-%    beta = asin(v/U); 
-% end
-% 
-% course = psi + beta;
-% gnc_par.Vd(gnc_par.Vd_count, 1) = U*cos(alpha_k - course);
-% gnc_par.Vd_count = gnc_par.Vd_count + 1;
+%calc velocity
+U = sqrt(u^2 + v^2);
+x1 = gnc_par.waypoints(1,1);
+y1 = gnc_par.waypoints(2,1);
+x2 = gnc_par.waypoints(1,2);
+y2 = gnc_par.waypoints(2,2);
+
+d_x = x2 - x1;
+d_y = y2 - y1;
+alpha_k = atan2(d_y,d_x);
+
+if U == 0
+    beta = 0;
+else
+   beta = asin(v/U); 
+end
+
+course = psi + beta;
+
+gnc_par.Vd(gnc_par.Vd_count, 1) = U*cos(alpha_k - course);
+gnc_par.Vd_count = gnc_par.Vd_count + 1;
 
 
 % if(waypoints_size ~= 0)
