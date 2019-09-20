@@ -22,11 +22,11 @@ void loop() {
   //lê sinal do rádio
   channel[0] = pulseIn(2, HIGH); //canal da vela
   channel[1] = pulseIn(3, HIGH); //canal do leme
-  channel[2] = pulseIn(13, HIGH);
+//  channel[2] = pulseIn(13, HIGH);
 
   Serial.print("VELA: "); Serial.println(channel[0]);
   Serial.print("LEME: "); Serial.println(channel[1]);
-  Serial.print("GEAR: "); Serial.println(channel[2]);
+//  Serial.print("GEAR: "); Serial.println(channel[2]);
   Serial.println();
 
   //mapeia de sinal de rádio para ângulo do leme

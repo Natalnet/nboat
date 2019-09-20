@@ -28,8 +28,8 @@ byte angulo_recebido;
 int range = 5;
 
 //valor do pot quando a vela está no max e no min
-int pot_min = 495; // vela 0 graus (fechada)
-int pot_max = 125; // vela 90 graus (aberta perpendicular)
+int pot_min = 435; // vela 0 graus (fechada)
+int pot_max = 647; // vela 90 graus (aberta perpendicular)
 
 void setup() {
   md.init();

@@ -13,7 +13,7 @@ DualVNH5019MotorShield md;
 //velocidade positiva -> indo para -90
 //velocidade negativa -> indo para 90
 
-float Kp = 10;
+float Kp = 30;
 float Ki = 0.5;
 float I_prior = 0;
 
@@ -25,8 +25,8 @@ byte angulo_recebido;
 int range = 40;
 
 //valor do pot quando a vela está no max e no min
-int pot_min = 495; // leme -90 graus (faz o veleiro virar no sentido horário)
-int pot_max = 125; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
+int pot_min = 680; // leme -90 graus (faz o veleiro virar no sentido horário)
+int pot_max = 370; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
 void setup() {
   md.init();

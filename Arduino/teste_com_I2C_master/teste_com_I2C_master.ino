@@ -33,6 +33,8 @@ void loop() {
 
   x++;
   y = y + 10;
+
+  Serial.println(x);
   
   delay(500);
 }

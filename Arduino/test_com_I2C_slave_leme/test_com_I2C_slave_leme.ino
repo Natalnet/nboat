@@ -27,6 +27,7 @@ void loop() {
 void receiveEvent(int howMany) {
   while (Wire.available()) { // loop through all but the last
     int c = Wire.read(); // receive byte as a character
-    Serial.println(map(c, 0, 179, -90, 90));         // print the character
+    Serial.println(c);         // print the character
+    //Serial.println(map(c, 0, 179, -90, 90));         // print the character
   }
 }
