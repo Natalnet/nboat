@@ -82,4 +82,5 @@ function [psi_d, e] = LOS_path_follow(V_in)
     chi_d = chi_p + chi_r;
     
     psi_d = chi_d - beta;
+    %psi_d = alpha_k;
 end

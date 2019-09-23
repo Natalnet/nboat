@@ -54,7 +54,7 @@ else
     %distancia entre o ponto atual e o proximo waypoint
     dist = norm(P - gnc_par.pontos_bordejar(gnc_par.waypointBId,:)');
     %se tiver alcançado o ponto
-    if dist < 5
+    if dist < gnc_par.dist_waypoint
         %se ainda tem pontos, passa para o proximo
         if (gnc_par.waypointBId < l)
             gnc_par.waypointBId = gnc_par.waypointBId + 1;
@@ -75,6 +75,7 @@ gamma_tw = constrain(gamma_tw);
 %angulo de ataque do vento com o veleiro
 alpha = psi - gamma_tw;
 alpha = constrain(alpha);
+%gnc_par.alpha(gnc_par.Vd_count) = alpha;
 
 %Verifica se há a necessidade de tack
 if(abs(alpha) < 30 && ~gnc_par.isBordejando)
@@ -107,8 +108,8 @@ end
 
 course = psi + beta;
 
-gnc_par.Vd(gnc_par.Vd_count, 1) = U*cos(alpha_k - course);
-gnc_par.Vd_count = gnc_par.Vd_count + 1;
+%gnc_par.Vd(gnc_par.Vd_count, 1) = U*cos(alpha_k - course);
+%gnc_par.Vd_count = gnc_par.Vd_count + 1;
 
 
 % if(waypoints_size ~= 0)

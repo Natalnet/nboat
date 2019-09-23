@@ -100,6 +100,12 @@ function psi_d = LOS_path_follow_reactive(V_in)
     %angle from p0 to p1
     psi_d = alpha_k;
     
+    gamma_tw = gamma_tw - pi;
+    gamma_tw = constrain(gamma_tw);
+    %angulo de ataque do vento com o veleiro
+    alpha = psi - gamma_tw;
+    alpha = constrain(alpha);
+    
     if gnc_par.tack == 1
         %verifica se o erro chegou no limite e muda o Ângulo
         if abs(e) > e_limit
@@ -111,11 +117,6 @@ function psi_d = LOS_path_follow_reactive(V_in)
         end
         psi_d = gnc_par.psi_t;
     elseif gnc_par.tack == 0
-        gamma_tw = gamma_tw - pi;
-        gamma_tw = constrain(gamma_tw);
-        %angulo de ataque do vento com o veleiro
-        alpha = psi - gamma_tw;
-        alpha = constrain(alpha);
         %verifica precisa de tack
         if(alpha < deg2rad(40) && alpha >= 0 && abs(rad2deg(psi-alpha_k)) < 5)
             psi_d = psi_d + psi_t;

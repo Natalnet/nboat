@@ -17,6 +17,8 @@ global gnc_par
     gamma_aw = constrain(gamma_aw);
     
     gnc_par.gamma_aw = gamma_aw;
+    gnc_par.gamma_aw_vec(gnc_par.gamma_aw_vec_count, 1) = rad2deg(gamma_aw);
+    gnc_par.gamma_aw_vec_count = gnc_par.gamma_aw_vec_count + 1;
     gnc_par.gamma_tw = gamma_tw;
     
     %desired sail position |-180 < gamma_aw < 180|

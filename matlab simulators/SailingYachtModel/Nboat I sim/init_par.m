@@ -48,12 +48,18 @@ gnc_par.init_err = 0;
 gnc_par.last_psi_d = 0;
 gnc_par.err = [];
 gnc_par.cont_err = 1;
+gnc_par.alpha = [];
 
 gnc_par.Vd = [];
 gnc_par.Vd_count = 1;
 
+gnc_par.gamma_aw_vec = [];
+gnc_par.gamma_aw_vec_count = 1;
+
+gnc_par.dist_waypoint = 2;
+
 %LOS parameters
-gnc_par.R = 20;
+gnc_par.R = 15;
 
 % MODEL PARAMETERS
 global mdl_par                                                       

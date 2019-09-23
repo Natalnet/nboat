@@ -63,6 +63,7 @@ function waypoints_t=tack_points(p0, p1, d_t, theta_t, alpha_tw)
     p_p = projecao2d(x_t, y_t, a_A, b_A);
     
     d_p0 = norm(p_p-p0);
+    d_p0 = d_p0*2;
 
     b_L1 = -a_A * x_t + y_t;
 
@@ -75,8 +76,8 @@ function waypoints_t=tack_points(p0, p1, d_t, theta_t, alpha_tw)
     %number of tacking points
     n_t = floor(norm(p0-p1)/d_p0);
 
-    delta_x = p_p(1) - x0;
-    delta_y = p_p(2) - y0;
+    delta_x = (p_p(1) - x0)*2;
+    delta_y = (p_p(2) - y0)*2;
 
     p0_L1 = projecao2d(p_p(1,1), p_p(2,1), a_A, b_L1);
     p0_L2 = projecao2d(p_p(1,1), p_p(2,1), a_A, b_L2);

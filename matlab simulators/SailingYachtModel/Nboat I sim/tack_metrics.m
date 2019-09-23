@@ -17,6 +17,16 @@ y1 = V_in(10);
 x2 = V_in(11);
 y2 = V_in(12);
 
+gamma_tw = V_in(13); 
+
+gamma_tw = gamma_tw - pi;
+gamma_tw = constrain(gamma_tw);
+%angulo de ataque do vento com o veleiro
+alpha = psi - gamma_tw;
+alpha = constrain(alpha);
+
+gnc_par.alpha(gnc_par.Vd_count, 1) = rad2deg(alpha);
+
 U = sqrt(u^2 + v^2);
 
 if U == 0
