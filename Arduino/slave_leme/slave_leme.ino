@@ -14,7 +14,7 @@ DualVNH5019MotorShield md;
 //velocidade negativa -> indo para 90
 
 float Kp = 30;
-float Ki = 0.5;
+float Ki = 0.05;
 float I_prior = 0;
 
 float _endtime, _starttime;

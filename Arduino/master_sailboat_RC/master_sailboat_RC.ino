@@ -39,11 +39,22 @@ void loop() {
   int theta_r = map(channel[1],  1093, 1885, -90, 90); //aileron
   
   //envia ângulo desejado pro arduino uno do leme
-  send_wire(map(theta_r, -90, 90, 0, 179), 8); //mapeamento pra poder enviar byte
-  send_wire(theta_s, 10);
+  //send_wire(map(theta_r, -90, 90, 0, 179), 8); //mapeamento pra poder enviar byte
+  //send_wire(theta_s, 8);
+
+  theta_r += 95;
+  
+  Wire.beginTransmission(8);           // transmit to device #8
+  //Wire.write(map(theta_r, -90, 90, 0, 179));   // sends one byte
+  Wire.write(theta_r);   // sends one byte
+  Wire.write(theta_s);   // sends one byte
+  Wire.endTransmission();                    // stop transmitting
+
   
   Serial.println(theta_r);
-  Serial.println(theta_s);
+  //Serial.println(theta_s);
+  //Serial.println();
+  //delay(500);
   //Serial.println(channel[1]);
 }
 

@@ -17,17 +17,18 @@ void setup() {
   Serial.begin(9600);
 }
 
-int x = 0;
-int y = 0;
+byte x = 0;
+byte y = 0;
 
 void loop() {
   Wire.beginTransmission(8); // transmit to device #8
-  Wire.write("x is ");        // sends five bytes
+  //Wire.write("x is ");        // sends five bytes
   Wire.write(x);              // sends one byte
+  Wire.write(y);              // sends one byte
   Wire.endTransmission();    // stop transmitting
 
   Wire.beginTransmission(10); // transmit to device #8
-  Wire.write("y is ");        // sends five bytes
+  //Wire.write("y is ");        // sends five bytes
   Wire.write(y);              // sends one byte
   Wire.endTransmission();    // stop transmitting
 

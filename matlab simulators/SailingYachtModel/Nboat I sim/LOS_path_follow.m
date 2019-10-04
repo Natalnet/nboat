@@ -1,4 +1,4 @@
-function [psi_d, e] = LOS_path_follow(V_in)
+function psi_d = LOS_path_follow(V_in)
     global gnc_par
     
     x = V_in(1);

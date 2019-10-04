@@ -16,9 +16,9 @@ DualVNH5019MotorShield md(2, 7, 6, A0, 2, 7, 12, A1);
 //velocidade positiva (+400) -> vela (?) (abre ou fecha?) FECHA
 //velocidade negativa (-400) -> vela (?) (abre ou fecha?) ABRE
 
-float Kp = 3;
-float Ki = 0;
-float I_prior = 0;
+float Kp = 10;
+float Ki = 0.1;
+float I_prior= 0;
 
 float _endtime, _starttime;
 
@@ -28,8 +28,8 @@ byte angulo_recebido;
 int range = 5;
 
 //valor do pot quando a vela está no max e no min
-int pot_min = 435; // vela 0 graus (fechada)
-int pot_max = 647; // vela 90 graus (aberta perpendicular)
+int pot_min = 700; // vela 0 graus (fechada)
+int pot_max = 1000; // vela 90 graus (aberta perpendicular)
 
 void setup() {
   md.init();
@@ -61,7 +61,7 @@ void vela_controle(int theta_s_desejado){
 
   //encontra erro
   int erro = theta_s_desejado - theta_s_atual;
-  erro = -erro;
+  //erro = -erro;
   
   //comando do motor
   int velocidade_motor = P(erro) + I(erro);
@@ -76,7 +76,7 @@ void vela_controle(int theta_s_desejado){
 
   velocidade_motor = constrain(velocidade_motor, -400, 400);
   md.setM1Speed(velocidade_motor); //-400 <-> +400
-  //Serial.println(velocidade_motor);
+  Serial.println(velocidade_motor);
 }
 
 
