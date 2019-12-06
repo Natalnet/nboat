@@ -9,13 +9,25 @@ double channel[3];
 //leme -> aileron -> direito esq-dir -> porta 3
 //vela -> trotle -> esquerdo cima-baixo -> porta 2
 
+int RC_sail_low = 1085;
+int RC_sail_high = 1885;
+
+int RC_rudder_low = 1093;
+int RC_rudder_high = 1885;
+
+int Pixhawk_sail_low = 1000;
+int Pixhawk_sail_high = 2000;
+
+int Pixhawk_rudder_low = 993;
+int Pixhawk_rudder_high = 1986;
+
 void setup() {
   pinMode(2, INPUT); //vela
   //pinMode(3, INPUT); //leme
   //pinMode(13, INPUT); //gear (controle de automático/manual
   Serial.begin(9600);
 
-  Wire.begin();
+  //Wire.begin();
 }
 
 void loop() {
@@ -24,9 +36,13 @@ void loop() {
   //channel[1] = pulseIn(3, HIGH); //canal do leme
 //  channel[2] = pulseIn(13, HIGH);
 
-  Serial.print("VELA: "); Serial.println(channel[0]);
+  //Serial.print("PWM: "); Serial.println(channel[0]);
   //Serial.print("LEME: "); Serial.println(channel[1]);
 //  Serial.print("GEAR: "); Serial.println(channel[2]);
+
+  int theta_r = map(channel[0],  Pixhawk_rudder_low, Pixhawk_rudder_high, -90, 90); //aileron
+
+  Serial.print("ANGLE: ");Serial.println(theta_r);
   Serial.println();
 
   //mapeia de sinal de rádio para ângulo do leme
