@@ -32,12 +32,16 @@ int pinoPot_s = A3;
 
 int range = 40;
 
-int pot_min_r = 660; // leme -90 graus (faz o veleiro virar no sentido horário)
-int pot_max_r = 360; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
+int pot_min_r = 723; // leme -90 graus (faz o veleiro virar no sentido horário)
+int pot_max_r = 335; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
 //valor do pot quando a vela está no max e no min
-int pot_min_s = 500; // leme -90 graus (faz o veleiro virar no sentido horário)
-int pot_max_s = 900; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
+//int pot_min_s = 500; // leme -90 graus (faz o veleiro virar no sentido horário)
+//int pot_max_s = 900; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
+
+int pot_min_s = 50; // leme -90 graus (faz o veleiro virar no sentido horário)
+int pot_max_s = 80
+0; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
 void setup() {
   md.init();

@@ -24,4 +24,3 @@ global gnc_par
     %desired sail position |-180 < gamma_aw < 180|
     delta_s = abs(gamma_aw)/2;
 end
-

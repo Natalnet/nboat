@@ -8,7 +8,7 @@ void setup() {
 }
 
 void loop() {
-  md.setM2Speed(-200);
+  md.setM1Speed(400);
   int pot_r = analogRead(A3);
   Serial.println(pot_r);
   //delay(4000);

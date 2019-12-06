@@ -21,6 +21,7 @@ function psi_d = LOS_path_follow_reactive(V_in)
     %wind and current
     gamma_tw = V_in(13);    
     
+    %psi_t
     psi_t = V_in(17);
     
     e_limit = 10;
@@ -73,12 +74,12 @@ function psi_d = LOS_path_follow_reactive(V_in)
     end
     
     %enclosure-based steering
-%     chi_d = atan2(y_los - y, x_los - x);
+    chi_d0 = atan2(y2 - y, x2 - x);
+    chi_d0 = chi_d0;
 %     psi_d = chi_d - beta;
     
-    
     %lookahead-based steering
-    alpha_k = atan2(d_y,d_x);    
+    alpha_k = atan2(d_y,d_x);
     chi_p = alpha_k;
     
     e = -(x - x1)*sin(alpha_k) + (y - y1)*cos(alpha_k);
@@ -106,6 +107,9 @@ function psi_d = LOS_path_follow_reactive(V_in)
     alpha = psi - gamma_tw;
     alpha = constrain(alpha);
     
+    alpha_d = psi_d - gamma_tw;
+    alpha_d = constrain(alpha_d);
+    
     if gnc_par.tack == 1
         %verifica se o erro chegou no limite e muda o Ângulo
         if abs(e) > e_limit
@@ -114,10 +118,38 @@ function psi_d = LOS_path_follow_reactive(V_in)
             elseif psi_d_line < 0
                 gnc_par.psi_t = constrain(psi_d - psi_t);
             end
+            %se o ângulo para o destino é maior que psi_t então psi_t vira
+            %esse ângulo                
         end
-        psi_d = gnc_par.psi_t;
+        
+        if abs(chi_d0) > deg2rad(90)
+            gnc_par.tack = 0;
+        else
+            psi_d = gnc_par.psi_t;
+        end
+        
+        
+        
+%         if chegou
+%             psi_d = chi_d0;
+%         else
+%             psi_d = gnc_par.psi_t;
+%         end
+%         
+% %         if abs(chi_d0) < abs(psi_t)
+% %             psi_d = gnc_par.psi_t;
+% %         else
+% %             psi_d = chi_d0;
+% %         end
+        
+        %verifica se NÃO precisa cambar
+        if(abs(alpha_d) >= deg2rad(40))
+            gnc_par.tack = 0;
+        end
+        
     elseif gnc_par.tack == 0
-        %verifica precisa de tack
+        psi_d = chi_d0;
+        %verifica precisa cambar
         if(alpha < deg2rad(40) && alpha >= 0 && abs(rad2deg(psi-alpha_k)) < 5)
             psi_d = psi_d + psi_t;
             gnc_par.psi_t = psi_d;

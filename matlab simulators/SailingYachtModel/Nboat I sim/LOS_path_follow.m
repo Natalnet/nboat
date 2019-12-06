@@ -16,6 +16,9 @@ function psi_d = LOS_path_follow(V_in)
     x2 = V_in(11);
     y2 = V_in(12);
     
+    alpha_tw = V_in(13);
+    gamma_tw = alpha_tw;
+    
     r = gnc_par.R;
     %K_ct = gnc_par.K_ct;
     
@@ -63,15 +66,28 @@ function psi_d = LOS_path_follow(V_in)
         end
     end
     
-    %enclosure-based steering
-%     chi_d = atan2(y_los - y, x_los - x);
-%     psi_d = chi_d - beta;
-    
-    
-    %lookahead-based steering
     alpha_k = atan2(d_y,d_x);    
     chi_p = alpha_k;
     
+    %enclosure-based steering
+%     chi_d = atan2(y_los - y, x_los - x);
+%     psi_d = chi_d - beta;
+
+
+    gamma_tw = gamma_tw - pi;
+    gamma_tw = constrain(gamma_tw);
+    
+    %angulo de ataque do vento atual
+    alpha = psi - gamma_tw;
+    alpha = constrain(alpha);
+    % gnc_par.alpha(gnc_par.Vd_count) = alpha;
+
+    %angulo de ataque do vento com o veleiro quando seguindo a direção alvo
+    alpha_d = alpha_k - gamma_tw;
+    alpha_d = constrain(alpha_d);
+   
+    
+    %lookahead-based steering    
     e = -(x - x1)*sin(alpha_k) + (y - y1)*cos(alpha_k);
     delta = sqrt(r^2 - e^2);
     K_ct = 1/delta;
@@ -82,5 +98,25 @@ function psi_d = LOS_path_follow(V_in)
     chi_d = chi_p + chi_r;
     
     psi_d = chi_d - beta;
-    %psi_d = alpha_k;
+    
+%     if psi_d > 0
+%         psi_d = psi_d - 2*pi;
+%     elseif psi_d < 0
+        psi_d = psi_d + 2*pi;
+% %     end
+%     
+%     if psi_d > 2*pi
+%         psi_d = psi_d - 2*pi;
+%     elseif psi_d < -2*pi
+%         psi_d = psi_d + 2*pi;
+%     end
+    
+%     if alpha < alpha_d
+%         psi_d = psi_d - pi;
+%     else
+%         
+%     end
+        
+
+%psi_d = alpha_k;
 end

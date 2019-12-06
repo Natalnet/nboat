@@ -32,8 +32,8 @@ V_tc =  V_in(14);
 [l,c] = size(V_in);
 j = 1;
 for i= 15:2:l
-    gnc_par.waypoints(1,j) = V_in(i);
-    gnc_par.waypoints(2,j) = V_in(i+1);
+    waypoints(1,j) = V_in(i);
+    waypoints(2,j) = V_in(i+1);
     j = j + 1;
 end
 
@@ -45,15 +45,17 @@ P = [x;y];
 %     gnc_par.init = 1;
 % end
 
-[l, waypoints_size] = size(gnc_par.waypoints);
+[l, waypoints_size] = size(waypoints);
 
 if ~gnc_par.isBordejando
-    waypoint_pair = gnc_par.waypoints(:);
+    waypoint_pair = waypoints;
 else
     [l, pb_size] = size(gnc_par.pontos_bordejar);
     %distancia entre o ponto atual e o proximo waypoint
     dist = norm(P - gnc_par.pontos_bordejar(gnc_par.waypointBId,:)');
     %se tiver alcançado o ponto
+    %TODO: possível bug aqui. quando o primeiro waypoint é próximo da
+    %posição atual o sistema funciona OK. se tiver longe dá merda.
     if dist < gnc_par.dist_waypoint
         %se ainda tem pontos, passa para o proximo
         if (gnc_par.waypointBId < l)
@@ -64,37 +66,27 @@ else
             gnc_par.waypointBId = 1;
         end
     end
-    waypoint_pair(1,:) = gnc_par.pontos_bordejar(gnc_par.waypointBId-1,:);
-    waypoint_pair(2,:) = gnc_par.pontos_bordejar(gnc_par.waypointBId,:);
-    waypoint_pair = waypoint_pair';
-    waypoint_pair = waypoint_pair(:);
-end
-
-gamma_tw = gamma_tw - pi;
-gamma_tw = constrain(gamma_tw);
-%angulo de ataque do vento com o veleiro
-alpha = psi - gamma_tw;
-alpha = constrain(alpha);
-%gnc_par.alpha(gnc_par.Vd_count) = alpha;
-
-%Verifica se há a necessidade de tack
-if(abs(alpha) < 30 && ~gnc_par.isBordejando)
-    gnc_par.pontos_bordejar = tack_points(gnc_par.waypoints(:,1), gnc_par.waypoints(:,2), d_t, theta_t, alpha_tw);
-    [l, c] = size(gnc_par.pontos_bordejar);
-    aux(1,1) = waypoint_pair(1);
-    aux(1,2) = waypoint_pair(2);
-    aux = [aux;gnc_par.pontos_bordejar];
-    aux(l+2,1) = waypoint_pair(3);
-    aux(l+2,2) = waypoint_pair(4);
-    gnc_par.pontos_bordejar = aux;
+    if gnc_par.isBordejando
+        if gnc_par.waypointBId ~= 1
+            waypoint_pair(1,:) = gnc_par.pontos_bordejar(gnc_par.waypointBId-1,:);
+            waypoint_pair(2,:) = gnc_par.pontos_bordejar(gnc_par.waypointBId,:);
+        else
+            waypoint_pair(1,:) = gnc_par.pontos_bordejar(gnc_par.waypointBId,:);
+            waypoint_pair(2,:) = gnc_par.pontos_bordejar(gnc_par.waypointBId+1,:);
+        end
+        waypoint_pair = waypoint_pair';
+        waypoint_pair = waypoint_pair(:);
+    else
+        waypoint_pair = waypoints;
+    end
 end
 
 %calc velocity
 U = sqrt(u^2 + v^2);
-x1 = gnc_par.waypoints(1,1);
-y1 = gnc_par.waypoints(2,1);
-x2 = gnc_par.waypoints(1,2);
-y2 = gnc_par.waypoints(2,2);
+x1 = waypoints(1,1);
+y1 = waypoints(2,1);
+x2 = waypoints(1,2);
+y2 = waypoints(2,2);
 
 d_x = x2 - x1;
 d_y = y2 - y1;
@@ -107,6 +99,32 @@ else
 end
 
 course = psi + beta;
+psi_d = alpha_k;
+
+gamma_tw = gamma_tw - pi;
+gamma_tw = constrain(gamma_tw);
+%angulo de ataque do vento com o veleiro
+alpha = psi - gamma_tw;
+alpha = constrain(alpha);
+% gnc_par.alpha(gnc_par.Vd_count) = alpha;
+
+%angulo de ataque do vento com o veleiro quando seguindo a direção alvo
+alpha_d = psi_d - gamma_tw;
+alpha_d = constrain(alpha_d);
+
+
+
+%Verifica se há a necessidade de tack
+if(abs(rad2deg(alpha_d)) < 30 && ~gnc_par.isBordejando)
+    gnc_par.pontos_bordejar = tack_points(waypoints(:,1), waypoints(:,2), d_t, theta_t, alpha_tw);
+    [l, c] = size(gnc_par.pontos_bordejar);
+    aux(1,1) = waypoint_pair(1);
+    aux(1,2) = waypoint_pair(2);
+    aux = [aux;gnc_par.pontos_bordejar];
+    aux(l+2,1) = waypoint_pair(3);
+    aux(l+2,2) = waypoint_pair(4);
+    gnc_par.pontos_bordejar = aux;
+end
 
 %gnc_par.Vd(gnc_par.Vd_count, 1) = U*cos(alpha_k - course);
 %gnc_par.Vd_count = gnc_par.Vd_count + 1;

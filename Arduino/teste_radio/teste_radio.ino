@@ -11,8 +11,8 @@ double channel[3];
 
 void setup() {
   pinMode(2, INPUT); //vela
-  pinMode(3, INPUT); //leme
-  pinMode(13, INPUT); //gear (controle de automático/manual
+  //pinMode(3, INPUT); //leme
+  //pinMode(13, INPUT); //gear (controle de automático/manual
   Serial.begin(9600);
 
   Wire.begin();
@@ -21,11 +21,11 @@ void setup() {
 void loop() {
   //lê sinal do rádio
   channel[0] = pulseIn(2, HIGH); //canal da vela
-  channel[1] = pulseIn(3, HIGH); //canal do leme
+  //channel[1] = pulseIn(3, HIGH); //canal do leme
 //  channel[2] = pulseIn(13, HIGH);
 
   Serial.print("VELA: "); Serial.println(channel[0]);
-  Serial.print("LEME: "); Serial.println(channel[1]);
+  //Serial.print("LEME: "); Serial.println(channel[1]);
 //  Serial.print("GEAR: "); Serial.println(channel[2]);
   Serial.println();
 
