@@ -20,24 +20,22 @@ Located in the UFRN (Federal University of Rio Grande do Norte, Brazil), the Nat
 .. toctree::
    :maxdepth: 2
    
-   source/our_robots/index
-   source/construction/index
-   source/eletronics/index
-   source/gnc/index
-   source/water_sensors/index
-   source/simulation/index
-   source/publications/index
-   source/contributors/index
+   source/estrutura/index
+   source/eletrica/index
+   source/eletronica/index
+   source/sensores/index
+   source/experimentos/index
+   source/publicacoes/index
+   source/participantes/index
 
 
 Disclaimer
 ----------
 
-The purpose of this document is for the use of Nboat group only, but we open it in case it can be usefull for someone else.
-Everything you find here is without absolutly no waranty and we're not responsible for any inconveniences or issues that might occurs. 
+Documento para uso interno no pronjeto Nboat.
+
 
 Feedback
 --------
 
-Don't hesitate to ask about some additional info or next guides and also if you find some mistakes, please let us know.
-This can be done by submitting an issue or a push request on github.
+Se você achar algum erro ou algo que pode ser melhorado faça um pull-request no branch nboat2.
