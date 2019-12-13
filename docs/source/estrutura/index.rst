@@ -2,23 +2,23 @@
     .. _nboatmini:
 
 ============
-Construção
+Estrutura
 ============
 
 .. talk about the fisical aspect of the robots and the challenges involved
 
+
+##Construção
+
 O veleiro Nboat II (será chamado de Nboat neste documento) foi construido em meados de 2015. O projeto do veleiro foi feito pelo Engenheiro naval Fred e a construção foi comandada pelo Zeca, que tem uma oficina para construção e manutenção de embarcações nos arredores da Redinha.
 
 .. image:: ./images/1.jpg
-    :width: 200px
-    :height: 100px
-    :align: center
+    :width: 49 %
 
+.. image:: ./images/2.jpg
+    :width: 49 %
 
 O veleiro é formado por 4 compartimentos estanques, conectados lateralmente por tubos de pvc que servem para passar os fios de potência.
-
-Nboat I
--------
 
 
 WQboat
