@@ -22,11 +22,11 @@ void loop() {
 //  Serial.println(sensorValue);
   md.setM1Speed(-400); //-400 <-> +400
   delay(4000);
-  md.setM1Speed(0); //-400 <-> +400
-  delay(500);
-  md.setM1Speed(400); //-400 <-> +400
-  delay(4000);
-  md.setM1Speed(0); //-400 <-> +400
-  delay(500);
-  md.setM1Speed(0);
+  //md.setM1Speed(0); //-400 <-> +400
+  //delay(500);
+  //md.setM1Speed(400); //-400 <-> +400
+  //delay(4000);
+  //md.setM1Speed(0); //-400 <-> +400
+  //delay(500);
+  //md.setM1Speed(0);
 }

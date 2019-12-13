@@ -25,7 +25,7 @@ void setup() {
   pinMode(2, INPUT); //vela
   pinMode(3, INPUT); //leme
   //pinMode(13, INPUT); //gear (controle de automático/manual
-  Serial.begin(9600);
+  //Serial.begin(9600);
 
   //delay(5000);
 
@@ -53,17 +53,30 @@ void loop() {
   //send_wire(map(theta_r, -90, 90, 0, 179), 8); //mapeamento pra poder enviar byte
   //send_wire(theta_s, 8);
 
-  theta_r += 95;
-  
+  //theta_r += 95;
+
+  //saturadores
+  if(theta_s > 90){
+    theta_s = 90;
+  }
+  if(theta_s < 0){
+    theta_s = 0;
+  }
+
+  if(theta_r > 90){
+    theta_r = 90;
+  }
+  if(theta_r < -90){
+    theta_r = -90;
+  }
+
   Wire.beginTransmission(8);           // transmit to device #8
-  //Wire.write(map(theta_r, -90, 90, 0, 179));   // sends one byte
-  Wire.write(theta_r);   // sends one byte
+  Wire.write(map(theta_r, -90, 90, 0, 179));   // sends one byte
   Wire.write(theta_s);   // sends one byte
   Wire.endTransmission();                    // stop transmitting
-
   
-  Serial.println(theta_r);
-  //Serial.println(theta_s);
+  //Serial.print("LEME: "); Serial.println(theta_r);
+  //Serial.print("VELA: "); Serial.println(theta_s);
   //Serial.println();
   //delay(500);
   //Serial.println(channel[1]);

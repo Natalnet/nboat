@@ -39,9 +39,8 @@ int pot_max_r = 335; // leme 90 graus (faz o veleiro virar no sentido anti-horá
 //int pot_min_s = 500; // leme -90 graus (faz o veleiro virar no sentido horário)
 //int pot_max_s = 900; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
-int pot_min_s = 50; // leme -90 graus (faz o veleiro virar no sentido horário)
-int pot_max_s = 80
-0; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
+int pot_min_s = 150; // leme -90 graus (faz o veleiro virar no sentido horário)
+int pot_max_s = 850; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
 void setup() {
   md.init();

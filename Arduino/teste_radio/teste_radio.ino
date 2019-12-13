@@ -23,7 +23,7 @@ int Pixhawk_rudder_high = 1986;
 
 void setup() {
   pinMode(2, INPUT); //vela
-  //pinMode(3, INPUT); //leme
+  pinMode(3, INPUT); //leme
   //pinMode(13, INPUT); //gear (controle de automático/manual
   Serial.begin(9600);
 
@@ -33,16 +33,16 @@ void setup() {
 void loop() {
   //lê sinal do rádio
   channel[0] = pulseIn(2, HIGH); //canal da vela
-  //channel[1] = pulseIn(3, HIGH); //canal do leme
-//  channel[2] = pulseIn(13, HIGH);
+  channel[1] = pulseIn(3, HIGH); //canal do leme
+  //channel[2] = pulseIn(13, HIGH);
 
-  //Serial.print("PWM: "); Serial.println(channel[0]);
-  //Serial.print("LEME: "); Serial.println(channel[1]);
+  Serial.print("PWM: "); Serial.println(channel[0]);
+  Serial.print("LEME: "); Serial.println(channel[1]);
 //  Serial.print("GEAR: "); Serial.println(channel[2]);
 
   int theta_r = map(channel[0],  Pixhawk_rudder_low, Pixhawk_rudder_high, -90, 90); //aileron
 
-  Serial.print("ANGLE: ");Serial.println(theta_r);
+  //Serial.print("ANGLE: ");Serial.println(theta_r);
   Serial.println();
 
   //mapeia de sinal de rádio para ângulo do leme

@@ -8,8 +8,8 @@ void setup() {
 }
 
 void loop() {
-  md.setM1Speed(400);
-  int pot_r = analogRead(A3);
+  md.setM2Speed(200);
+  int pot_r = analogRead(A2);
   Serial.println(pot_r);
   //delay(4000);
   //md.setM1Speed(0);
