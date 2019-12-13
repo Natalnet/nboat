@@ -1,14 +1,21 @@
 About the project
 -----------------
 
-The Nboat Project started in 2013. Our main goal is to develop robots that moves on the surface of the water to be used as an educational tool to increase interest in the area of mobile robotics in our community and in the process develop human resources specialized in environmental and green robotics.
+A concepção do projeto Nboat se deu em meados de 2010, quando o então aluno de doutardo Rafael Aroca escreveu o projeto que foi submetido. A execução do projeto Nboat se deu de fato em meados de 2013, sendo coordenado por Luiz Marcos. Seu principal objetivo é desenvolver robôs de superfície aquática para serem usados como ferramenta educacional para aumentar o interesse na área de robôs móveis *outdoor* e, neste processo, formar recurso humano especializado no uso de robôs em tarefas de ajuda ao ambiente aquático.
 
-Further, our plataforms will be used to help researchers in applications such as water quality evaluation and coastal survailancy. Our secondary goal is to participate in various autonomous robots competitions such as the Microtransat Challenge, IRSC and WRSC. The Nboat project is partially funded by CNPq and CAPES.
+Além disto, as plataformas desenvolvidas podem ser usadas na coleta de dados para pesquisas sobre avaliação da qualidade e vigilância costeira nacional. Como objetivo secundário, o projeto previa participação em competições de veleiros autônomos, como o IRSC, WRSC e o Microtransat Challenge, que promove a travessia do oceâno atlântico. Este projeto é financiado parcialmente pelo CNPq e CAPES.
 
-.. image:: ./source/our_robots/images/nboat2.png
-    :scale: 50 %
+.. image:: ./source/robos/images/nboat.png
+    :width: 90%
     :align: center
-    :alt: Nboat platform.
+    :alt: Veleiro NBoat II
+
+
+A ideia deste documento é ser escrito de forma informal, na medida do  possível explicando como se estivesse conversando informalemente com alguém que não é especialista na área. Isto facilita o processo de escrita e também deixa o texto simples o que facilitar a leitura e entendimento por novos integrantes. Revisões gramáticais e explicações aprofundadas serão feitas no esquema incremental posteriormente.
+
+A ideia aqui é centralizar os conhecimentos práticos obtidos no projeto, evitando que novos integrantes tenham que buscar essas informações nos artigos e dissertações, que por possuírem linguagem mais formal e recheada de teoria, acaba por desmotivar a leitura.
+
+O texto deste documento fica na pasta /docs do branch nboat2 do repositório nboat. O documento é organizado por arquivos de texto que são simples de modificar e usam o padrão `Sphinx <https://www.sphinx-doc.org/pt_BR/master/usage/quickstart.html>`_. A atualiação da página web é feita automaticamente do repositório pelo sistema `ReadTheDocs <https://docs.readthedocs.io/en/stable/>`_.
 
 
 NatalNet -- UFRN
@@ -38,4 +45,4 @@ Documento para uso interno no pronjeto Nboat.
 Feedback
 --------
 
-Se você achar algum erro ou algo que pode ser melhorado faça um pull-request no branch nboat2.
+Se você quiser contribuir com o texto, ou achar algum erro ou algo que pode ser melhorado solicite acesso ao repositório https://github.com/Natalnet/nboat ou faça um pull-request no branch nboat2.

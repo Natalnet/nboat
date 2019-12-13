@@ -8,9 +8,10 @@ Estrutura
 .. talk about the fisical aspect of the robots and the challenges involved
 
 
-##Construção
+Construção
+----------
 
-O veleiro Nboat II (será chamado de Nboat neste documento) foi construido em meados de 2015. O projeto do veleiro foi feito pelo Engenheiro naval Fred e a construção foi comandada pelo Zeca, que tem uma oficina para construção e manutenção de embarcações nos arredores da Redinha.
+O veleiro Nboat II (será chamado de Nboat neste documento) foi construido em meados de 2015. O projeto estrutural do veleiro foi feito pelo Engenheiro naval Fred e sua construção foi comandada pelo Zeca, que tem uma oficina para construção e manutenção de embarcações nos arredores da Redinha.
 
 .. image:: ./images/1.jpg
     :width: 49 %
@@ -18,11 +19,45 @@ O veleiro Nboat II (será chamado de Nboat neste documento) foi construido em me
 .. image:: ./images/2.jpg
     :width: 49 %
 
-O veleiro é formado por 4 compartimentos estanques, conectados lateralmente por tubos de pvc que servem para passar os fios de potência.
+O casco do veleiro possui 4 compartimentos, cada um vedado com tampas presas com parafusos para evitar a entrada de água. Os compartimentos são conectados lateralmente por tubos de pvc que servem para passar os fios de energia e dados.
+
+A quilha do veleiro é lastrasda, ou seja, possúi um peso em sua extremidade para ajudar na estabilidade do veleiro. Ela pesa 37 Kg.
+
+.. image:: ./images/4.jpg
+    :width: 49 %
+
+.. image:: ./images/5.jpg
+    :width: 49 %
+
+Também foi construído o leme e a vela. O leme é uma espécie de quilha rotatória que 
 
 
-WQboat
-------
+Atuadores
+---------
+
+Para mover
+
+
+.. image:: ./images/3.jpg
+    :width: 60 %
+    :align: center
+
+
+Organização
+-----------
+
+Os compartimentos são númerados de 1 a 4, sendo o compartimento 1 aquele que fica mais a frente da embarcação e 4 o que fica mais próximo ao leme. Cada compartimento acolhe um tipo de equipamento, sendo, atualmente, o compartimento 1 contém o botão de emergência e as entradas dos sensores de vento e da buzina. O compartimento 2 fica com o sistema de atuação da vela e as baterias, além de relés para o sistema de seguraça da vela. O compartimento 3 fica com os processadores centrais e a caixa de disjuntores de distrubuição de energia. O compartimento 4 fica com o atuador do leme.
+
+
+Montagem do veleiro
+-------------------
+
+
+
+Dimensões e pesos
+-----------------
+
+
 
 First Try
 +++++++++
