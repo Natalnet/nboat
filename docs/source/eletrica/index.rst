@@ -1,9 +1,9 @@
 
     .. _nboatmini:
 
-============
-Construction
-============
+========
+Elétrica
+========
 
 .. talk about the fisical aspect of the robots and the challenges involved
 

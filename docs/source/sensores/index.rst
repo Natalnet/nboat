@@ -1,10 +1,9 @@
 
 .. _water-sensors:
 
-*********************
-Water Quality Sensors
-*********************
-
+********
+Sensores
+********
 
 Abstract
 =========

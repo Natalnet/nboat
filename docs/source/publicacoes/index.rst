@@ -2,6 +2,6 @@
 .. _publications:
 
 ============
-Publications
+Publicações
 ============
 
