@@ -21,8 +21,8 @@ float Kp_r = 30;
 float Ki_r = 0.05;
 float I_prior_r = 0;
 
-float Kp_s = 10;
-float Ki_s = 0.1;
+float Kp_s = 30;
+float Ki_s = 1;
 float I_prior_s = 0;
 
 float _endtime_r, _starttime_r, _endtime_s, _starttime_s;
@@ -134,8 +134,20 @@ void vela_controle(int theta_s_desejado){
   }*/
 
   velocidade_motor = constrain(velocidade_motor, -400, 400);
+
+  //para o motor para não ficar consumindo corrente para valores baixos de velocidade;
+  int vel_limite = 100;
+  if(velocidade_motor < vel_limite && velocidade_motor > 0){
+    velocidade_motor = 0;
+  }
+  if(velocidade_motor > -vel_limite && velocidade_motor < 0){
+    velocidade_motor = 0;
+  }
+  
   md.setM2Speed(velocidade_motor); //-400 <-> +400
   //Serial.println(velocidade_motor);
+  //Serial.println(md.getM1CurrentMilliamps() + md.getM2CurrentMilliamps());
+  Serial.println(float(md.getM1CurrentMilliamps()+md.getM2CurrentMilliamps())/1000.);
 }
 
 int ler_angulo_atual_s(){
