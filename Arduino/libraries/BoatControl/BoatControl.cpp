@@ -35,7 +35,7 @@ void BoatControl::rudderHeadingControl(SensorManager *sensors, Location target) 
 
   _currentError = _sp - _heading;
   _currentError = _navFunc.adjustFrame(_currentError);
-  _currentError = -_currentError;
+//  _currentError = -_currentError;
   //Serial.print(_currentError);   Serial.print("--");
  
   rudderAngle = P(_currentError) + I(_currentError);
@@ -81,12 +81,15 @@ float BoatControl::I(float currentError)
   _starttime = millis();
   if ((I_prior > 0 && currentError < 0) || (I_prior < 0 && currentError > 0))
   {
-    I_prior = I_prior + _ki * currentError * 1 * _cycleTime;
+
+    I_prior = I_prior + _ki * currentError * 10 * _cycleTime;
+
   }
   else
   {
     I_prior = I_prior + _ki * currentError * _cycleTime;
   }
+
   if (I_prior > 30){
     I_prior = 30;
   }

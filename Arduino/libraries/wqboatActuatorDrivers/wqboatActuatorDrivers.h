@@ -26,6 +26,7 @@ class wqboatActuatorDrivers
 
     void initThruster();
   private:
+    
     Servo rudder, thruster;
     int _rudderPin = 12, _thrusterPin = 9;
 
@@ -38,7 +39,8 @@ class wqboatActuatorDrivers
 
      int init_thruster = 1;
 
-     int cont = 0;   
+     int cont = 0;
+     float rudderError = 0;
 
 };
 
