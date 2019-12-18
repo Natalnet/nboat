@@ -6,4 +6,7 @@ master -> stable version
 
 nboat2 -> development
 
-![nboat2](https://nboat-documentation.readthedocs.io/en/nboat2/_images/nboat.png)
+
+<p align="center">
+  <img src="https://nboat-documentation.readthedocs.io/en/nboat2/_images/nboat.png" width="400" alt="Nboat2"/>
+</p>
