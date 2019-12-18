@@ -21,11 +21,13 @@ int Pixhawk_sail_high = 1986;
 int Pixhawk_rudder_low = 993;
 int Pixhawk_rudder_high = 1986;
 
+int channel1_ant = 0;
+
 void setup() {
   pinMode(2, INPUT); //vela
-  pinMode(3, INPUT); //leme
-  //pinMode(13, INPUT); //gear (controle de automático/manual
-  //Serial.begin(9600);
+  //pinMode(3, INPUT); //leme
+  pinMode(14, INPUT); //gear (controle de automático/manual
+  Serial.begin(9600);
 
   //delay(5000);
 
@@ -33,10 +35,12 @@ void setup() {
 }
 
 void loop() {
+    
   //lê sinal do rádio
   channel[0] = pulseIn(2, HIGH); //canal da vela
-  channel[1] = pulseIn(3, HIGH); //canal do leme
-  //channel[2] = pulseIn(13, HIGH);
+  //channel[1] = pulseIn(3, HIGH); //canal do leme  
+  channel[1] = pulseIn(14, HIGH); //canal do leme  
+  //channel[2] = pulseIn(14, HIGH);
 
   //Serial.print("VELA: "); Serial.println(channel[0]);
   //Serial.print("LEME: "); Serial.println(channel[1]);
@@ -44,6 +48,16 @@ void loop() {
   //Serial.println();
 
   //delay(500);
+/*
+  if(channel[1] > -10 && channel[1] < 993){
+    channel[1] = channel1_ant;
+  } else {
+    channel1_ant = channel[1];
+  }
+*/
+  
+
+  //Serial.print("LEME: "); Serial.println(channel[1]);
 
   //mapeia de sinal de rádio para ângulo do leme
   int theta_s = map(channel[0], Pixhawk_sail_low, Pixhawk_sail_high, 0, 90); //aileron
@@ -80,6 +94,7 @@ void loop() {
   //Serial.println();
   //delay(500);
   //Serial.println(channel[1]);
+  //delay(50);
 }
 
 void send_wire(int theta, int address){

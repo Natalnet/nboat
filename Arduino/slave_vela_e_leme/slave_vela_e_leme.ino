@@ -54,6 +54,8 @@ const int posicao_vela = 4;
 const int motor_leme = 5;
 const int motor_vela = 6;
 
+int cont = 0;
+
 void setup() {
   md.init();
   ss.begin(115200);
@@ -78,11 +80,12 @@ void receiveEvent() {
     angle_r = Wire.read();    // receive byte as an integer
     angle_s = Wire.read();    // receive byte as an integer
   }
-  //angle_r = map(angle_r, 0, 179, -90, 90);
-  angle_r -= 95;
+  angle_r = map(angle_r, 0, 179, -90, 90);
+  //angle_r -= 95;
   //Serial.println(angle_r);
   leme_controle(constrain(angle_r, -90, 90));
   vela_controle(constrain(angle_s, 0, 90));
+  cont++;
   //Serial.println(angle_s);
   //Serial.println();
   //delay(1000);
@@ -95,8 +98,6 @@ void leme_controle(int theta_r_desejado){
     //calcula o erro com o angulo desejado
   int erro = theta_r_desejado - theta_r_atual;
   erro = -erro;
-
-  Serial.println(theta_r_desejado);
   
     //calcula os valores do controlador
   int velocidade_motor = P_r(erro) + I_r(erro);
@@ -105,23 +106,24 @@ void leme_controle(int theta_r_desejado){
   velocidade_motor = constrain(velocidade_motor, -400, 400);
 
     //satura para o motor para não ficar consumindo corrente para valores baixos de pwm
-  /*int vel_limite = 20;
+  int vel_limite = 50;
   if(velocidade_motor < vel_limite && velocidade_motor > 0){
     velocidade_motor = 0;
   }
   if(velocidade_motor > -vel_limite && velocidade_motor < 0){
     velocidade_motor = 0;
-  }*/
+  }
 
     //envia comando para o motor
   md.setM1Speed(velocidade_motor); //-400 <-> +400
-  //Serial.println(velocidade_motor);  
+  //Serial.println(velocidade_motor);
 
-    //envia os dados para a pixhawk
-  send_mavlink(corrente_leme, md.getM1CurrentMilliamps()/1000.);
-  send_mavlink(posicao_leme, theta_r_atual);
-  //Serial.println(theta_r_atual);
-  send_mavlink(motor_leme, velocidade_motor);
+    //envia os dados para a pixhawk    
+  if(cont % 10 == 0){
+    send_mavlink(corrente_leme, md.getM1CurrentMilliamps()/1000.);
+    send_mavlink(posicao_leme, theta_r_atual);
+    send_mavlink(motor_leme, velocidade_motor);
+  }
 }
 
 void vela_controle(int theta_s_desejado){  
@@ -154,8 +156,9 @@ void vela_controle(int theta_s_desejado){
   //Serial.println(md.getM1CurrentMilliamps() + md.getM2CurrentMilliamps());
 
     //envia mensagem para a pixhawk
-  send_mavlink(corrente_vela, md.getM2CurrentMilliamps()/1000.);
-  send_mavlink(posicao_vela, theta_s_atual);
-  //Serial.println(theta_s_atual);
-  send_mavlink(motor_vela, velocidade_motor);
+  if(cont % 10 == 0){
+    send_mavlink(corrente_vela, md.getM2CurrentMilliamps()/1000.);
+    send_mavlink(posicao_vela, theta_s_atual);
+    send_mavlink(motor_vela, velocidade_motor);
+  }
 }
