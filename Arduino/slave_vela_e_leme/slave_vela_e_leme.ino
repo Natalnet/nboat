@@ -1,13 +1,18 @@
 #include "DualVNH5019MotorShield.h" //drive motor
 #include "Wire.h"
+#include "mavlink.h"
+#include <SoftwareSerial.h>
+
 DualVNH5019MotorShield md;
+SoftwareSerial ss(5, 3);
 
 //recebe um ângulo de leme (deg)
 //lê potenciometro do leme
 //mapeia o valor do potenciometro para ângulo do leme (posição atual)
 //compara o leme desejado ao atual e encontra um erro
-//aplica um ganho nesse erro
+//aplica os ganhos nesse erro
 //manda esse sinal para o driver do motor
+//envia estado para a pixhawk
 
 //ATUADOR LINEAR
 //velocidade positiva -> indo para -90
@@ -18,7 +23,7 @@ DualVNH5019MotorShield md;
 //velocidade negativa (-400) -> vela ABRE
 
 float Kp_r = 30;
-float Ki_r = 0.05;
+float Ki_r = 0.1;
 float I_prior_r = 0;
 
 float Kp_s = 30;
@@ -42,13 +47,21 @@ int pot_max_r = 335; // leme 90 graus (faz o veleiro virar no sentido anti-horá
 int pot_min_s = 150; // leme -90 graus (faz o veleiro virar no sentido horário)
 int pot_max_s = 850; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
+const int corrente_leme = 1;
+const int corrente_vela = 2;
+const int posicao_leme = 3;
+const int posicao_vela = 4;
+const int motor_leme = 5;
+const int motor_vela = 6;
+
 void setup() {
   md.init();
-  Serial.begin(9600);
+  ss.begin(115200);
   _starttime_r = millis();
   _starttime_s = millis();
   Wire.begin(8);                // join i2c bus with address #8
   Wire.onReceive(receiveEvent); // register event
+  Serial.begin(9600);
 }
 
 
@@ -75,67 +88,57 @@ void receiveEvent() {
   //delay(1000);
 }
 
-
 void leme_controle(int theta_r_desejado){  
-  //verifica posição atual
+    //verifica posição atual do leme
   int theta_r_atual = ler_angulo_atual_r();
-  
+
+    //calcula o erro com o angulo desejado
   int erro = theta_r_desejado - theta_r_atual;
   erro = -erro;
+
+  Serial.println(theta_r_desejado);
   
-  //comando do motor
+    //calcula os valores do controlador
   int velocidade_motor = P_r(erro) + I_r(erro);
 
-  /*if (erro > range) {
-  velocidade_motor = 400;
-  } else if (erro < range){
-  velocidade_motor = -400;
-  } else {
-  velocidade_motor = 0;
-  }*/
-  
-  //Serial.println(erro);
-
+    //satura valores max e min de pwm
   velocidade_motor = constrain(velocidade_motor, -400, 400);
+
+    //satura para o motor para não ficar consumindo corrente para valores baixos de pwm
+  /*int vel_limite = 20;
+  if(velocidade_motor < vel_limite && velocidade_motor > 0){
+    velocidade_motor = 0;
+  }
+  if(velocidade_motor > -vel_limite && velocidade_motor < 0){
+    velocidade_motor = 0;
+  }*/
+
+    //envia comando para o motor
   md.setM1Speed(velocidade_motor); //-400 <-> +400
-  //Serial.println(velocidade_motor);
+  //Serial.println(velocidade_motor);  
+
+    //envia os dados para a pixhawk
+  send_mavlink(corrente_leme, md.getM1CurrentMilliamps()/1000.);
+  send_mavlink(posicao_leme, theta_r_atual);
+  //Serial.println(theta_r_atual);
+  send_mavlink(motor_leme, velocidade_motor);
 }
-
-int ler_angulo_atual_r(){
-  int pot_r = analogRead(pinoPot_r);
-
-  //Serial.println(pot_r);
-
-  //Serial.println(map(pot_r, pot_min_r, pot_max_r, -90, 90));
-  
-  //medir pot atuador linear
-  return map(pot_r, pot_min_r, pot_max_r, -90, 90);
-}
-
-
 
 void vela_controle(int theta_s_desejado){  
-  //verifica posição atual
+    //verifica posição atual da vela
   int theta_s_atual = ler_angulo_atual_s();
 
-  //encontra erro
+    //calcula o erro com o angulo desejado
   int erro = theta_s_desejado - theta_s_atual;
   erro = -erro;
-  
-  //comando do motor
+
+    //encontra valores do controlador
   int velocidade_motor = P_s(erro) + I_s(erro);
 
-  /*if (erro > range) {
-  velocidade_motor = 400;
-  } else if (erro < range){
-  velocidade_motor = -400;
-  } else {
-  velocidade_motor = 0;
-  }*/
-
+    //satura pwm para max e min
   velocidade_motor = constrain(velocidade_motor, -400, 400);
 
-  //para o motor para não ficar consumindo corrente para valores baixos de velocidade;
+    //satura para o motor para não ficar consumindo corrente para valores baixos de pwm
   int vel_limite = 100;
   if(velocidade_motor < vel_limite && velocidade_motor > 0){
     velocidade_motor = 0;
@@ -143,61 +146,16 @@ void vela_controle(int theta_s_desejado){
   if(velocidade_motor > -vel_limite && velocidade_motor < 0){
     velocidade_motor = 0;
   }
-  
+
+    //envia comando do motor
   md.setM2Speed(velocidade_motor); //-400 <-> +400
+
   //Serial.println(velocidade_motor);
   //Serial.println(md.getM1CurrentMilliamps() + md.getM2CurrentMilliamps());
-  Serial.println(float(md.getM1CurrentMilliamps()+md.getM2CurrentMilliamps())/1000.);
-}
 
-int ler_angulo_atual_s(){
-  int pot_s = analogRead(pinoPot_s);
-  
-  //medir pot guincho
-  return map(pot_s, pot_min_s, pot_max_s, 0, 90);
-}
-
-
-float P_r(float currentError)
-{
-  return Kp_r * currentError;
-}
-
-float I_r(float currentError)
-{
-  _endtime_r = millis();
-  float _cycleTime = (_endtime_r - _starttime_r)/1000;
-  _starttime_r = millis();
-  if ((I_prior_r > 0 && currentError < 0) || (I_prior_r < 0 && currentError > 0))
-  {
-    I_prior_r = I_prior_r + Ki_r * currentError * _cycleTime;
-  }
-  else
-  {
-    I_prior_r = I_prior_r + Ki_r * currentError * _cycleTime;
-  }
-  I_prior_r = constrain(I_prior_r, -200, 200);
-  return I_prior_r;
-}
-
-float P_s(float currentError)
-{
-  return Kp_s * currentError;
-}
-
-float I_s(float currentError)
-{
-  _endtime_s = millis();
-  float _cycleTime = (_endtime_s - _starttime_s)/1000;
-  _starttime_s = millis();
-  if ((I_prior_s > 0 && currentError < 0) || (I_prior_s < 0 && currentError > 0))
-  {
-    I_prior_s = I_prior_s + Ki_s * currentError * _cycleTime;
-  }
-  else
-  {
-    I_prior_s = I_prior_s + Ki_s * currentError * _cycleTime;
-  }
-  I_prior_s = constrain(I_prior_s, -200, 200);
-  return I_prior_s;
+    //envia mensagem para a pixhawk
+  send_mavlink(corrente_vela, md.getM2CurrentMilliamps()/1000.);
+  send_mavlink(posicao_vela, theta_s_atual);
+  //Serial.println(theta_s_atual);
+  send_mavlink(motor_vela, velocidade_motor);
 }

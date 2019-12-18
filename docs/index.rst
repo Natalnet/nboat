@@ -14,7 +14,7 @@ A ideia deste documento é ser escrito de forma informal, na medida do  possíve
 
 A ideia aqui é centralizar os conhecimentos práticos obtidos no projeto, evitando que novos integrantes tenham que buscar essas informações nos artigos e dissertações, que por possuírem linguagem mais formal e recheada de teoria, acaba por desmotivar a leitura.
 
-O texto deste documento fica na pasta /docs do branch nboat2 do repositório nboat. O documento é organizado por arquivos de texto que são simples de modificar e usam o padrão `Sphinx <https://www.sphinx-doc.org/pt_BR/master/usage/quickstart.html>`_. A atualiação da página web é feita automaticamente do repositório pelo sistema `ReadTheDocs <https://docs.readthedocs.io/en/stable/>`_.
+O texto deste documento fica na pasta /docs do branch nboat2 do repositório nboat. O documento é organizado por arquivos de texto que são simples de modificar e usam o padrão `Sphinx <https://www.sphinx-doc.org/pt_BR/master/usage/quickstart.html>`_. A atualização da página web é feita automaticamente do repositório pelo sistema `ReadTheDocs <https://docs.readthedocs.io/en/stable/>`_.
 
 
 NatalNet -- UFRN

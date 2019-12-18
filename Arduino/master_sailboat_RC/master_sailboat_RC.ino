@@ -1,4 +1,5 @@
 #include <Wire.h>
+#include <mavlink.h>
 double channel[3];
 
 //recebe sinal do rádio
