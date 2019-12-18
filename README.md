@@ -5,3 +5,5 @@ This repository contains the ongoing development of the Nboat robots, software a
 master -> stable version
 
 nboat2 -> development
+
+![nboat2](https://nboat-documentation.readthedocs.io/en/nboat2/_images/nboat.png)
