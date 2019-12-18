@@ -65,7 +65,7 @@ Os sensores de vento ficam na proa do nboat. No momento temos um que mede a velo
 Pixhawk
 -------
 
-A pixhawk é o processador central de baixo nível. Nela ficam os controles é o planejamento da missão, além da coleta dos dados dos sensores. O kit Pixhawk vem com um IMU e um GPS, e nela fica toda parte de filtragem dos dados, estimação do estado e navegação (no sentido Fossen). A pixhawk roda Ardupilot Ardurover com configuração específica para veleiro. O firmware e os parâmetros podem ser encontrados neste branch.
+A pixhawk é o processador central de baixo nível. Nela ficam os controles de movimento do nboat e o planejamento da missão, além da coleta dos dados dos sensores. O kit Pixhawk vem com um IMU e um GPS, e a pixhawk faz toda a parte de filtragem dos dados, estimação do estado e navegação (no sentido Fossen). A pixhawk roda Ardupilot Ardurover com configuração específica para veleiro. O firmware e os parâmetros podem ser encontrados neste branch.
 
 Raspberry Pi
 ------------
