@@ -10,7 +10,7 @@ This repository contains the ongoing development of the Nboat robots, software a
 
 # Organização
 
-**Arduino ------>** Códigos e bibliotecas usadas para testes no arduino mega e uno. Os códigos carregados nos arduinos são: master_sailboat_RC_pixhawk no arduino mega e slave_vela_e_leme no arduino uno.
+**Arduino ------>** Códigos e bibliotecas usadas para testes no arduino mega e uno. Os códigos carregados nos arduinos são: *master_sailboat_RC_pixhawk* no arduino mega e *slave_vela_e_leme* no arduino uno.
 
 **Códigos_nboat_manual ------>** Códigos dos arduinos usados antes de mudar o sistema para a pixhawk.
 
