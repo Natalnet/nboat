@@ -1,0 +1,711 @@
+#VRML V2.0 utf8
+# Created by Jerome Jouffroy, Jiaxi He and Lin Xiao
+# University of Southern Denmark, 2014
+
+DirectionalLight {
+  intensity 0.5
+  direction -0.408215 -0.81653 0.408215
+}
+DirectionalLight {
+  intensity 0.5
+  direction 0.408215 -0.81653 0.408215
+}
+Background {
+  skyColor [
+    0 0 0,
+    0.2 0.2 0.9,
+    0.4 0.8 0.9 
+  ]
+  skyAngle [1.39626, 1.51844]
+  groundColor 0 0.6 1
+  groundAngle [1.3, 1.5708]
+}
+Background {
+  skyColor [
+    0.76238 0.8 0.1427,
+    0.277798 0.219779 0.7,
+    0.222549 0.390234 0.7,
+    0.60094 0.662637 0.69 
+  ]
+  skyAngle [0.1, 1.2, 1.57]
+  groundColor [
+    0 0.8 0,
+    0.174249 0.82 0.187362,
+    0.467223 0.82 0.445801,
+    0.621997 0.67 0.600279 
+  ]
+  groundAngle [0.9, 1.5, 1.57]
+}
+DEF drawing_overview Viewpoint {
+  description "overview"
+  position -10 8 50
+}
+DEF sea_level Transform {
+  translation -4.35466 2.00542e-05 -5.48129
+  scale 200 200 1
+  rotation 1 0 0 1.5708
+  children Shape {
+    appearance Appearance {
+      textureTransform TextureTransform {
+        scale 10 10
+      }
+      texture ImageTexture {
+        url "water.jpg" 
+      }
+      material Material {
+        transparency 0.3
+        diffuseColor 0.2 0.6 1
+      }
+    }
+    geometry IndexedFaceSet {
+      solid FALSE
+      coordIndex [
+        0, 1, 2, 3, -1 
+      ]
+      colorIndex [
+        2, 1, 0, 2, -1 
+      ]
+      coord Coordinate {
+        point [
+          -10 10 0,
+          -10 -10 0,
+          10 -10 0,
+          10 10 0 
+        ]
+      }
+    }
+  }
+}
+DEF Yacht Group {
+  children DEF Hull_EarthFixed Transform {
+    translation -7.34509 0 -17.9628
+    children [
+      DEF Rot_Yaw Transform {
+        rotation -0 -1 -0 -2.8096
+        children DEF Rot_Roll Transform {
+          rotation 1 0 0 -0.224772
+          children [
+            DEF Hull_back Shape {
+              appearance Appearance {
+                texture ImageTexture {
+                }
+                material Material {
+                  diffuseColor 1 0.2 0
+                }
+              }
+              geometry Box {
+                size 6 1.5 3
+              }
+            }
+            DEF Mast Transform {
+              translation 4 10.75 0
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 1 1 1
+                  }
+                }
+                geometry Cylinder {
+                  radius 0.3
+                  height 20
+                }
+              }
+            }
+            DEF Sail Transform {
+              translation 2.7 11.3 0
+              scale 4.5 8.8 1
+              rotation 0 1 0 -0.523599
+              center 1 0 0
+              children [
+                DEF Sail_Fabric Shape {
+                  appearance Appearance {
+                    textureTransform TextureTransform {
+                      scale 2 2
+                      center -0.3 -0.7
+                    }
+                    texture ImageTexture {
+                      repeatT FALSE
+                      repeatS FALSE
+                    }
+                    material Material {
+                      transparency 0.3
+                      diffuseColor 1 1 0.6
+                    }
+                  }
+                  geometry IndexedFaceSet {
+                    solid FALSE
+                    creaseAngle 3.14
+                    coordIndex [
+                      0, 1, 2, 3, 7, 5, 9, 10, 11, 4, 13, 8, 12, 6, -1 
+                    ]
+                    colorIndex [
+                      1, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 
+                    ]
+                    coord Coordinate {
+                      point [
+                        -0.802335 -0.999482 -0.0135182,
+                        -0.806183 -1 0.00231971,
+                        1 -1 0,
+                        1 1 0,
+                        0.0108288 0.490035 0,
+                        0.516783 0.888929 1.00727e-08,
+                        -0.373516 -0.044114 1.88777e-10,
+                        0.758022 0.966119 5.17167e-09,
+                        -0.36497 -0.0202862 2.54823e-10,
+                        0.418763 0.844221 8.31241e-09,
+                        0.270098 0.748778 5.60166e-09,
+                        0.171281 0.664112 8.53652e-09,
+                        -0.370085 -0.0712587 0,
+                        -0.173477 0.272414 3.16587e-10 
+                      ]
+                    }
+                  }
+                }
+                DEF boom Transform {
+                  translation 0.1 -1.02 0
+                  scale 0.8 1 8
+                  rotation 0 0 -1 1.5708
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 1 0
+                      }
+                    }
+                    geometry Cylinder {
+                      radius 0.03
+                      height 1.9
+                    }
+                  }
+                }
+                DEF Text_1 Transform {
+                  translation 0.9 -0.9 0
+                  scale 0.2 0.3 0.5
+                  rotation 0 1 0 3.1412
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        transparency 0.9
+                        diffuseColor 0.2 0.2 1
+                      }
+                    }
+                    geometry Text {
+                      fontStyle FontStyle {
+                        style "BOLD"
+                        family "SANS" 
+                      }
+                      string "CYBERSAILING" 
+                    }
+                  }
+                }
+                DEF Text_2 Transform {
+                  translation -0.3 -0.9 0
+                  scale 0.2 0.3 0.5
+                  rotation 0 0 0 0
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        transparency 0.9
+                        diffuseColor 0.2 0.2 1
+                      }
+                    }
+                    geometry Text {
+                      fontStyle FontStyle {
+                        style "BOLD"
+                        family "SANS" 
+                      }
+                      string "CYBERSAILING" 
+                    }
+                  }
+                }
+              ]
+            }
+            DEF hull_bottom Transform {
+              translation 0 -0.75 0
+              scale 0.5 2 1.5
+              rotation 0 0 -1 1.5708
+              children Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                  }
+                  material Material {
+                    diffuseColor 1 0.2 0
+                  }
+                }
+                geometry IndexedFaceSet {
+                  solid FALSE
+                  creaseAngle 0.96
+                  coordIndex [
+                    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -1, 
+                    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, -1, 
+                    0, 1, 18, 17, -1, 
+                    1, 2, 19, 18, -1, 
+                    2, 3, 20, 19, -1, 
+                    3, 4, 21, 20, -1, 
+                    12, 13, 30, 29, -1, 
+                    13, 14, 31, 30, -1, 
+                    14, 15, 32, 31, -1, 
+                    15, 16, 33, 32, -1, 
+                    16, 0, 17, 33, -1 
+                  ]
+                  colorPerVertex FALSE
+                  ccw FALSE
+                  coord Coordinate {
+                    point [
+                      1 -1.5 0,
+                      0.927257 -1.5 0.374426,
+                      0.71961 -1.5 0.694378,
+                      0.40727 -1.5 0.913308,
+                      0.0356776 -1.5 0.999363,
+                      -0.341105 -1.5 0.940025,
+                      -0.668262 -1.5 0.743926,
+                      -0.898196 -1.5 0.439595,
+                      -0.997454 -1.5 0.0713099,
+                      -0.951596 -1.5 -0.30735,
+                      -0.767294 -1.5 -0.641295,
+                      -0.471361 -1.5 -0.88194,
+                      -0.106851 -1.5 -0.994275,
+                      0.273204 -1.5 -0.961956,
+                      0.613512 -1.5 -0.789686,
+                      0.864562 -1.5 -0.502527,
+                      0.98983 -1.5 -0.142257,
+                      1 1.5 0,
+                      0.927257 1.5 0.374426,
+                      0.71961 1.5 0.694378,
+                      0.40727 1.5 0.913308,
+                      0.0356776 1.5 0.999363,
+                      -0.341105 1.5 0.940025,
+                      -0.668262 1.5 0.743926,
+                      -0.898196 1.5 0.439595,
+                      -0.997454 1.5 0.0713099,
+                      -0.951596 1.5 -0.30735,
+                      -0.767294 1.5 -0.641295,
+                      -0.471361 1.5 -0.88194,
+                      -0.106851 1.5 -0.994275,
+                      0.273204 1.5 -0.961956,
+                      0.613512 1.5 -0.789686,
+                      0.864562 1.5 -0.502527,
+                      0.98983 1.5 -0.142257 
+                    ]
+                  }
+                }
+              }
+            }
+            DEF hull_front Transform {
+              translation 3 -0.75 0
+              scale 6 0.5 1.5
+              children Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                  }
+                  material Material {
+                    diffuseColor 1 0.2 0
+                  }
+                }
+                geometry IndexedFaceSet {
+                  solid FALSE
+                  creaseAngle 1.8
+                  coordIndex [
+                    0, 9, 10, 1, -1, 
+                    1, 10, 11, 2, -1, 
+                    2, 11, 12, 3, -1, 
+                    3, 12, 13, 4, -1, 
+                    4, 13, 14, 5, -1, 
+                    5, 14, 15, 6, -1, 
+                    6, 15, 16, 7, -1, 
+                    7, 16, 17, 8, -1, 
+                    9, 18, 19, 10, -1, 
+                    10, 19, 20, 11, -1, 
+                    11, 20, 21, 12, -1, 
+                    12, 21, 22, 13, -1, 
+                    13, 22, 23, 14, -1, 
+                    14, 23, 24, 15, -1, 
+                    15, 24, 25, 16, -1, 
+                    16, 25, 26, 17, -1, 
+                    18, 27, 28, 19, -1, 
+                    19, 28, 29, 20, -1, 
+                    20, 29, 30, 21, -1, 
+                    21, 30, 31, 22, -1, 
+                    22, 31, 32, 23, -1, 
+                    23, 32, 33, 24, -1, 
+                    24, 33, 34, 25, -1, 
+                    25, 34, 35, 26, -1, 
+                    36, 27, 28, -1, 
+                    36, 28, 29, -1, 
+                    36, 29, 30, -1, 
+                    36, 30, 31, -1, 
+                    36, 31, 32, -1, 
+                    36, 32, 33, -1, 
+                    36, 33, 34, -1, 
+                    36, 34, 35, -1 
+                  ]
+                  colorPerVertex FALSE
+                  coord Coordinate {
+                    point [
+                      4.37114e-08 -4.37114e-08 -1,
+                      0.382683 -4.37114e-08 -0.92388,
+                      0.707107 -4.37114e-08 -0.707107,
+                      0.92388 -4.37114e-08 -0.382683,
+                      1 -4.37114e-08 0,
+                      0.92388 -4.37114e-08 0.382683,
+                      0.707107 -4.37114e-08 0.707107,
+                      0.382683 -4.37114e-08 0.92388,
+                      -1.31134e-07 -4.37114e-08 1,
+                      4.03841e-08 -0.382683 -0.92388,
+                      0.353553 -0.382683 -0.853553,
+                      0.653282 -0.382683 -0.653281,
+                      0.853553 -0.382683 -0.353553,
+                      0.92388 -0.382683 0,
+                      0.853553 -0.382683 0.353553,
+                      0.653281 -0.382683 0.653282,
+                      0.353553 -0.382683 0.853553,
+                      -1.21152e-07 -0.382683 0.92388,
+                      3.09086e-08 -0.707107 -0.707107,
+                      0.270598 -0.707107 -0.653281,
+                      0.5 -0.707107 -0.5,
+                      0.653281 -0.707107 -0.270598,
+                      0.707107 -0.707107 0,
+                      0.653281 -0.707107 0.270598,
+                      0.5 -0.707107 0.5,
+                      0.270598 -0.707107 0.653282,
+                      -9.27258e-08 -0.707107 0.707107,
+                      1.67276e-08 -0.92388 -0.382683,
+                      0.146447 -0.92388 -0.353553,
+                      0.270598 -0.92388 -0.270598,
+                      0.353553 -0.92388 -0.146447,
+                      0.382683 -0.92388 0,
+                      0.353553 -0.92388 0.146447,
+                      0.270598 -0.92388 0.270598,
+                      0.146447 -0.92388 0.353553,
+                      -5.01829e-08 -0.92388 0.382683,
+                      0 -1 0 
+                    ]
+                  }
+                }
+              }
+            }
+            Transform {
+              translation 3 0 0
+              scale 6 0.5 1.5
+              children Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                  }
+                  material Material {
+                    diffuseColor 1 0.2 0
+                  }
+                }
+                geometry IndexedFaceSet {
+                  solid FALSE
+                  creaseAngle 3.14
+                  coordIndex [
+                    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -1, 
+                    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, -1, 
+                    0, 1, 18, 17, -1, 
+                    1, 2, 19, 18, -1, 
+                    2, 3, 20, 19, -1, 
+                    3, 4, 21, 20, -1, 
+                    4, 5, 22, 21, -1, 
+                    5, 6, 23, 22, -1, 
+                    6, 7, 24, 23, -1, 
+                    7, 8, 25, 24, -1, 
+                    8, 9, 26, 25, -1, 
+                    9, 10, 27, 26, -1, 
+                    10, 11, 28, 27, -1, 
+                    11, 12, 29, 28, -1, 
+                    12, 13, 30, 29, -1, 
+                    13, 14, 31, 30, -1, 
+                    14, 15, 32, 31, -1, 
+                    15, 16, 33, 32, -1, 
+                    16, 0, 17, 33, -1 
+                  ]
+                  colorPerVertex FALSE
+                  ccw FALSE
+                  coord Coordinate {
+                    point [
+                      1 -1.5 0,
+                      0.927257 -1.5 0.374426,
+                      0.71961 -1.5 0.694378,
+                      0.40727 -1.5 0.913308,
+                      0.0356776 -1.5 0.999363,
+                      -0.341105 -1.5 0.940025,
+                      -0.668262 -1.5 0.743926,
+                      -0.898196 -1.5 0.439595,
+                      -0.997454 -1.5 0.0713099,
+                      -0.951596 -1.5 -0.30735,
+                      -0.767294 -1.5 -0.641295,
+                      -0.471361 -1.5 -0.88194,
+                      -0.106851 -1.5 -0.994275,
+                      0.273204 -1.5 -0.961956,
+                      0.613512 -1.5 -0.789686,
+                      0.864562 -1.5 -0.502527,
+                      0.98983 -1.5 -0.142257,
+                      1 1.5 0,
+                      0.927257 1.5 0.374426,
+                      0.71961 1.5 0.694378,
+                      0.40727 1.5 0.913308,
+                      0.0356776 1.5 0.999363,
+                      -0.341105 1.5 0.940025,
+                      -0.668262 1.5 0.743926,
+                      -0.898196 1.5 0.439595,
+                      -0.997454 1.5 0.0713099,
+                      -0.951596 1.5 -0.30735,
+                      -0.767294 1.5 -0.641295,
+                      -0.471361 1.5 -0.88194,
+                      -0.106851 1.5 -0.994275,
+                      0.273204 1.5 -0.961956,
+                      0.613512 1.5 -0.789686,
+                      0.864562 1.5 -0.502527,
+                      0.98983 1.5 -0.142257 
+                    ]
+                  }
+                }
+              }
+            }
+            DEF keel Transform {
+              translation 3.7 -2.5 0
+              scale 1.5 0.5 1.5
+              rotation -1 0 0 1.5708
+              children Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                  }
+                  material Material {
+                    diffuseColor 1 0.2 0
+                  }
+                }
+                geometry Extrusion {
+                  spine [
+                    1 0 0,
+                    0.932472 0.361242 0,
+                    0.739009 0.673696 0,
+                    0.445738 0.895163 0,
+                    0.0922684 0.995734 0,
+                    -0.273663 0.961826 0,
+                    -0.602634 0.798017 0,
+                    -0.850217 0.526432 0,
+                    -0.982973 0.18375 0,
+                    -0.982973 -0.183749 0,
+                    -0.850217 -0.526432 0,
+                    -0.602635 -0.798017 0,
+                    -0.273663 -0.961826 0,
+                    0.092268 -0.995734 0,
+                    0.445738 -0.895163 0,
+                    0.739009 -0.673696 0,
+                    0.932472 -0.361241 0,
+                    1 0 0 
+                  ]
+                  scale [
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1,
+                    1 1 
+                  ]
+                  orientation [
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0,
+                    0 0 1 0 
+                  ]
+                  endCap FALSE
+                  crossSection [
+                    -1 1,
+                    -1 -1,
+                    -0.633837 -1.00309,
+                    -0.375001 1.00619,
+                    -1 1 
+                  ]
+                  creaseAngle 3.14
+                  ccw FALSE
+                  beginCap FALSE
+                }
+              }
+            }
+            DEF Rudder Transform {
+              translation -2.5 -2 0
+              scale 0.3 0.6 0.1
+              rotation 0 1 0 -0.165996
+              children Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                  }
+                  material Material {
+                    shininess 0.5
+                    diffuseColor 1 1 0.2
+                  }
+                }
+                geometry IndexedFaceSet {
+                  solid FALSE
+                  creaseAngle 3.14
+                  coordIndex [
+                    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -1, 
+                    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, -1, 
+                    0, 1, 18, 17, -1, 
+                    1, 2, 19, 18, -1, 
+                    2, 3, 20, 19, -1, 
+                    3, 4, 21, 20, -1, 
+                    4, 5, 22, 21, -1, 
+                    5, 6, 23, 22, -1, 
+                    6, 7, 24, 23, -1, 
+                    7, 8, 25, 24, -1, 
+                    8, 9, 26, 25, -1, 
+                    9, 10, 27, 26, -1, 
+                    10, 11, 28, 27, -1, 
+                    11, 12, 29, 28, -1, 
+                    12, 13, 30, 29, -1, 
+                    13, 14, 31, 30, -1, 
+                    14, 15, 32, 31, -1, 
+                    15, 16, 33, 32, -1, 
+                    16, 0, 17, 33, -1 
+                  ]
+                  colorPerVertex FALSE
+                  ccw FALSE
+                  coord Coordinate {
+                    point [
+                      1 -1.5 0,
+                      0.927257 -1.5 0.374426,
+                      0.71961 -1.5 0.694378,
+                      0.40727 -1.5 0.913308,
+                      0.0356776 -1.5 0.999363,
+                      -0.341105 -1.5 0.940025,
+                      -0.668262 -1.5 0.743926,
+                      -0.898196 -1.5 0.439595,
+                      -0.997454 -1.5 0.0713099,
+                      -0.951596 -1.5 -0.30735,
+                      -0.767294 -1.5 -0.641295,
+                      -0.471361 -1.5 -0.88194,
+                      -0.106851 -1.5 -0.994275,
+                      0.273204 -1.5 -0.961956,
+                      0.613512 -1.5 -0.789686,
+                      0.864562 -1.5 -0.502527,
+                      0.98983 -1.5 -0.142257,
+                      1 1.5 0,
+                      0.927257 1.5 0.374426,
+                      0.71961 1.5 0.694378,
+                      0.40727 1.5 0.913308,
+                      0.0356776 1.5 0.999363,
+                      -0.341105 1.5 0.940025,
+                      -0.668262 1.5 0.743926,
+                      -0.898196 1.5 0.439595,
+                      -0.997454 1.5 0.0713099,
+                      -0.951596 1.5 -0.30735,
+                      -0.767294 1.5 -0.641295,
+                      -0.471361 1.5 -0.88194,
+                      -0.106851 1.5 -0.994275,
+                      0.273204 1.5 -0.961956,
+                      0.613512 1.5 -0.789686,
+                      0.864562 1.5 -0.502527,
+                      0.98983 1.5 -0.142257 
+                    ]
+                  }
+                }
+              }
+            }
+            DEF observe_stern Viewpoint {
+              description "Stern"
+              position -8 2 0
+              orientation 0 1 0 -1.5708
+              fieldOfView 1.5708
+            }
+          ]
+        }
+      }
+      DEF observe_west Viewpoint {
+        description "West"
+        position 35 8 0
+        orientation 0 1 0 1.5708
+      }
+      DEF observe_south Viewpoint {
+        description "South"
+        position 0 8 -35
+        orientation 0 -1 0 3.14159
+      }
+      DEF observe_north Viewpoint {
+        description "North"
+        position 0 8 30
+      }
+      DEF observe_east Viewpoint {
+        description "East"
+        position -35 8 0
+        orientation 0 1 0 -1.5708
+      }
+      DEF Wind_Arrow Transform {
+        translation 10 1 -12
+        scale 1.1 0.25 1
+        rotation 0 1 0 3.1412
+        children Shape {
+          appearance Appearance {
+            texture ImageTexture {
+            }
+            material Material {
+              shininess 0.7
+              diffuseColor 1 0 0
+              ambientIntensity 0.6
+            }
+          }
+          geometry IndexedFaceSet {
+            solid FALSE
+            coordIndex [
+              0, 1, 2, 3, 4, 5, 6, -1, 
+              7, 8, 9, 10, 11, 12, 13, -1, 
+              0, 1, 8, 7, -1, 
+              0, 6, 13, 7, -1, 
+              2, 3, 10, 9, -1, 
+              4, 5, 12, 11, -1, 
+              1, 2, 9, 8, -1, 
+              3, 4, 11, 10, -1, 
+              5, 6, 13, 12, -1 
+            ]
+            colorPerVertex FALSE
+            ccw FALSE
+            coord Coordinate {
+              point [
+                0 1 -2.5,
+                -1.5 1 -1,
+                -0.5 1 -1,
+                -0.5 1 3,
+                0.5 1 3,
+                0.5 1 -1,
+                1.5 1 -1,
+                0 0 -2.5,
+                -1.5 0 -1,
+                -0.5 0 -1,
+                -0.5 0 3,
+                0.5 0 3,
+                0.5 0 -1,
+                1.5 0 -1 
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}
