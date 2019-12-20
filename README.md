@@ -10,12 +10,12 @@ This repository contains the ongoing development of the Nboat robots, software a
 
 # Organização
 
-**Arduino ------> ** Códigos e bibliotecas usadas para testes no arduino mega e uno. Os códigos carregados nos arduinos são: master_sailboat_RC_pixhawk no arduino mega e slave_vela_e_leme no arduino uno.
+**Arduino ------>** Códigos e bibliotecas usadas para testes no arduino mega e uno. Os códigos carregados nos arduinos são: master_sailboat_RC_pixhawk no arduino mega e slave_vela_e_leme no arduino uno.
 
-**Códigos_nboat_manual ------> ** Códigos dos arduinos usados antes de mudar o sistema para a pixhawk.
+**Códigos_nboat_manual ------>** Códigos dos arduinos usados antes de mudar o sistema para a pixhawk.
 
-**config_pixhawk ------> ** Arquivos de configuração da pixhawk. Contém o firmware, os parâmetros e uma missão com pontos na logoa do bonfim.
+**config_pixhawk ------>** Arquivos de configuração da pixhawk. Contém o firmware, os parâmetros e uma missão com pontos na logoa do bonfim.
 
-**docs ------> ** Arquivos do site de documentação do projeto.
+**docs ------>** Arquivos do site de documentação do projeto.
 
-**matlab_simulators ------> ** Simulador de veleiro no matlab.
+**matlab_simulators ------>** Simulador de veleiro no matlab.
