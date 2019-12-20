@@ -24,3 +24,5 @@ This repository contains the ongoing development of the Nboat robots, software a
 # Instalação
 
 O código fonte do firmware está em https://github.com/Natalnet/ardupilot.git, no branch nboat. Para compilar siga este [tutorial](https://ardupilot.org/dev/docs/building-setup-linux.html#building-setup-linux) de *Setup On Ubuntu* até o comando *. ~/.profile*. Se tudo der certo, use os comandos **./waf configure --board Pixhawk1** e **./waf rover**. O firmware estará na pasta **ardupilot/build/Pixhawk1/bin** com o nome **ardupilot.apj**.
+
+Instale o MissionPlanner ou o QGroundControl para carregar o firmware na pixhawk. Após carregar o firmware, carregue na pixhawk os parâmetros do arquivo da pasta **config_pixhawk/nboat_param**.
