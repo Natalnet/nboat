@@ -3,57 +3,34 @@ Experimentos
 ============
 
 
-A primeira parte a ser montada é a bolina, devido ao seu peso elevado. Com o veleiro em cima da carroça de transporte, duas pessoas (ou mais) levantam o casco verticalmente enquanto outras duas (ou mais) posicionam a bolina no centro da carroça e alinham sua entrada. O casco é então descido lentamente, observando 
+Montagem do veleiro
+-------------------
 
-Para montar a vela é preciso primeiro por o tecido da vela no mastro. 
+1) O primeiro passo é montar o leme. Devido ao seu tamanho, talvez seja preciso levantar o casco para encaixar o leme em seu compartimento. Duas pessoas (ou mais) levantam o casco enquanto uma pessoa vai por baixo e encaixa o leme no seu buraco. Em seguida o casco é baixado até descançar novamente na carroça. Alternativamente, o engate da carroça, que neste momento está apoiado em uma cadeira ou uma caixa, pode ser descido até o chão, de forma que a traseira se eleve e talvez dê para encaixar o leme. Após esta etapa, uma pessoa mantém o leme elevado e, pelo compartimento 4, a haste que encaixa no atuador linear é aparafusada ao leme. Em seguida é preciso calibrar o leme. Com o sistema do veleiro e o rádio ligado, certifique-se que há o controle manual pelo rádio movendo os sticks e vendo se o leme e/ou a vela se mexem. Então, deixe o stick do leme (stick direito, movimento horizontal) na posição central e gire o potenciometro cuidadosamente. Perceba que girando o potenciometro em um sentido o atuador retrai e girando em outro sentido o atuador abre. Então, observando a faixa de cores no atuador linear, ajuste o potenciometro até que o atuador pare na cor preta. Em seguida, encaixe o braço do potenciometro na vela, tendo cuidado para manter a posição do potenciometro (normalemente ele gira um pouco e o atuador se move). Por fim, use os trims para um ajuste fino do leme, de modo que ele fique alinhado corretamente;
 
+2) A segunda parte a ser montada é a bolina. Com o veleiro em cima da carroça de transporte, duas pessoas (ou mais) levantam o casco verticalmente enquanto outras duas (ou mais) posicionam a bolina no centro da carroça e alinham sua entrada. O casco é então descido lentamente, observando sua angulação pois se a bolina estiver um pouco desalinhada há o perigo de danificar o casco. Vale salientar que neste momento o casco, por conter as baterias, pesa aproximadamente 100kg. Quando o casco descer ao ponto de ser apoiado novamente na carroça, duas pessoas vão por baixo da carroça e empurram a bolina para cima até que o buraco no meio da bolina fique visível na parte superior do casco. Então, outra pessoa põe uma haste nesse buraco, o que mantém a bolina na posição elevada impede que ela desça. Em seguida alguém encaixa e aparafusa a tampa da bolina;
 
-Talk about both sailboats and the project in general.
+3) O próximo passo é montar a vela. Para montar a vela é preciso primeiro por o tecido da vela no mastro. Em seguida o mastro é encaixado no casco. Quando o veleiro estiver na água, deve-se colocar a retranca no mastro e amarrar a ponta da vela no final da retranca, mantendo a vela tensionada;
 
-We are currently working on 3 different platforms: Nboat I, Nboat II and WQboat I, each used for different purpuses.
+4) Com a estrutura principal do veleiro montada, é preciso agora conectar as baterias e fazer alguns testes básicos do sistema de controle. Antes de conectar verifique se o botão de emergência está pressionado e se o disjuntor central está desligado. Primeiramente conecte as baterias em paralelo, conectando um cabo vermelho do positivo da bat1 para o positivo da bat2 e um cabo preto do negativo da bat1 para o negativo da bat2. Então, conecte o cabo preto do (negativo do sistema) e o cabo preto e vermelho (relé) no contato negativo da bateria. Em seguida, conecte o cabo vermelho (positivo do sistema) no contato positivo da bateria. Você deve ouvir um clique o que indica que o relé foi energizado. Caso não ouça este clique verifique as conexões. Ligue o disjuntor central. Solte o botão de emergência e verifique se o led verde do compartimento das baterias está aceso.
 
+.. warning::
+	CUIDADO PARA NÃO INVERTER A CONEXÃO DA BATERIA!!!!!
 
-Nboat I
--------
+5) Ligue o rádio e verifique se o controle manual está funcionando. Ligue o notebook de apoio e conecte o receptor do rádio de telemetria na porta usb. Abra o QGroundControl ou o MissionPlanner e tente se conectar. Deixe o sistema ligado um tempo para que o GPS esquente e dê lock (isso leva mais ou menos uns 3 minutos). Após isto o sistema de controle está pronto para ir pra água.
 
-This is the first water vehicle we worked with. In the beginnings of Nboat project our idea was to first develop a sailboat model in small scale and then test and validate the hardware, mainly compose of the microcontrollers and sensors, and software, composed of the navigation system and the movement control strategies.
-
-So, our idea was instead of build a sailboat from zero, buy a commercial sailboat model and adapt it to support our needs. After that, we start developing a movement control strategy for a sailboat, so that, given a certain target position, the sailboat was able to get there on its own (autonomously). After that, we had to decide what kind of information this movement control needed to do his job, and then pick the appropriated sensors.
-
-Small sailboat used for initial understanding of sailing control, sailboat movement and dynamics. This is an RC Moonsoon sailboat (https://hobbyking.com/en_us/monsoon-sailboat-1800mm-71-almost-ready-to-sail.html) adapted for robotics, where we modified the structure to add a waterproof compartiment and embaked the necessary eletronics for autonomous navigation.
-
-.. image:: ../nboat_mini/images/5.jpg
-    :scale: 10 %
-    :align: center
-    :alt: Nboat I.
+6) Agora, para levar o veleiro até a margem do reservatório, deve-se ter cuidado com o leme pois devido a altura da carroça, o mesmo fica bem próximo ao chão. É melhor levar o veleiro até a margem de ré, dependendo da inclinação do local.
 
 
-WQboat
-------
+Debugando o sistema
+-------------------
 
-Small boat that we build. It uses a fan and and a rudder for its movement.
+Após ligar o veleiro vários problemas podem ocorrer que causam o mau funcionamento do sistema. O mais importante é manter o controle manual funcional a todo tempo para salvar veleiro em situação de emergência.
 
-.. add image of wqboat
-
-Nboat II
---------
-
-After testing some of the methods for sailboat navigation in a reduced model we (and some financial problems) we finally started to build the 2 meters platform we would eventually use in real world applications.
-
-Our ideal was to use the same eletronics, sensors and navigations techinches validated in the smaller platform with little to no changes in this bigger platform.
-
-On its final form, the NBoat 2 should be able to navigate autonomously to desired points in the globe, being robust enough to support harsh environments such as strong winds and high waves, performing long term missions lasting several weeks or months, using solar power to charge its batteries. Thats our goal.
-
-Below, we explain with details some of this journey of build such a complex robotic platform.
-
-contracting experienced sailors, some with real world experience and the other with a more technical background.
-
-2.5 meters long sailboat to be used in long term applicaions. The Nboat II has four waterproof compartiments and can carry 50 kg of payload (?).
-
-.. image:: ./images/nboat2.png
-    :scale: 50 %
-    :align: center
-    :alt: Nboat II.
-
-
-Over the next chapters we dive in the construction, eletronics and software of our robots.
+1) O controle manual não funciona:
+	- problema no potenciometro;
+	- problema na placa central;
+	- problema no driver;
+	- problema na pixhawk;
+	- problema no rádio;
+	- problema no receptor do rádio;

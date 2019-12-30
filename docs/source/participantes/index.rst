@@ -6,11 +6,18 @@ Participantes
  
 The list of contributors to this project.
 
-	* @Alvaro Negreiros
+	* @Álvaro Negreiros
+
     * @Andouglas Costa
-    * André
+
+    * @André
+
 	* @Davi Henrique
+
     * @João Moreno
+
 	* @Justo Emilio
+
 	* @Luiz Marcos
+
     * @Vitor Vieira
