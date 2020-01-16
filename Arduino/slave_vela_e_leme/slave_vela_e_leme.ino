@@ -54,7 +54,20 @@ const int posicao_vela = 4;
 const int motor_leme = 5;
 const int motor_vela = 6;
 
+float _corrente_vela_ant = 0;
+float _posicao_vela_ant = 0;
+float _motor_vela_ant = 0;
+
+float _corrente_leme_ant = 0;
+float _posicao_leme_ant = 0;
+float _motor_leme_ant = 0;
+
 int cont = 0;
+
+int vel_limite_vela = 100;
+int vel_limite_leme = 50;
+
+int cont_limite = 100;
 
 void setup() {
   md.init();
@@ -92,73 +105,90 @@ void receiveEvent() {
 }
 
 void leme_controle(int theta_r_desejado){  
-    //verifica posição atual do leme
+  // verifica posição atual do leme
   int theta_r_atual = ler_angulo_atual_r();
 
-    //calcula o erro com o angulo desejado
+  // calcula o erro com o angulo desejado
   int erro = theta_r_desejado - theta_r_atual;
   erro = -erro;
   
-    //calcula os valores do controlador
+  // calcula os valores do controlador
   int velocidade_motor = P_r(erro) + I_r(erro);
 
-    //satura valores max e min de pwm
+  // satura valores max e min de pwm
   velocidade_motor = constrain(velocidade_motor, -400, 400);
 
-    //satura para o motor para não ficar consumindo corrente para valores baixos de pwm
-  int vel_limite = 50;
-  if(velocidade_motor < vel_limite && velocidade_motor > 0){
+  // satura para o motor para não ficar consumindo corrente para valores baixos de pwm
+  if(velocidade_motor < vel_limite_leme && velocidade_motor > 0){
     velocidade_motor = 0;
   }
-  if(velocidade_motor > -vel_limite && velocidade_motor < 0){
+  if(velocidade_motor > -vel_limite_leme && velocidade_motor < 0){
     velocidade_motor = 0;
   }
 
-    //envia comando para o motor
+  // envia comando para o motor
   md.setM1Speed(velocidade_motor); //-400 <-> +400
+  
   //Serial.println(velocidade_motor);
 
-    //envia os dados para a pixhawk    
-  if(cont % 10 == 0){
-    send_mavlink(corrente_leme, md.getM1CurrentMilliamps()/1000.);
+  float corrente_motor = md.getM1CurrentMilliamps()/1000.;
+
+  bool aux = (corrente_motor != _corrente_leme_ant || theta_r_atual != _posicao_leme_ant || velocidade_motor != _motor_leme_ant);
+
+  // envia os dados para a pixhawk quando dados mudam
+  if(cont % cont_limite == 0 && aux){
+    send_mavlink(corrente_leme, corrente_motor);
     send_mavlink(posicao_leme, theta_r_atual);
     send_mavlink(motor_leme, velocidade_motor);
+
+    _corrente_leme_ant = corrente_motor;
+    _posicao_leme_ant = theta_r_atual;
+    _motor_leme_ant = velocidade_motor;
+    cont = 0;
   }
 }
 
 void vela_controle(int theta_s_desejado){  
-    //verifica posição atual da vela
+  // verifica posição atual da vela
   int theta_s_atual = ler_angulo_atual_s();
 
-    //calcula o erro com o angulo desejado
+  // calcula o erro com o angulo desejado
   int erro = theta_s_desejado - theta_s_atual;
   erro = -erro;
 
-    //encontra valores do controlador
+  // encontra valores do controlador
   int velocidade_motor = P_s(erro) + I_s(erro);
 
-    //satura pwm para max e min
+  // satura pwm para max e min
   velocidade_motor = constrain(velocidade_motor, -400, 400);
 
-    //satura para o motor para não ficar consumindo corrente para valores baixos de pwm
-  int vel_limite = 100;
-  if(velocidade_motor < vel_limite && velocidade_motor > 0){
+  // satura para o motor para não ficar consumindo corrente para valores baixos de pwm
+  if(velocidade_motor < vel_limite_vela && velocidade_motor > 0){
     velocidade_motor = 0;
   }
-  if(velocidade_motor > -vel_limite && velocidade_motor < 0){
+  if(velocidade_motor > -vel_limite_vela && velocidade_motor < 0){
     velocidade_motor = 0;
   }
 
-    //envia comando do motor
+  // envia comando do motor
   md.setM2Speed(velocidade_motor); //-400 <-> +400
 
   //Serial.println(velocidade_motor);
   //Serial.println(md.getM1CurrentMilliamps() + md.getM2CurrentMilliamps());
+  float corrente_motor = md.getM2CurrentMilliamps()/1000.;
 
-    //envia mensagem para a pixhawk
-  if(cont % 10 == 0){
-    send_mavlink(corrente_vela, md.getM2CurrentMilliamps()/1000.);
+  bool aux = (corrente_motor != _corrente_vela_ant || theta_s_atual != _posicao_vela_ant || velocidade_motor != _motor_vela_ant);
+  
+  // envia mensagem para a pixhawk
+  if(cont % cont_limite == 0 && aux){
+    send_mavlink(corrente_vela, corrente_motor);
     send_mavlink(posicao_vela, theta_s_atual);
     send_mavlink(motor_vela, velocidade_motor);
+
+    _corrente_vela_ant = corrente_motor;
+    _posicao_vela_ant = theta_s_atual;
+    _motor_vela_ant = velocidade_motor;
+
+    cont = 0;
   }
 }
