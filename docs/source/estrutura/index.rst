@@ -51,6 +51,17 @@ Organização
 
 Os compartimentos são númerados de 1 a 4, sendo o compartimento 1 aquele que fica mais a frente da embarcação e 4 o que fica mais próximo ao leme. Cada compartimento acolhe um tipo de equipamento, sendo, atualmente, o compartimento 1 contém o botão de emergência e as entradas dos sensores de vento e da buzina. O compartimento 2 fica com o sistema de atuação da vela e as baterias, além de relés para o sistema de seguraça da vela. O compartimento 3 fica com os processadores centrais e a caixa de disjuntores de distrubuição de energia. O compartimento 4 fica com o atuador do leme.
 
+.. image:: ./images/comp_1.jpg
+    :width: 49 %
+
+.. image:: ./images/comp_2.jpg
+    :width: 49 %
+
+.. image:: ./images/comp_3.jpg
+    :width: 49 %
+
+.. image:: ./images/comp_4.jpg
+    :width: 49 %
 
 Montagem estrutural do veleiro
 ------------------------------
