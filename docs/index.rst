@@ -5,7 +5,7 @@ A concepção do projeto Nboat se deu em meados de 2010, quando o então aluno d
 
 Além disto, as plataformas desenvolvidas podem ser usadas na coleta de dados para pesquisas sobre avaliação da qualidade e vigilância costeira nacional. Como objetivo secundário, o projeto prevê participação em competições de veleiros autônomos, como o IRSC, WRSC e o Microtransat Challenge, que promove a travessia do oceâno atlântico. Este projeto é financiado parcialmente pelo CNPq e CAPES.
 
-.. image:: ./source/robos/images/nboat.png
+.. image:: ./source/experimentos/images/nboat.png
     :width: 60%
     :align: center
     :alt: Veleiro NBoat II
@@ -44,4 +44,4 @@ Documento para uso interno no projeto Nboat.
 Feedback
 --------
 
-Se você quiser contribuir com o texto, ou achar algum erro ou algo que pode ser melhorado solicite acesso ao repositório https://github.com/Natalnet/nboat ou faça um pull-request no branch nboat2.
+Se você quiser contribuir com o texto, ou achar algum erro ou algo que pode ser melhorado solicite acesso ao repositório https://github.com/Natalnet/nboat ou faça um pull-request no branch master.

@@ -23,7 +23,7 @@ A parte eletrônica do veleiro Nboat é composta por:
 - Potenciômetro da vela;
 - Potenciômetro do leme;
 - Sensores do vento;
-- Pixhawk 2.1.6
+- Pixhawk 2.4.6
     - GPS
     - IMU
     - Telemetria 433 MHz
