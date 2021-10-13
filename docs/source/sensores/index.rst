@@ -56,3 +56,34 @@ Algumas configurações na pixhawk são necessárias para os sinais lidos dos se
 .. image:: ./images/anemometer_bb.png
     :width: 60 %
     :align: center
+
+
+Setup inicial da pixhawk
+------------------------
+
+O primeiro passo é encaixar os módulos que vem no kit pixhawk. Com a pixhawk em mãos e montada, baixe o `MissionPlanner <https://firmware.ardupilot.org/Tools/MissionPlanner/MissionPlanner-latest.msi>`_ e também o `QGroundControl <http://qgroundcontrol.com/>`_. Os dois são ground controls: softwares usados para ajudar a carregar o código na pixhawk, configurar os parâmetros, carregar missões e também acompanhar os dados de telemetria. Principalmente, eles serão usados para calibrar os sensores da pixhawk.
+
+Algumas partes são mais fáceis de fazer no MissionPlanner e outras no QGroundControl, então é importante instalar os dois.
+
+Carregando o firmware
+=====================
+
+O código fonte do firmware está em https://github.com/Natalnet/ardupilot.git, no branch nboat. Para compilar siga este `tutorial <https://ardupilot.org/dev/docs/building-setup-linux.html#building-setup-linux>`_ de *Setup On Ubuntu* até o comando *. ~/.profile*. Se tudo der certo, use os comandos **./waf configure --board Pixhawk1** e **./waf rover**. O firmware estará na pasta **ardupilot/build/Pixhawk1/bin** com o nome **ardupilot.apj**.
+
+Instale o MissionPlanner ou o QGroundControl para carregar o firmware na pixhawk. Após carregar o firmware, carregue na pixhawk os parâmetros do arquivo da pasta **config_pixhawk/nboat_param**. Com isto, o código ardupilot modificado para o nboat estará rodando na pixhawk. Em outro menu será mostrado mais detalhes do código.
+
+Calibrar o imu
+==============
+
+Esta parte é relativamente direta. Abra o missionplanner. Vá na aba 
+
+Calibrar o rádio
+================
+
+Calibrar as saídas
+==================
+
+
+
+asdasdad
+
