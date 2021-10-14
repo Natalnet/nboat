@@ -6,19 +6,18 @@
 DualVNH5019MotorShield md;
 SoftwareSerial ss(5, 3);
 
-/*
-
-- 
-- recebe sinal do rádio
-- recebe um ângulo de leme (deg)
-- lê potenciometro do leme
-- mapeia o valor do potenciometro para ângulo do leme (posição atual)
+/*****************************
+ 
+- recebe sinal pwm da pixhawk
+- mapeia para ângulo de atuadores
+- lê potenciometros
+- mapeia o valor do potenciometro para ângulo do leme (saber a posição atual)
 - compara o leme desejado ao atual e encontra um erro
 - aplica os ganhos nesse erro
 - manda esse sinal para o driver do motor
 - envia estado para a pixhawk comunicação serial
 
-*/
+*****************************/
 
 //ATUADOR LINEAR
 //velocidade positiva -> indo para -90
@@ -28,6 +27,7 @@ SoftwareSerial ss(5, 3);
 //velocidade positiva (+400) -> vela FECHA
 //velocidade negativa (-400) -> vela ABRE
 
+// variáveis PID
 float Kp_r = 30;
 float Ki_r = 0.1;
 float I_prior_r = 0;
@@ -38,21 +38,21 @@ float I_prior_s = 0;
 
 float _endtime_r, _starttime_r, _endtime_s, _starttime_s;
 
+// pinos dos potenciometros do leme e da vela
 int pinoPot_r = A2;
 int pinoPot_s = A3;
 
 int range = 40;
 
+// RECALIBRAR
 int pot_min_r = 723; // leme -90 graus (faz o veleiro virar no sentido horário)
 int pot_max_r = 335; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
 //valor do pot quando a vela está no max e no min
-//int pot_min_s = 500; // leme -90 graus (faz o veleiro virar no sentido horário)
-//int pot_max_s = 900; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
-
 int pot_min_s = 150; // leme -90 graus (faz o veleiro virar no sentido horário)
 int pot_max_s = 850; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
+// mapeamento das mensagens mavlink
 const int corrente_leme = 1;
 const int corrente_vela = 2;
 const int posicao_leme = 3;
@@ -70,44 +70,32 @@ float _motor_leme_ant = 0;
 
 int cont = 0;
 
+// evita uso excessivo dos atuadores
 int vel_limite_vela = 100;
 int vel_limite_leme = 50;
 
 int cont_limite = 100;
+
+// Variáveis do read_radio
+double channel[2];
+
+int angulo_leme, angulo_vela;
 
 void setup() {
   md.init();
   ss.begin(115200);
   _starttime_r = millis();
   _starttime_s = millis();
-  Wire.begin(8);                // join i2c bus with address #8
-  Wire.onReceive(receiveEvent); // register event
   Serial.begin(9600);
+  pinMode(11, INPUT); //vela
+  pinMode(13, INPUT); //leme (controle de automático/manual
 }
-
 
 void loop() {
-}
-
-
-// function that runs whenever data is received from master
-// this function is registered as an event, see setup()
-void receiveEvent() {  
-  int angle_r;
-  int angle_s;
-  if (Wire.available()) { // loop through all but the last
-    angle_r = Wire.read();    // receive byte as an integer
-    angle_s = Wire.read();    // receive byte as an integer
-  }
-  angle_r = map(angle_r, 0, 179, -90, 90);
-  //angle_r -= 95;
-  //Serial.println(angle_r);
-  leme_controle(constrain(angle_r, -90, 90));
-  vela_controle(constrain(angle_s, 0, 90));
-  cont++;
-  //Serial.println(angle_s);
-  //Serial.println();
-  //delay(1000);
+  // garantir que o código não vai ficar preso no read_radio()
+  read_radio();
+  leme_controle(constrain(angulo_leme, -90, 90));
+  vela_controle(constrain(angulo_vela, 0, 90));  
 }
 
 void leme_controle(int theta_r_desejado){  
