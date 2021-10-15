@@ -12,16 +12,15 @@
 #include "Wire.h"
 
 Mag_HMC5883L::Mag_HMC5883L(float gridNorth){
-  Serial.println("test");
   HMC5883LAddress = 0x1E;
   Wire.begin();
   _ctrl = 1;
 }
 
-float Mag_HMC5883L::readHeading(){
+void Mag_HMC5883L::read(){
 
   if(_ctrl == 1) {
-    Wire.beginTransmission(0x1E); //open communication with HMC5883
+    Wire.beginTransmission(HMC5883LAddress); //open communication with HMC5883
     Wire.write(0x02); //select mode register
     Wire.write(0x00); //continuous measurement mode
     Wire.endTransmission();
@@ -29,12 +28,12 @@ float Mag_HMC5883L::readHeading(){
   }
  
   //Tell the HMC5883L where to begin reading data
-  Wire.beginTransmission(0x1E);
+  Wire.beginTransmission(HMC5883LAddress);
   Wire.write(0x03); //select register 3, X MSB register
   Wire.endTransmission();
   
  //Read data from each axis, 2 registers per axis
-  Wire.requestFrom(0x1E, 6);
+  Wire.requestFrom(HMC5883LAddress, 6);
   if(6<=Wire.available()){
     _x = Wire.read()<<8; //X msb
     _x |= Wire.read(); //X lsb
@@ -44,5 +43,15 @@ float Mag_HMC5883L::readHeading(){
     _y |= Wire.read(); //Y lsb
   }
 
+  _magnetometer.x = (float)_x;
+  _magnetometer.y = (float)_y;
+  _magnetometer.z = (float)_z;
+}
+
+Pose Mag_HMC5883L::get(){
+  return _magnetometer;
+}
+
+float Mag_HMC5883L::getHeading(){
   return atan2(_x,_y)*180/PI;
 }

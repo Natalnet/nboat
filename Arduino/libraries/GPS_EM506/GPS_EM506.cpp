@@ -11,11 +11,11 @@
 
 GPS_EM506::GPS_EM506(){
   Serial3.begin(4800);
-  ms = 1000;
+  ms = 30;
   start = 0.0;
 }
 
-Location GPS_EM506::readPosition(){  
+void GPS_EM506::read(){
   start = millis();
   do 
   {
@@ -25,8 +25,14 @@ Location GPS_EM506::readPosition(){
       if(gps.encode(c))
       {
         gps.f_get_position(&_p1.latitude, &_p1.longitude);
-        //direcao = gps.f_course();
-        //velocidade = gps.f_speed_kmph();
+        _gpsCourse = gps.f_course();
+        _gpsSpeed = gps.f_speed_kmph();
+        _gpsAltitude = gps.f_altitude();
+        gps.crack_datetime(&_year, &_month, &_day, &_hour, &_minute, &_second, &_hundredths, &_age);
+        if (_age != TinyGPS::GPS_INVALID_AGE){
+          sprintf(_gpsDate, "%02d:%02d:%02d", _hour-3, _minute, _second);
+          sprintf(_gpsDateFull, "%02d/%02d/%02d %02d:%02d:%02d", _day, _month, _year, _hour-3, _minute, _second);
+        }
       }
     }
   } while (millis() - start < ms);
@@ -35,20 +41,15 @@ Location GPS_EM506::readPosition(){
     Serial.println("GPS still calibrating...");
   }
 
-  return _p1;
+  _gpsData.location = _p1;
+  _gpsData.course = _gpsCourse;
+  _gpsData.speed = _gpsSpeed;
+  _gpsData.date = String(_gpsDate);
+  _gpsData.dateFull = String(_gpsDateFull);
+  _gpsData.altitude = _gpsAltitude;
+
 }
 
-float GPS_EM506::computeDistance(Location p1, Location p2){
-  return TinyGPS::distance_between(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
-}
-
-float GPS_EM506::computeHeading(Location p1, Location p2){
-  heading = TinyGPS::course_to(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
-  if(heading > 180){
-    heading = heading-360;
-  }
-  if(heading < -180){
-    heading = heading+360;
-  }
-  return heading;
+GPSData GPS_EM506::get(){
+  return _gpsData;
 }

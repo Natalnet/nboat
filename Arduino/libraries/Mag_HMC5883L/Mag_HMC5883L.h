@@ -10,15 +10,19 @@
 #define Mag_HMC5883L_h
 
 #include "Arduino.h"
+#include "Pose.h"
 
 class Mag_HMC5883L
 {
   public:
-    //calibration
     Mag_HMC5883L(float gridNorth = 0.0);
-    float readHeading();
+    float getHeading();
+    void read();
+    Pose get();
   private:
+    //calibration
     int HMC5883LAddress, _x, _y, _z, _ctrl;
+    Pose _magnetometer;
 };
 
 #endif
