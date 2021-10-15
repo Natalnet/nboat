@@ -30,7 +30,7 @@
 //pot vela A3
 //þot leme A2. min = 435; max = 647;
 
-int sensorPin = A2;    // select the input pin for the potentiometer
+int sensorPin = A0;    // select the input pin for the potentiometer
 int sensorValue = 0;  // variable to store the value coming from the sensor
 
 void setup() {

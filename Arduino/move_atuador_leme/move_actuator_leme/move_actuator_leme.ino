@@ -1,6 +1,9 @@
 #include "DualVNH5019MotorShield.h" //drive motor
 DualVNH5019MotorShield md;
 
+//640
+//80
+
 void setup() {
   md.init();
   Serial.begin(9600);
@@ -8,7 +11,7 @@ void setup() {
 }
 
 void loop() {
-  md.setM2Speed(200);
+  md.setM1Speed(-400);
   int pot_r = analogRead(A2);
   Serial.println(pot_r);
   //delay(4000);

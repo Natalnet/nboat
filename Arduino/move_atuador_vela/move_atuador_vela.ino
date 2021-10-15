@@ -1,11 +1,17 @@
 #include "DualVNH5019MotorShield.h" //drive motor
-DualVNH5019MotorShield md(2, 7, 6, A0, 2, 7, 12, A1);
+//DualVNH5019MotorShield md(2, 7, 6, A0, 2, 7, 12, A1);
+DualVNH5019MotorShield md;
+
+
+// leme -> 735 (sentido anti-horário)
+// leme -> 500 (sentido horário)
 
 //pot vela A3
 //þot leme A2. min = 435; max = 647;
 
 int sensorPin = A3;    // select the input pin for the potentiometer
 int sensorValue = 0;  // variable to store the value coming from the sensor
+int speed_motor = -200;
 
 void setup() {
   md.init();
@@ -17,11 +23,13 @@ void loop() {
     md.setM1Speed(i);
     delay(500);
   }*/
-
-//  sensorValue = analogRead(sensorPin);
-//  Serial.println(sensorValue);
-  md.setM1Speed(-400); //-400 <-> +400
-  delay(4000);
+  md.setM1Speed(400); //-400 <-> +400
+  //delay(500);
+  sensorValue = analogRead(sensorPin);
+  Serial.println(sensorValue);
+  if (sensorValue > 800 || sensorValue < 200){
+    //speed_motor = -speed_motor;
+  }
   //md.setM1Speed(0); //-400 <-> +400
   //delay(500);
   //md.setM1Speed(400); //-400 <-> +400

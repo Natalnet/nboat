@@ -45,8 +45,8 @@ int pinoPot_s = A3;
 int range = 40;
 
 // RECALIBRAR
-int pot_min_r = 723; // leme -90 graus (faz o veleiro virar no sentido horário)
-int pot_max_r = 335; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
+int pot_min_r = 640; // leme -90 graus (faz o veleiro virar no sentido horário)
+int pot_max_r = 80; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
 //valor do pot quando a vela está no max e no min
 int pot_min_s = 150; // leme -90 graus (faz o veleiro virar no sentido horário)
@@ -88,14 +88,16 @@ void setup() {
   _starttime_s = millis();
   Serial.begin(9600);
   pinMode(11, INPUT); //vela
-  pinMode(13, INPUT); //leme (controle de automático/manual
+  //pinMode(13, INPUT); //leme (controle de automático/manual
 }
 
 void loop() {
   // garantir que o código não vai ficar preso no read_radio()
   read_radio();
   leme_controle(constrain(angulo_leme, -90, 90));
-  vela_controle(constrain(angulo_vela, 0, 90));  
+  //vela_controle(constrain(angulo_vela, 0, 90));
+  // conta o número de comandos enviados. isso é usado para limitar o envio de mensagens para a pixhawk
+  cont++;  
 }
 
 void leme_controle(int theta_r_desejado){  
