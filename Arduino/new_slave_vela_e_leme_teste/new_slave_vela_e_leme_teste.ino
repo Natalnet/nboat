@@ -31,10 +31,12 @@ SoftwareSerial ss(5, 3);
 float Kp_r = 20;
 float Ki_r = 0.001;
 float I_prior_r = 0;
+float I_max_r = 200;
 
 float Kp_s = 15;
 float Ki_s = 0.5;
 float I_prior_s = 0;
+float I_max_s = 200;
 
 float _endtime_r, _starttime_r, _endtime_s, _starttime_s;
 
@@ -57,8 +59,12 @@ const int corrente_leme = 1;
 const int corrente_vela = 2;
 const int posicao_leme = 3;
 const int posicao_vela = 4;
-const int motor_leme = 5;
-const int motor_vela = 6;
+const int motor_leme_com = 5;
+const int motor_vela_com = 6;
+
+// mapeamento dos motores
+const int motor_leme = 1;
+const int motor_vela = 2;
 
 float _corrente_vela_ant = 0;
 float _posicao_vela_ant = 0;
@@ -69,12 +75,11 @@ float _posicao_leme_ant = 0;
 float _motor_leme_ant = 0;
 
 int cont = 0;
+int cont_limite = 100;
 
-// evita uso excessivo dos atuadores
+// evita uso excessivo dos atuadores. corta comandos menos que os limites.
 int vel_limite_vela = 100;
 int vel_limite_leme = 50;
-
-int cont_limite = 100;
 
 // Variáveis do read_radio
 int channel[2];
@@ -110,55 +115,28 @@ void leme_controle(int theta_r_desejado){
   int erro = theta_r_desejado - theta_r_atual;
   //erro = -erro;
   
-  // calcula os valores do controlador
+  // calcula os valores PID
   int velocidade_motor = P_r(erro) + I_r(erro);
 
   // satura valores max e min de pwm
   velocidade_motor = constrain(velocidade_motor, -400, 400);
 
-  // satura para o motor para não ficar consumindo corrente para valores baixos de pwm
-  if(velocidade_motor < vel_limite_leme && velocidade_motor > 0){
-    velocidade_motor = 0;
-  }
-  if(velocidade_motor > -vel_limite_leme && velocidade_motor < 0){
-    velocidade_motor = 0;
-  }
+  // corta velocidades baixas (evita uso desnecessário)
+  velocidade_motor = satura_motor(velocidade_motor, vel_limite_leme);
 
   // envia comando para o motor
-  md.setM1Speed(velocidade_motor); //-400 <-> +400
-  //md.setM2Speed(velocidade_motor); //-400 <-> +400
+  set_speed_suave(velocidade_motor, _motor_leme_ant, motor_leme);
 
-  //positivo aumenta, negativo diminui
-  
-  
+  // mede a corrente
+  float corrente_motor = get_corrente(motor_leme);
 
-  float corrente_motor = md.getM1CurrentMilliamps()/1000.;
+  // manda sinais para a pixhawk
+  com_pixhawk_leme(corrente_motor, theta_r_atual, velocidade_motor);
 
-  Serial.print("angulo_atual: ");
-  Serial.println(theta_r_atual);
-  Serial.print("set_point: ");
-  Serial.println(angulo_leme);
-  Serial.print("velocidade_motor: ");
-  Serial.println(velocidade_motor);
-  Serial.print("corrente motor: ");
-  Serial.println(corrente_motor);
-  Serial.println(); 
+  // debuga
+  debug_leme(theta_r_atual, angulo_leme, velocidade_motor, corrente_motor);
 
-  bool aux = (corrente_motor != _corrente_leme_ant || theta_r_atual != _posicao_leme_ant || velocidade_motor != _motor_leme_ant);
-
-  // envia os dados para a pixhawk quando dados mudam
-  if(cont % cont_limite == 0 && aux){
-    send_mavlink(corrente_leme, corrente_motor);
-    send_mavlink(posicao_leme, theta_r_atual);
-    send_mavlink(motor_leme, velocidade_motor);
-
-    _corrente_leme_ant = corrente_motor;
-    _posicao_leme_ant = theta_r_atual;
-    _motor_leme_ant = velocidade_motor;
-    cont = 0;
-  }
-
-  delay(10);
+  //delay(10);
 }
 
 void vela_controle(int theta_s_desejado){  
@@ -176,45 +154,16 @@ void vela_controle(int theta_s_desejado){
   // satura pwm para max e min
   velocidade_motor = constrain(velocidade_motor, -400, 400);
 
-  /*
-
-  // satura para o motor para não ficar consumindo corrente para valores baixos de pwm
-  if(velocidade_motor < vel_limite_vela && velocidade_motor > 0){
-    velocidade_motor = 0;
-  }
-  if(velocidade_motor > -vel_limite_vela && velocidade_motor < 0){
-    velocidade_motor = 0;
-  }
-  */
+  velocidade_motor = satura_motor(velocidade_motor, vel_limite_vela);
 
   // envia comando do motor
-  //md.setM2Speed(velocidade_motor); //-400 <-> +400
+  set_speed_suave(velocidade_motor, _motor_vela_ant, motor_vela);
+   
+  float corrente_motor = get_corrente(motor_vela);
+
+  com_pixhawk_vela(corrente_motor, theta_s_atual, velocidade_motor);
+
+  debug_vela(theta_s_atual, angulo_vela, velocidade_motor, corrente_motor);
   
-  Serial.print("angulo_atual: ");
-  Serial.println(theta_s_atual);
-  Serial.print("set_point: ");
-  Serial.println(angulo_vela);
-  Serial.print("velocidade_motor: ");
-  Serial.println(velocidade_motor);
-  Serial.println();
-  
-  Serial.println(md.getM2CurrentMilliamps() + md.getM2CurrentMilliamps());
-  /*float corrente_motor = md.getM1CurrentMilliamps()/1000.;
-
-  bool aux = (corrente_motor != _corrente_vela_ant || theta_s_atual != _posicao_vela_ant || velocidade_motor != _motor_vela_ant);
-  
-  // envia mensagem para a pixhawk
-  if(cont % cont_limite == 0 && aux){
-    send_mavlink(corrente_vela, corrente_motor);
-    send_mavlink(posicao_vela, theta_s_atual);
-    send_mavlink(motor_vela, velocidade_motor);
-
-    _corrente_vela_ant = corrente_motor;
-    _posicao_vela_ant = theta_s_atual;
-    _motor_vela_ant = velocidade_motor;
-
-    cont = 0;
-  }*/
-
-  delay(10);
+  //delay(10);
 }
