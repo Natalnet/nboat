@@ -11,12 +11,12 @@ void debug_leme(int theta_r_atual, int angulo_leme, int velocidade_motor, float 
 }
 
 void debug_vela(int theta_s_atual, int angulo_vela, int velocidade_motor, float corrente_motor){
-  /*Serial.print("angulo_atual: ");
+  Serial.print("angulo_atual: ");
   Serial.println(theta_s_atual);
   Serial.print("set_point: ");
   Serial.println(angulo_vela);
   Serial.print("velocidade_motor: ");
-  Serial.println(velocidade_motor);*/
+  Serial.println(vel_acc);
   Serial.print("corrente motor: ");
   Serial.println(corrente_motor);
   Serial.println();

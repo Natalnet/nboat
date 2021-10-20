@@ -4,8 +4,8 @@ void read_radio(){
   // passar isso para o controle
 
   // recebe um sinal entre 1000 - 2000. espera 1 segundo
-  channel[0] = pulseIn(11, HIGH); //canal da vela
-  channel[1] = pulseIn(13, HIGH); //canal da vela
+  //channel[0] = pulseIn(11, HIGH); //canal da vela
+  channel[1] = pulseIn(52, HIGH); //canal da vela
 
   if (channel[1] < 1000){
     

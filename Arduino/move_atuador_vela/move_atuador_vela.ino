@@ -23,13 +23,12 @@ void loop() {
     md.setM1Speed(i);
     delay(500);
   }*/
-  md.setM1Speed(400); //-400 <-> +400
+
+  md.setM1Speed(0);
+  //-400 <-> +400
   //delay(500);
   sensorValue = analogRead(sensorPin);
   Serial.println(sensorValue);
-  if (sensorValue > 800 || sensorValue < 200){
-    //speed_motor = -speed_motor;
-  }
   //md.setM1Speed(0); //-400 <-> +400
   //delay(500);
   //md.setM1Speed(400); //-400 <-> +400

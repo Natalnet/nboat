@@ -33,7 +33,7 @@ float Ki_r = 0.2;
 float I_prior_r = 0;
 float I_max_r = 50;
 
-float Kp_s = 10;
+float Kp_s = 20;
 float Ki_s = 0.5;
 float I_prior_s = 0;
 float I_max_s = 200;
@@ -93,6 +93,9 @@ int radio_vela, radio_leme;
 
 int angulo_leme, angulo_vela;
 
+int vel_acc;
+int vel_incremento = 80;
+
 void setup() {
   md.init();
   ss.begin(115200);
@@ -107,7 +110,7 @@ void setup() {
 void loop() {
   // garantir que o código não vai ficar preso no read_radio()
   read_radio();
-  //leme_controle(constrain(angulo_leme, -90, 90));
+  leme_controle(constrain(angulo_leme, -90, 90));
   vela_controle(constrain(angulo_vela, 0, 90));
   // conta o número de comandos enviados. isso é usado para limitar o envio de mensagens para a pixhawk
   cont++;
@@ -126,7 +129,7 @@ void leme_controle(int theta_r_desejado){
   int velocidade_motor = P_r(erro) + I_r(erro);
 
   // satura valores max e min de pwm
-  velocidade_motor = constrain(velocidade_motor, -100, 100);
+  velocidade_motor = constrain(velocidade_motor, -400, 400);
 
   // corta velocidades baixas (evita uso desnecessário)
   velocidade_motor = satura_motor(velocidade_motor, vel_limite_leme);
@@ -168,7 +171,8 @@ void vela_controle(int theta_s_desejado){
 
   // envia comando do motor
   // set_speed_suave(velocidade_motor, _motor_vela_ant, motor_vela);
-  md.setM2Speed(velocidade_motor); //-400 <-> +400
+  // md.setM2Speed(velocidade_motor); //-400 <-> +400
+  set_speed_incremental(velocidade_motor);
   
   //set_speed_suave(velocidade_motor); //-400 <-> +400
 

@@ -1,41 +1,29 @@
-// Wire Master Writer
-// by Nicholas Zambetti <http://www.zambetti.com>
+#include<Wire.h>
 
-// Demonstrates use of the Wire library
-// Writes data to an I2C/TWI slave device
-// Refer to the "Wire Slave Receiver" example for use with this
-
-// Created 29 March 2006
-
-// This example code is in the public domain.
-
-
-#include <Wire.h>
-
-void setup() {
-  Wire.begin(); // join i2c bus (address optional for master)
+void setup()
+{
+  Wire.begin();
   Serial.begin(9600);
 }
 
-byte x = 0;
-byte y = 0;
+void loop()
+{
+  int a = 300;   //0x012C
+  int b = 400; //0x0190
+  int c = -500; //0x0190
+  Wire.beginTransmission(10);  //slaveAddress
+  Wire.write(highByte(a)); //I2C is byte oriented; write(a);
+  Wire.write(lowByte(a));
+  Wire.write(highByte(b)); //I2C is byte oriented; write(a);
+  Wire.write(lowByte(b));
+  Wire.write(highByte(c)); //I2C is byte oriented; write(a);
+  Wire.write(lowByte(c));
+  Wire.endTransmission();
+  //delay(1000);
 
-void loop() {
-  Wire.beginTransmission(8); // transmit to device #8
-  //Wire.write("x is ");        // sends five bytes
-  Wire.write(x);              // sends one byte
-  Wire.write(y);              // sends one byte
-  Wire.endTransmission();    // stop transmitting
-
-  Wire.beginTransmission(10); // transmit to device #8
-  //Wire.write("y is ");        // sends five bytes
-  Wire.write(y);              // sends one byte
-  Wire.endTransmission();    // stop transmitting
-
-  x++;
-  y = y + 10;
-
-  Serial.println(x);
-  
-  delay(500);
+  //int b = 400;   //
+  //Wire.beginTransmission(0x40);
+  //Wire.write(b);
+  //Wire.endTransmission();
+  delay(100);
 }

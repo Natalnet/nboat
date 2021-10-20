@@ -32,7 +32,7 @@ void setup() {
 
 void loop() {
   //lê sinal do rádio
-  channel[0] = pulseIn(2, HIGH); //canal da vela
+  channel[0] = pulseIn(28, HIGH); //canal da vela
   //channel[1] = pulseIn(3, HIGH); //canal do leme
   //channel[2] = pulseIn(13, HIGH);
 
@@ -40,10 +40,10 @@ void loop() {
   //Serial.print("LEME: "); Serial.println(channel[1]);
 //  Serial.print("GEAR: "); Serial.println(channel[2]);
 
-  int theta_r = map(channel[0],  Pixhawk_rudder_low, Pixhawk_rudder_high, -90, 90); //aileron
+  //int theta_r = map(channel[0],  Pixhawk_rudder_low, Pixhawk_rudder_high, -90, 90); //aileron
 
   //Serial.print("ANGLE: ");Serial.println(theta_r);
-  Serial.println();
+  //Serial.println();
 
   //mapeia de sinal de rádio para ângulo do leme
   //byte theta_r = map(channel, 894, 2088, -90, 90); //aileron

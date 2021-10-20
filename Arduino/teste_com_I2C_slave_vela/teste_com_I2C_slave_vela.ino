@@ -1,33 +1,49 @@
-// Wire Slave Receiver
-// by Nicholas Zambetti <http://www.zambetti.com>
+#include<Wire.h>
+#define led 13
 
-// Demonstrates use of the Wire library
-// Receives data as an I2C/TWI slave device
-// Refer to the "Wire Master Writer" example for use with this
+volatile byte x1, x2;
+int y1, y2, y3;
+bool flag1 = false;
 
-// Created 29 March 2006
-
-// This example code is in the public domain.
-
-
-#include <Wire.h>
-
-void setup() {
-  Wire.begin(10);                // join i2c bus with address #8
-  Wire.onReceive(receiveEvent); // register event
-  Serial.begin(9600);           // start serial for output
+void setup()
+{
+  Wire.begin(10);
+  Serial.begin(9600);
+  Wire.onReceive(receiveEvent);
+  pinMode(led, OUTPUT);
+  digitalWrite(led, LOW);
 }
 
-void loop() {
-  delay(100);
-}
-
-// function that executes whenever data is received from master
-// this function is registered as an event, see setup()
-void receiveEvent(int howMany) {
-  int c;
-  while (Wire.available()) { // loop through all but the last
-    c = Wire.read(); // receive byte as a character
+void loop()
+{
+  if (flag1 == true)
+  {
+    Serial.print("Recived a: ");
+    Serial.println(y1, DEC);        //Serial Monitor shows: 300
+    //-------------------------
+    Serial.print("Recived b: ");
+    Serial.println(y2, DEC);
+    //-------------------------
+    Serial.print("Recived c: ");
+    Serial.println(y3, DEC);
+    //-------------------------
+    flag1 = false;   //reday for next cycle
   }
-  Serial.println(c);         // print the character
+}
+
+void receiveEvent(int howMany)
+{
+  x1 = Wire.read();  //x1 hilds upper byte of received a
+  x2 = Wire.read();  //x2 holds lower byte of received a
+  y1 = (int)x1 << 8 | (int)x2;
+  //------------------------
+  x1 = Wire.read();  //x1 hilds upper byte of received b
+  x2 = Wire.read();  //x2 holds lower byte of received b
+  y2 = (int)x1 << 8 | (int)x2;
+  //---------------------------
+  x1 = Wire.read();  //x1 hilds upper byte of received b
+  x2 = Wire.read();  //x2 holds lower byte of received b
+  y3 = (int)x1 << 8 | (int)x2;
+  //---------------------------
+  flag1 = true; //to indicate recevieEvent() handler is visited; do all print in loop()
 }

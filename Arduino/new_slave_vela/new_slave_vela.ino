@@ -1,10 +1,7 @@
 #include "DualVNH5019MotorShield.h" //drive motor
 #include "Wire.h"
-#include "mavlink.h"
-#include <SoftwareSerial.h>
 
-DualVNH5019MotorShield md;
-SoftwareSerial ss(5, 3);
+DualVNH5019MotorShield md(2, 7, 6, A0, 2, 7, 12, A1);
 
 /*****************************
  
@@ -28,29 +25,21 @@ SoftwareSerial ss(5, 3);
 //velocidade negativa (-400) -> vela ABRE
 
 // variáveis PID
-float Kp_r = 20;
-float Ki_r = 0.001;
-float I_prior_r = 0;
-
 float Kp_s = 15;
-float Ki_s = 0.5;
+float Ki_s = 0.1;
 float I_prior_s = 0;
 
-float _endtime_r, _starttime_r, _endtime_s, _starttime_s;
+float _endtime_s, _starttime_s;
 
 // pinos dos potenciometros do leme e da vela
-int pinoPot_r = A2;
 int pinoPot_s = A3;
 
 int range = 40;
 
 // RECALIBRAR
-int pot_min_r = 80; // leme -90 graus (faz o veleiro virar no sentido horário)
-int pot_max_r = 640; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
-
 //valor do pot quando a vela está no max e no min
-int pot_min_s = 250; // leme -90 graus (faz o veleiro virar no sentido horário)
-int pot_max_s = 850; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
+int pot_min_s = 850; // leme -90 graus (faz o veleiro virar no sentido horário)
+int pot_max_s = 250; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
 // mapeamento das mensagens mavlink
 const int corrente_leme = 1;
@@ -69,12 +58,15 @@ float _posicao_leme_ant = 0;
 float _motor_leme_ant = 0;
 
 int cont = 0;
+int cont_iic = 0;
+
 
 // evita uso excessivo dos atuadores
 int vel_limite_vela = 100;
 int vel_limite_leme = 50;
 
 int cont_limite = 100;
+int cont_iic_limite = 20;
 
 // Variáveis do read_radio
 int channel[2];
@@ -82,99 +74,31 @@ int channel[2];
 int radio_vela, radio_leme;
 
 int angulo_leme, angulo_vela;
-
-// conector 2
-
-// 1 - 5v
-// 2 - ground
-// 3 - dados pot vela
-// 4 - rmp
-// 5 - biruta dados
-// 6 - 
-// 7 - ground
-// 8 - vcc
+int corrente, posicao, velocidade;
 
 void setup() {
   md.init();
-  ss.begin(115200);
-  _starttime_r = millis();
   _starttime_s = millis();
   Serial.begin(9600);
-  pinMode(11, INPUT); //leme
   pinMode(13, INPUT); //vela
+  Wire.begin();
 }
 
 void loop() {
   // garantir que o código não vai ficar preso no read_radio()
   read_radio();
-  //leme_controle(constrain(angulo_leme, -90, 90));
   vela_controle(constrain(angulo_vela, 0, 90));
   // conta o número de comandos enviados. isso é usado para limitar o envio de mensagens para a pixhawk
+  send_data_master(corrente, posicao, velocidade);
   cont++;
-}
-
-void leme_controle(int theta_r_desejado){  
-  // verifica posição atual do leme
-  int theta_r_atual = ler_angulo_atual_r();
-
-  // calcula o erro com o angulo desejado
-  int erro = theta_r_desejado - theta_r_atual;
-  //erro = -erro;
-  
-  // calcula os valores do controlador
-  int velocidade_motor = P_r(erro) + I_r(erro);
-
-  // satura valores max e min de pwm
-  velocidade_motor = constrain(velocidade_motor, -400, 400);
-
-  // satura para o motor para não ficar consumindo corrente para valores baixos de pwm
-  if(velocidade_motor < vel_limite_leme && velocidade_motor > 0){
-    velocidade_motor = 0;
-  }
-  if(velocidade_motor > -vel_limite_leme && velocidade_motor < 0){
-    velocidade_motor = 0;
-  }
-
-  // envia comando para o motor
-  md.setM1Speed(velocidade_motor); //-400 <-> +400
-  //md.setM2Speed(velocidade_motor); //-400 <-> +400
-
-  //positivo aumenta, negativo diminui
-  
-  
-
-  float corrente_motor = md.getM1CurrentMilliamps()/1000.;
-
-  Serial.print("angulo_atual: ");
-  Serial.println(theta_r_atual);
-  Serial.print("set_point: ");
-  Serial.println(angulo_leme);
-  Serial.print("velocidade_motor: ");
-  Serial.println(velocidade_motor);
-  Serial.print("corrente motor: ");
-  Serial.println(corrente_motor);
-  Serial.println(); 
-
-  bool aux = (corrente_motor != _corrente_leme_ant || theta_r_atual != _posicao_leme_ant || velocidade_motor != _motor_leme_ant);
-
-  // envia os dados para a pixhawk quando dados mudam
-  if(cont % cont_limite == 0 && aux){
-    send_mavlink(corrente_leme, corrente_motor);
-    send_mavlink(posicao_leme, theta_r_atual);
-    send_mavlink(motor_leme, velocidade_motor);
-
-    _corrente_leme_ant = corrente_motor;
-    _posicao_leme_ant = theta_r_atual;
-    _motor_leme_ant = velocidade_motor;
-    cont = 0;
-  }
-
-  delay(10);
+  cont_iic++;
 }
 
 void vela_controle(int theta_s_desejado){  
   // verifica posição atual da vela
   int theta_s_atual = ler_angulo_atual_s();
+
+  posicao = theta_s_atual;
 
   // calcula o erro com o angulo desejado
   int erro = theta_s_desejado - theta_s_atual;
@@ -187,7 +111,7 @@ void vela_controle(int theta_s_desejado){
   // satura pwm para max e min
   velocidade_motor = constrain(velocidade_motor, -100, 100);
 
-  /*
+  
 
   // satura para o motor para não ficar consumindo corrente para valores baixos de pwm
   if(velocidade_motor < vel_limite_vela && velocidade_motor > 0){
@@ -196,15 +120,15 @@ void vela_controle(int theta_s_desejado){
   if(velocidade_motor > -vel_limite_vela && velocidade_motor < 0){
     velocidade_motor = 0;
   }
-  */
+  
 
   // envia comando do motor
-  //md.setM2Speed(velocidade_motor); //-400 <-> +400
-  
-  Serial.print("angulo_atual: ");
-  Serial.println(theta_s_atual);
+  md.setM1Speed(velocidade_motor); //-400 <-> +400
+
   Serial.print("set_point: ");
   Serial.println(angulo_vela);
+  Serial.print("angulo_atual: ");
+  Serial.println(theta_s_atual);
   Serial.print("velocidade_motor: ");
   Serial.println(velocidade_motor);
   Serial.println();

@@ -32,25 +32,16 @@ float Kp_r = 20;
 float Ki_r = 0.001;
 float I_prior_r = 0;
 
-float Kp_s = 15;
-float Ki_s = 0.5;
-float I_prior_s = 0;
-
-float _endtime_r, _starttime_r, _endtime_s, _starttime_s;
+float _endtime_r, _starttime_r;
 
 // pinos dos potenciometros do leme e da vela
 int pinoPot_r = A2;
-int pinoPot_s = A3;
 
 int range = 40;
 
 // RECALIBRAR
 int pot_min_r = 80; // leme -90 graus (faz o veleiro virar no sentido horário)
 int pot_max_r = 640; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
-
-//valor do pot quando a vela está no max e no min
-int pot_min_s = 250; // leme -90 graus (faz o veleiro virar no sentido horário)
-int pot_max_s = 850; // leme 90 graus (faz o veleiro virar no sentido anti-horário)
 
 // mapeamento das mensagens mavlink
 const int corrente_leme = 1;
@@ -59,6 +50,8 @@ const int posicao_leme = 3;
 const int posicao_vela = 4;
 const int motor_leme = 5;
 const int motor_vela = 6;
+
+float corrente_vela_send, posicao_vela_send, velocidade_vela_send;
 
 float _corrente_vela_ant = 0;
 float _posicao_vela_ant = 0;
@@ -70,10 +63,6 @@ float _motor_leme_ant = 0;
 
 int cont = 0;
 
-// evita uso excessivo dos atuadores
-int vel_limite_vela = 100;
-int vel_limite_leme = 50;
-
 int cont_limite = 100;
 
 // Variáveis do read_radio
@@ -83,33 +72,24 @@ int radio_vela, radio_leme;
 
 int angulo_leme, angulo_vela;
 
-// conector 2
+int y1, y2, y3;
 
-// 1 - 5v
-// 2 - ground
-// 3 - dados pot vela
-// 4 - rmp
-// 5 - biruta dados
-// 6 - 
-// 7 - ground
-// 8 - vcc
+int vel_limite_leme = 50;
 
 void setup() {
   md.init();
   ss.begin(115200);
   _starttime_r = millis();
-  _starttime_s = millis();
   Serial.begin(9600);
   pinMode(11, INPUT); //leme
-  pinMode(13, INPUT); //vela
+  Wire.begin(10);
+  Wire.onReceive(receiveEvent);
 }
 
 void loop() {
   // garantir que o código não vai ficar preso no read_radio()
   read_radio();
-  //leme_controle(constrain(angulo_leme, -90, 90));
-  vela_controle(constrain(angulo_vela, 0, 90));
-  // conta o número de comandos enviados. isso é usado para limitar o envio de mensagens para a pixhawk
+  leme_controle(constrain(angulo_leme, -90, 90));
   cont++;
 }
 
@@ -140,11 +120,9 @@ void leme_controle(int theta_r_desejado){
   //md.setM2Speed(velocidade_motor); //-400 <-> +400
 
   //positivo aumenta, negativo diminui
-  
-  
 
   float corrente_motor = md.getM1CurrentMilliamps()/1000.;
-
+  /*
   Serial.print("angulo_atual: ");
   Serial.println(theta_r_atual);
   Serial.print("set_point: ");
@@ -153,7 +131,8 @@ void leme_controle(int theta_r_desejado){
   Serial.println(velocidade_motor);
   Serial.print("corrente motor: ");
   Serial.println(corrente_motor);
-  Serial.println(); 
+  Serial.println();
+  */
 
   bool aux = (corrente_motor != _corrente_leme_ant || theta_r_atual != _posicao_leme_ant || velocidade_motor != _motor_leme_ant);
 
@@ -163,69 +142,15 @@ void leme_controle(int theta_r_desejado){
     send_mavlink(posicao_leme, theta_r_atual);
     send_mavlink(motor_leme, velocidade_motor);
 
+    send_mavlink(corrente_vela, corrente_vela_send);
+    send_mavlink(posicao_vela, posicao_vela_send);
+    send_mavlink(motor_vela, velocidade_vela_send);
+
     _corrente_leme_ant = corrente_motor;
     _posicao_leme_ant = theta_r_atual;
     _motor_leme_ant = velocidade_motor;
     cont = 0;
   }
-
-  delay(10);
-}
-
-void vela_controle(int theta_s_desejado){  
-  // verifica posição atual da vela
-  int theta_s_atual = ler_angulo_atual_s();
-
-  // calcula o erro com o angulo desejado
-  int erro = theta_s_desejado - theta_s_atual;
-  erro = -erro;
-
-  // encontra valores do controlador
-  int velocidade_motor = P_s(erro) + I_s(erro);
-  //int velocidade_motor = P_s(erro);
-
-  // satura pwm para max e min
-  velocidade_motor = constrain(velocidade_motor, -100, 100);
-
-  /*
-
-  // satura para o motor para não ficar consumindo corrente para valores baixos de pwm
-  if(velocidade_motor < vel_limite_vela && velocidade_motor > 0){
-    velocidade_motor = 0;
-  }
-  if(velocidade_motor > -vel_limite_vela && velocidade_motor < 0){
-    velocidade_motor = 0;
-  }
-  */
-
-  // envia comando do motor
-  //md.setM2Speed(velocidade_motor); //-400 <-> +400
-  
-  Serial.print("angulo_atual: ");
-  Serial.println(theta_s_atual);
-  Serial.print("set_point: ");
-  Serial.println(angulo_vela);
-  Serial.print("velocidade_motor: ");
-  Serial.println(velocidade_motor);
-  Serial.println();
-  
-  //Serial.println(md.getM2CurrentMilliamps() + md.getM2CurrentMilliamps());
-  /*float corrente_motor = md.getM1CurrentMilliamps()/1000.;
-
-  bool aux = (corrente_motor != _corrente_vela_ant || theta_s_atual != _posicao_vela_ant || velocidade_motor != _motor_vela_ant);
-  
-  // envia mensagem para a pixhawk
-  if(cont % cont_limite == 0 && aux){
-    send_mavlink(corrente_vela, corrente_motor);
-    send_mavlink(posicao_vela, theta_s_atual);
-    send_mavlink(motor_vela, velocidade_motor);
-
-    _corrente_vela_ant = corrente_motor;
-    _posicao_vela_ant = theta_s_atual;
-    _motor_vela_ant = velocidade_motor;
-
-    cont = 0;
-  }*/
 
   delay(10);
 }
