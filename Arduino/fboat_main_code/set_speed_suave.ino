@@ -20,4 +20,5 @@ void set_speed_incremental(int velocidade_motor){
   }
   vel_acc = constrain(vel_acc, -400, 400);
   md.setM2Speed(vel_acc);
+  //Serial.println(vel_acc);
 }
