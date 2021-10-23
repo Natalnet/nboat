@@ -12,7 +12,8 @@ double channel[3];
 
 
 void setup() {
-  pinMode(52, INPUT); //vela
+  pinMode(8, INPUT); // vem da pixhawk
+  pinMode(5, OUTPUT); // vai para o driver
   //pinMode(3, INPUT); //leme
   //pinMode(13, INPUT); //gear (controle de automático/manual
   Serial.begin(9600);
@@ -24,11 +25,16 @@ void setup() {
 
 void loop() {
   //lê sinal do rádio
-  channel[0] = pulseIn(52, HIGH); //canal da vela
+  channel[0] = pulseIn(8, HIGH); //canal da vela
   //channel[1] = pulseIn(3, HIGH); //canal do leme
   //channel[2] = pulseIn(13, HIGH);
 
   Serial.print("VELA: "); Serial.println(channel[0]);
+  int pwm = map(channel[0], 1500, 1950, 0, 255);
+  pwm = constrain(pwm, 0, 255);
+  //Serial.print("PWM: "); Serial.println(pwm);
+  analogWrite(53, pwm);
+  //delay(500);
   //Serial.print("LEME: "); Serial.println(channel[1]);
   //Serial.print("GEAR: "); Serial.println(channel[2]);
   //Serial.println();}
